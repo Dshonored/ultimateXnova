@@ -231,7 +231,7 @@ switch ($mode) {
                     curl_close($ch);
                     unlink($fileInfo['fileName']);
                     break;
-                case 'sql';
+                case 'sql':
                     $data = file_get_contents(ROOT_PATH . 'install/migrations/' . $fileInfo['fileName']);
                     try {
                         $queries	= explode(";\n", str_replace('%PREFIX%', DB_PREFIX, $data));
