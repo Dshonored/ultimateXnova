@@ -74,6 +74,15 @@ class ShowMessagesPage extends AbstractGamePage
         $messagePage	= HTTP::_GP('page', 1);
         $messageIDs		= HTTP::_GP('messageID', array());
 
+        // The array KEYS are imploded into SQL IN() lists below; _GP only sanitizes the values.
+        $safeMessageIDs	= array();
+        foreach($messageIDs as $messageKey => $messageValue) {
+            if(is_scalar($messageValue) && (string) (int) $messageKey === (string) $messageKey && (int) $messageKey > 0) {
+                $safeMessageIDs[(int) $messageKey]	= $messageValue;
+            }
+        }
+        $messageIDs		= $safeMessageIDs;
+
         $redirectUrl	= 'game.php?page=messages&category='.$MessCategory.'&side='.$messagePage;
 
 		    $action	= false;

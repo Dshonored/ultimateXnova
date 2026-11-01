@@ -102,10 +102,16 @@ class ShowTicketPage extends AbstractGamePage
 		} else {
 			$db = Database::get();
 
-			$sql = "SELECT status FROM %%TICKETS%% WHERE ticketID = :ticketID;";
+			// players may only answer their own tickets
+			$sql = "SELECT status FROM %%TICKETS%% WHERE ticketID = :ticketID AND ownerID = :ownerID;";
 			$ticketStatus = $db->selectSingle($sql, array(
-				':ticketID'	=> $ticketID
+				':ticketID'	=> $ticketID,
+				':ownerID'	=> $USER['id']
 			), 'status');
+
+			if ($ticketStatus === false || $ticketStatus === null) {
+				$this->redirectTo('game.php?page=ticket');
+			}
 
 			if ($ticketStatus == 2)
 			{
