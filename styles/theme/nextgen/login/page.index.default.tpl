@@ -152,13 +152,9 @@ function codeSubmit(){
 
 {/block}
 
+{block name="script" append}
 {if $recaptchaEnable && $use_recaptcha_on_login}
-	{block name="script" append}
-		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$lang}"></script>
-	{/block}
-
-	{block name="script" append}
-		<script type="text/javascript" src="./scripts/base/avoid_submit_on_refresh.js"></script>
-	{/block}
-
+	<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$lang}"></script>
+	<script type="text/javascript" src="./scripts/base/avoid_submit_on_refresh.js"></script>
 {/if}
+{/block}
