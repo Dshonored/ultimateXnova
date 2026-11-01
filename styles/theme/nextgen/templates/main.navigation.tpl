@@ -1,126 +1,96 @@
 <div class="dark-blur-bg box-border box-shadow-large main-menu-container" id="main-menu-container">
   <ul class="main-menu">
       <li>
-        <a class="{if $page == 'overview'}menuActive{/if}" href="game.php?page=overview">{$LNG.lm_overview}</a>
+        <a class="{if $page == 'overview'}menuActive{/if}" href="game.php?page=overview"><i class="bi bi-house-door"></i><span>{$LNG.lm_overview}</span></a>
       </li>
       {if isModuleAvailable($smarty.const.MODULE_BUILDING)}
       <li>
-        <a class="{if $page == 'buildings'}menuActive{/if}"  href="game.php?page=buildings">{$LNG.lm_buildings}</a>
+        <a class="{if $page == 'buildings'}menuActive{/if}" href="game.php?page=buildings"><i class="bi bi-building"></i><span>{$LNG.lm_buildings}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_SHIPYARD_FLEET)}
       <li>
-        <a class="{if $page == 'shipyard' && $mode == 'fleet'}menuActive{/if}" href="game.php?page=shipyard&amp;mode=fleet">{$LNG.lm_shipshard}</a>
+        <a class="{if $page == 'shipyard' && $mode == 'fleet'}menuActive{/if}" href="game.php?page=shipyard&amp;mode=fleet"><i class="bi bi-rocket-takeoff"></i><span>{$LNG.lm_shipshard}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_SHIPYARD_DEFENSIVE)}
       <li>
-        <a class="{if $page == 'shipyard' && $mode == 'defense'}menuActive{/if}" href="game.php?page=shipyard&amp;mode=defense">{$LNG.lm_defenses}</a>
+        <a class="{if $page == 'shipyard' && $mode == 'defense'}menuActive{/if}" href="game.php?page=shipyard&amp;mode=defense"><i class="bi bi-shield-shaded"></i><span>{$LNG.lm_defenses}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_RESEARCH)}
       <li>
-        <a class="{if $page == 'research'}menuActive{/if}" href="game.php?page=research">{$LNG.lm_research}</a>
+        <a class="{if $page == 'research'}menuActive{/if}" href="game.php?page=research"><i class="bi bi-lightbulb"></i><span>{$LNG.lm_research}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_TRADER)}
       <li>
-        <a class="{if $page == 'fleetTable'}menuActive{/if}" href="game.php?page=fleetTable">{$LNG.lm_fleet}</a>
+        <a class="{if $page == 'fleetTable' || $page == 'fleetStep1' || $page == 'fleetStep2'}menuActive{/if}" href="game.php?page=fleetTable"><i class="bi bi-send"></i><span>{$LNG.lm_fleet}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_GALAXY)}
       <li>
-        <a class="{if $page == 'galaxy'}menuActive{/if}" href="game.php?page=galaxy">{$LNG.lm_galaxy}</a>
+        <a class="{if $page == 'galaxy'}menuActive{/if}" href="game.php?page=galaxy"><i class="bi bi-stars"></i><span>{$LNG.lm_galaxy}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_IMPERIUM)}
       <li>
-        <a target="_blank" class="{if $page == 'imperium'}menuActive{/if}" href="game.php?page=imperium">{$LNG.lm_empire}</a>
+        <a class="{if $page == 'imperium'}menuActive{/if}" href="game.php?page=imperium"><i class="bi bi-grid-3x3-gap"></i><span>{$LNG.lm_empire}</span></a>
       </li>
       {/if}
-
       {if isModuleAvailable($smarty.const.MODULE_TECHTREE)}
       <li>
-        <a class="{if $page == 'techtree'}menuActive{/if}" href="game.php?page=techtree">{$LNG.lm_technology}</a>
+        <a class="{if $page == 'techtree'}menuActive{/if}" href="game.php?page=techtree"><i class="bi bi-diagram-3"></i><span>{$LNG.lm_technology}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_RESSOURCE_LIST)}
       <li>
-        <a class="{if $page == 'resources'}menuActive{/if}" href="game.php?page=resources">{$LNG.lm_resources}</a>
+        <a class="{if $page == 'resources'}menuActive{/if}" href="game.php?page=resources"><i class="bi bi-box-seam"></i><span>{$LNG.lm_resources}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_OFFICIER) || isModuleAvailable($smarty.const.MODULE_DMEXTRAS)}
       <li>
-        <a class="{if $page == 'officier'}menuActive{/if}" href="game.php?page=officier">{$LNG.lm_officiers}</a>
+        <a class="{if $page == 'officier'}menuActive{/if}" href="game.php?page=officier"><i class="bi bi-person-badge"></i><span>{$LNG.lm_officiers}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_TRADER)}
       <li>
-        <a class="{if $page == 'trader'}menuActive{/if}" href="game.php?page=trader">{$LNG.lm_trader}</a>
+        <a class="{if $page == 'trader'}menuActive{/if}" href="game.php?page=trader"><i class="bi bi-arrow-left-right"></i><span>{$LNG.lm_trader}</span></a>
       </li>
       {/if}
       {if isModuleAvailable($smarty.const.MODULE_FLEET_TRADER)}
       <li>
-        <a class="{if $page == 'fleetDealer'}menuActive{/if}" href="game.php?page=fleetDealer">{$LNG.lm_fleettrader}</a>
+        <a class="{if $page == 'fleetDealer'}menuActive{/if}" href="game.php?page=fleetDealer"><i class="bi bi-cart3"></i><span>{$LNG.lm_fleettrader}</span></a>
       </li>
       {/if}
-
       {if isModuleAvailable($smarty.const.MODULE_ALLIANCE)}
       <li>
-        <a class="" href="game.php?page=alliance">{$LNG.lm_alliance}</a>
+        <a class="{if $page == 'alliance'}menuActive{/if}" href="game.php?page=alliance"><i class="bi bi-flag"></i><span>{$LNG.lm_alliance}</span></a>
       </li>
       {/if}
       {if $authlevel > 0}
       <li>
-        <a class="blur-bg-danger" href="./admin.php" style="">{$LNG.lm_administration} ({$VERSION})</a>
-      </li>
-      {/if}
-      {if $commit != ''}
-      <li>
-        <a href="https://github.com/ultimateXnova/ultimateXnova/commit/{$commit}"  class="" target="copy">ultimateXnova {$commitShort}</a>
+        <a class="blur-bg-danger" href="./admin.php"><i class="bi bi-shield-lock"></i><span>{$LNG.lm_administration}</span></a>
       </li>
       {/if}
   </ul>
-  <div class="toggle-menu-button-container"> 
-    <div class="toggle-menu-button dark-blur-bg" onclick="document.getElementById('main-navigation').classList.toggle('main-menu-hidden'); saveMenuStateToSession();">
-      <div class="toggle-menu-button-icon"><img src="styles/theme/nextgen/img/menu-button.svg" alt="menu"></div>
-      <script>
-       function checkMobileScreen() {
-        var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        var mainNavigation = document.getElementById('main-navigation');
-        
-        if (screenWidth < 960) {
-          mainNavigation.classList.add('main-menu-hidden');
-        }
-      }
-      checkMobileScreen();
-     
-      // Function to save the last state of menu hidden to the session
-      function saveMenuStateToSession() {
-        var mainNavigation = document.getElementById('main-navigation');
-        var isMenuHidden = mainNavigation.classList.contains('main-menu-hidden');
-        
-        // Save the menu state to the session
-        sessionStorage.setItem('menuHidden', isMenuHidden);
-      }
-
-      
-
-      // Function to restore the last state of menu hidden from the session
-      function restoreMenuStateFromSession() {
-        var mainNavigation = document.getElementById('main-navigation');
-        var isMenuHidden = sessionStorage.getItem('menuHidden');
-        
-        // Restore the menu state from the session
-        if (isMenuHidden === 'true') {
-          mainNavigation.classList.add('main-menu-hidden');
-        } 
-      }
-
-      // Call the function to restore the menu state from the session
-      restoreMenuStateFromSession();
-
-      </script>
-    </div>
+  <div class="toggle-menu-button-container">
+    <button type="button" class="toggle-menu-button dark-blur-bg" aria-label="Menu" onclick="toggleMainMenu()">
+      <span class="toggle-menu-button-icon"><img src="styles/theme/nextgen/img/menu-button.svg" alt=""></span>
+    </button>
   </div>
+  <script>
+    (function () {
+      var nav = document.getElementById('main-navigation');
+      var stored = null;
+      try { stored = sessionStorage.getItem('menuHidden'); } catch (e) {}
+      if (stored === 'true' || (stored === null && window.innerWidth < 960)) {
+        nav.classList.add('main-menu-hidden');
+      }
+      window.toggleMainMenu = function () {
+        var hidden = nav.classList.toggle('main-menu-hidden');
+        try { sessionStorage.setItem('menuHidden', hidden); } catch (e) {}
+      };
+    })();
+  </script>
 </div>

@@ -685,3 +685,87 @@ position: relative;
 .uk-grid-column-small {
   margin-left: -5px;
 }
+/* ==========================================================
+   friends-edition overrides
+   ========================================================== */
+
+/* Wider layout (was 1200px) */
+.uk-container {
+    max-width: 1640px;
+}
+
+/* Sticky sidebar: stays in view while the page scrolls,
+   and the menu list scrolls on its own when it is taller than the viewport. */
+#main-navigation > .main-menu-container {
+    position: sticky;
+    top: 16px;
+    margin-top: 40px;
+    border-radius: 16px;
+    padding: 10px 8px;
+}
+.main-menu {
+    max-height: calc(100vh - 32px - 20px - 50px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.25) transparent;
+    padding-right: 2px !important;
+}
+.main-menu::-webkit-scrollbar { width: 6px; }
+.main-menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 3px; }
+
+/* Menu items: icon + label, left aligned */
+.main-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    border-radius: 10px;
+    padding: 7px 12px;
+    transition: background-color 150ms ease-out, border-color 150ms ease-out;
+}
+.main-menu li a i {
+    flex: 0 0 18px;
+    font-size: 16px;
+    line-height: 1;
+    text-align: center;
+    opacity: 0.85;
+}
+.main-menu li a span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.main-menu li a:hover {
+    transform: none;
+    font-weight: inherit;
+    background-color: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.2);
+}
+.main-menu li a.menuActive {
+    background-color: rgba(255,128,0,0.18);
+    border-color: rgba(255,128,0,0.55);
+}
+.main-menu li a.menuActive i { opacity: 1; color: #ffb066; }
+
+/* Collapse toggle */
+.toggle-menu-button {
+    display: block;
+    color: inherit;
+    background: transparent;
+}
+.main-menu-hidden .main-menu-container {
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .main-menu li a { transition: none; }
+}
+
+@media (max-width: 960px) {
+    #main-navigation > .main-menu-container {
+        position: relative;
+        top: 0;
+    }
+    .main-menu { max-height: none; }
+}

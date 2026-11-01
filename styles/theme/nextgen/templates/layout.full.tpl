@@ -124,13 +124,10 @@
 			{if isModuleAvailable($smarty.const.MODULE_FORUM)}{if !empty($hasBoard)}
 			<a class="font-size-12 px-2 border-end text-white hover-underline" href="game.php?page=board" target="forum">{$LNG.lm_forums}</a>
 			{/if}{/if}
-			{if isModuleAvailable($smarty.const.MODULE_DISCORD)}
-			<a class="font-size-12 px-2 border-end text-white hover-underline" href="{$discordUrl}" target="copy">Discord</a>
-			{/if}
 			{if isModuleAvailable($smarty.const.MODULE_CHAT)}
 			<a class="font-size-12 px-2 border-end text-white hover-underline" href="game.php?page=chat">{$LNG.lm_chat}</a>
 			{/if}
-			<a href="https://github.com/Pfahli" target="_blank" class=" font-size-12 text-white">Designed by Pfahli</a>
+			<a href="{$smarty.const.SOURCE_CODE_URL}" target="_blank" rel="noopener" class="font-size-12 px-2 text-white-50 hover-underline" title="AGPL-3.0">Source</a>
 
 
 			
