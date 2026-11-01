@@ -164,10 +164,19 @@ class ShowFleetStep3Page extends AbstractGamePage
 
 		if(!empty($fleetGroup))
 		{
+            // the player must be invited to this very ACS group and it must aim at the chosen target
             $sql = "SELECT ankunft FROM %%USERS_ACS%% INNER JOIN %%AKS%% ON id = acsID
-			WHERE acsID = :acsID AND :maxFleets > (SELECT COUNT(*) FROM %%FLEETS%% WHERE fleet_group = :acsID);";
+			WHERE acsID = :acsID AND userID = :userID
+			AND target = (SELECT id FROM %%PLANETS%% WHERE universe = :universe AND galaxy = :targetGalaxy AND `system` = :targetSystem AND planet = :targetPlanet AND planet_type = :targetType)
+			AND :maxFleets > (SELECT COUNT(*) FROM %%FLEETS%% WHERE fleet_group = :acsID);";
             $ACSTime = $db->selectSingle($sql, array(
                 ':acsID'        => $fleetGroup,
+                ':userID'       => $USER['id'],
+                ':universe'     => Universe::current(),
+                ':targetGalaxy' => $targetGalaxy,
+                ':targetSystem' => $targetSystem,
+                ':targetPlanet' => $targetPlanet,
+                ':targetType'   => ($targetType == 2 ? 1 : $targetType),
                 ':maxFleets'    => $config->max_fleets_per_acs,
             ), 'ankunft');
 

@@ -32,7 +32,8 @@ if (function_exists('mb_internal_encoding')) {
 }
 
 ignore_user_abort(true);
-error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED); // patched: deprecations were fatal
+ini_set('display_errors', 0); // never leak paths/queries to players; errors go to includes/error.log
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED); // deprecations must not be fatal (E_STRICT was removed in PHP 8.4)
 
 // If date.timezone is invalid
 date_default_timezone_set(@date_default_timezone_get());

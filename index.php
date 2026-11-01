@@ -49,7 +49,14 @@ if(isset($pageProps['requireModule']) && $pageProps['requireModule'] !== 0 && !i
 	ShowErrorPage::printError($LNG['sys_module_inactive']);
 }
 
-if(!is_callable(array($pageObj, $mode))) {
+// Only real controller actions (public, argument-less, declared by the page itself) may be called by URL.
+$modeIsAction	= false;
+if(is_string($mode) && preg_match('/^[A-Za-z][A-Za-z0-9]*$/', $mode) && method_exists($pageObj, $mode)) {
+	$modeReflection	= new ReflectionMethod($pageObj, $mode);
+	$modeIsAction	= $modeReflection->isPublic() && !$modeReflection->isStatic() && $modeReflection->getNumberOfRequiredParameters() === 0 && $modeReflection->getDeclaringClass()->getName() !== 'AbstractLoginPage';
+}
+
+if(!$modeIsAction) {
 	if(!isset($pageProps['defaultController']) || !is_callable(array($pageObj, $pageProps['defaultController']))) {
 		ShowErrorPage::printError($LNG['page_doesnt_exist']);
 	}

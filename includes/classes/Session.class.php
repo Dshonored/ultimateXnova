@@ -364,7 +364,7 @@ class Session
 
 	private function getRequestPath()
 	{
-		return HTTP_ROOT.(!empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '');
+		return htmlspecialchars(HTTP_ROOT.(!empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : ''), ENT_QUOTES, 'UTF-8');
 	}
 
 	private function compareIpAddress($ip1, $ip2, $blockCount)
