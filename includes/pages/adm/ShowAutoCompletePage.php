@@ -32,22 +32,26 @@ function ShowAutoCompletePage()
 		exit;
 	}
 
+	$params = array(':universe' => Universe::getEmulated());
+
 	if(substr($searchText, 0, 1) === '#')
 	{
-		$where = 'id = '.((int) substr($searchText, 1));
+		$where = 'id = :userId';
 		$orderBy = ' ORDER BY id ASC';
+		$params[':userId'] = (int) substr($searchText, 1);
 	}
 	else
 	{
-		$where = "username LIKE '%". $searchText ."%'";
-		$orderBy = " ORDER BY (IF(username = '". $searchText ."', 1, 0) + IF(username LIKE '" . $searchText ."%', 1, 0)) DESC, username";
+		$where = 'username LIKE :searchLike';
+		$orderBy = ' ORDER BY (IF(username = :searchExact, 1, 0) + IF(username LIKE :searchStart, 1, 0)) DESC, username';
+		$params[':searchLike'] = '%'.$searchText.'%';
+		$params[':searchExact'] = $searchText;
+		$params[':searchStart'] = $searchText.'%';
 	}
 
 	$sql = "SELECT id, username FROM %%USERS%% WHERE universe = :universe AND " . $where . $orderBy . " LIMIT 20";
 
-	$userRaw = Database::get()->select($sql,array(
-		':universe' => Universe::getEmulated()
-	));
+	$userRaw = Database::get()->select($sql, $params);
 
 	foreach($userRaw as $userRow)
 	{
