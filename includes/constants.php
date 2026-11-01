@@ -255,3 +255,14 @@ define('ELEMENT_BUILD_ON_MOONS'		, 2097152);
 define('ELEMENT_RESOURCE_ON_TF'		, 4194304);
 define('ELEMENT_RESOURCE_ON_FLEET'	, 8388608);
 define('ELEMENT_RESOURCE_ON_STEAL'	, 16777216);
+
+// Cache-busting token for theme assets (Cloudflare caches CSS/JS for hours).
+// Changes automatically whenever one of these files changes.
+define('ASSET_VERSION', substr(md5(implode('|', array_map(function ($f) {
+	return @filemtime(__DIR__.'/../'.$f);
+}, array(
+	'styles/theme/nextgen/css/style.css',
+	'styles/theme/nextgen/css/login.css',
+	'styles/theme/nextgen/css/mobile.css',
+	'scripts/base/lang-pref.js',
+)))), 0, 10));

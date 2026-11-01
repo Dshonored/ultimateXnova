@@ -16,15 +16,15 @@
 
 
 	<!-- NG Fonts -->
-	<link rel="stylesheet" href="styles/theme/nextgen/css/fonts.css">
+	<link rel="stylesheet" href="styles/theme/nextgen/css/fonts.css?v={$smarty.const.ASSET_VERSION}">
 	<!-- NG Libraries -->
 	<link rel="stylesheet" href="styles/theme/nextgen/css/uikit.min.css">
 	<link rel="stylesheet" href="styles/theme/nextgen/css/uikit-rtl.min.css">
 	<script src="styles/theme/nextgen/js/uikit.min.css"></script>
 	<script src="styles/theme/nextgen/js/uikit-icons.min.css"></script>
 	<!-- NG CSS -->
-	<link rel="stylesheet" href="styles/theme/nextgen/css/login.css">
-	<link rel="stylesheet" href="styles/theme/nextgen/css/style.css">
+	<link rel="stylesheet" href="styles/theme/nextgen/css/login.css?v={$smarty.const.ASSET_VERSION}">
+	<link rel="stylesheet" href="styles/theme/nextgen/css/style.css?v={$smarty.const.ASSET_VERSION}">
 	<!-- Favicons  -->
 	<link rel="shortcut icon" href="/styles/resource/favicon/favicon.ico" type="image/x-icon">
 	<link rel="apple-touch-icon" sizes="180x180" href="/styles/resource/favicon/apple-touch-icon.png">
@@ -48,7 +48,7 @@
 	<script src="scripts/base/jquery.cookie.js?v={$REV}"></script>
 	<script src="scripts/base/jquery.fancybox.js?v={$REV}"></script>
 	<script src="scripts/login/main.js"></script>
-	<script src="scripts/base/lang-pref.js?v=1"></script>
+	<script src="scripts/base/lang-pref.js?v={$smarty.const.ASSET_VERSION}"></script>
 	<script>{if isset($code)}var loginError = {$code|json};{/if}</script>
 	{block name="script"}{/block}
 </head>

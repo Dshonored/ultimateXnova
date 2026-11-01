@@ -32,14 +32,14 @@
 	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 
 	<!-- NG Fonts -->
-	<link rel="stylesheet" href="styles/theme/nextgen/css/fonts.css">
+	<link rel="stylesheet" href="styles/theme/nextgen/css/fonts.css?v={$smarty.const.ASSET_VERSION}">
 	<!-- NG Libraries -->
 	<link rel="stylesheet" href="styles/theme/nextgen/css/uikit.min.css">
 	<script src="styles/theme/nextgen/js/uikit.min.js	"></script>
 	<script src="styles/theme/nextgen/js/uikit-icons.min.js"></script>
 	<!-- NG CSS -->
-	<link rel="stylesheet" href="styles/theme/nextgen/css/style.css">
-	<link rel="stylesheet" href="styles/theme/nextgen/css/mobile.css">
+	<link rel="stylesheet" href="styles/theme/nextgen/css/style.css?v={$smarty.const.ASSET_VERSION}">
+	<link rel="stylesheet" href="styles/theme/nextgen/css/mobile.css?v={$smarty.const.ASSET_VERSION}">
 	<!-- Favicons  -->
 	<link rel="shortcut icon" href="/styles/resource/favicon/favicon.ico" type="image/x-icon">
 	<link rel="apple-touch-icon" sizes="180x180" href="/styles/resource/favicon/apple-touch-icon.png">
@@ -80,7 +80,7 @@
 	<script type="text/javascript" src="./scripts/base/jquery.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/base/jquery.ui.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/base/jquery.cookie.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/base/lang-pref.js?v=1"></script>
+	<script type="text/javascript" src="./scripts/base/lang-pref.js?v={$smarty.const.ASSET_VERSION}"></script>
 	<script type="text/javascript" src="./scripts/base/jquery.validationEngine.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/l18n/validationEngine/jquery.validationEngine-{$lang}.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/base/tooltip.js?v={$REV}"></script>
