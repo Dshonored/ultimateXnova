@@ -111,6 +111,9 @@ class HTTP {
 			if (in_array($page, $safeGetPages, true) && $mode === 'show' && $plainQuery) {
 				return;
 			}
+			// A link from outside (chat, bookmark sync, e-mail) to any other page: land on the
+			// overview instead of an error. Parameters are dropped, so no action can run.
+			self::redirectTo('game.php');
 		}
 
 		self::sendHeader('HTTP/1.1 403 Forbidden');
