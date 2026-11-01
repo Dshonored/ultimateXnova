@@ -160,3 +160,157 @@ body {
       }
 }
 .login-code-input { letter-spacing: 0.5em; font-variant-numeric: tabular-nums; }
+
+/* ==========================================================
+   friends-edition: centered login card
+   Colors keep WCAG AA contrast on the dark glass background.
+   ========================================================== */
+:root {
+    --fe-text: #f4f6fb;
+    --fe-text-muted: #c3c9d6;
+    --fe-accent: #ffb066;
+    --fe-accent-strong: #ff8a1f;
+    --fe-border: rgba(255,255,255,0.18);
+    --fe-input-bg: rgba(10,12,20,0.72);
+}
+
+.login-stage {
+    min-height: calc(100vh - 190px);
+    display: grid;
+    place-items: center;
+    padding: 24px 16px 72px;
+}
+.login-card, .login-card.dark-blur-bg {
+    width: min(400px, 100%);
+    padding: 32px 28px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--fe-border);
+    background-color: rgba(8,10,18,0.92);
+    color: var(--fe-text);
+    text-align: left;
+}
+.login-card-header { margin-bottom: 20px; text-align: center; }
+.login-card-title {
+    margin: 0 0 6px;
+    font-family: var(--secondary-font-family);
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--fe-text);
+}
+.login-card-subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--fe-text-muted);
+}
+.login-form { display: flex; flex-direction: column; gap: 6px; }
+.login-label {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--fe-text);
+}
+.login-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--fe-border);
+    background: var(--fe-input-bg);
+    color: var(--fe-text);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+.login-input::placeholder { color: #8f97a8; }
+.login-input:focus {
+    border-color: var(--fe-accent-strong);
+    box-shadow: 0 0 0 3px rgba(255,138,31,0.28);
+}
+/* Chrome autofill keeps the dark style instead of a pale yellow box with white text */
+.login-input:-webkit-autofill,
+.login-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--fe-text);
+    -webkit-box-shadow: 0 0 0 1000px #141824 inset;
+    caret-color: var(--fe-text);
+}
+.login-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 10px 0 6px;
+    flex-wrap: wrap;
+}
+.login-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--fe-text);
+    cursor: pointer;
+}
+.login-check input { width: 16px; height: 16px; accent-color: var(--fe-accent-strong); }
+.login-link, .login-link:visited {
+    color: var(--fe-accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+.login-link:hover, .login-link:focus-visible { color: #ffd2a6; text-decoration: underline; }
+.login-button {
+    margin-top: 8px;
+    height: 46px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--fe-accent-strong);
+    color: #1a0d00;
+    font-family: var(--secondary-font-family);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color 150ms ease-out, transform 100ms ease-out;
+}
+.login-button:hover { background: #ff9d45; }
+.login-button:active { transform: scale(0.98); }
+.login-button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.login-card .alert { margin: 6px 0 0; padding: 8px 12px; font-size: 0.9rem; border-radius: 8px; }
+.login-card-footer {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--fe-border);
+    font-size: 0.9rem;
+    color: var(--fe-text-muted);
+}
+.login-code-input { height: 56px; font-size: 1.6rem; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+    .login-input, .login-button { transition: none; }
+}
+@media (max-width: 960px) {
+    .login-stage { min-height: auto; padding-top: 8px; }
+}
+
+/* Readability: UIkit's default navbar grey (#999) was ~2:1 over the bright backdrop */
+.menu-container .uk-navbar-nav > li > a { color: #e8ebf2; }
+.menu-container .uk-navbar-nav > li > a:hover,
+.menu-container .uk-navbar-nav > li > a.uk-active { color: #ffb066; }
+.menu-container.dark-blur-bg { background-color: rgba(0,0,0,0.82); }
+
+.fe-source, .fe-source:visited { color: #d5d9e2 !important; }
+.fe-source:hover { color: #ffffff !important; }
+.footer-container.dark-blur-bg { background-color: rgba(0,0,0,0.82); }
+
+.login-card-wide, .login-card-wide.dark-blur-bg { width: min(460px, 100%); }
+.login-hint { margin: 2px 0 4px; font-size: 0.82rem; line-height: 1.4; color: var(--fe-text-muted); }
+.login-rules { margin: 12px 0 4px; align-items: flex-start; line-height: 1.4; }
+.login-rules input { margin-top: 2px; flex: 0 0 auto; }
+.login-rules a, .login-rules a:visited { color: var(--fe-accent); font-weight: 600; }
+select.login-input { appearance: auto; }
+select.login-input option { background: #141824; color: var(--fe-text); }

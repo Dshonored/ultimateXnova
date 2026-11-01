@@ -1,8 +1,11 @@
 # ultimateXnova friends-edition: PHP 8.5 + Apache, hardened defaults
-FROM php:8.5-apache
+# Latest stable PHP (8.5.12, Oct 2026) pinned exactly; 8.6 is still RC and gets no security support.
+# Bump this tag when a new 8.5.x / 8.6.x security release ships.
+FROM php:8.5.12-apache-trixie
 
 # (OPcache is part of the PHP 8.5 core, no extension build needed)
 RUN apt-get update \
+ && apt-get upgrade -y --no-install-recommends \
  && apt-get install -y --no-install-recommends libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
  && docker-php-ext-install -j"$(nproc)" gd pdo_mysql mysqli bcmath \

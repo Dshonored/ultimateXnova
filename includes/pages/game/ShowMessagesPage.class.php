@@ -304,14 +304,14 @@ class ShowMessagesPage extends AbstractGamePage
         $TitleColor = array (
           0 => '#FFFF00',
           1 => '#FF6699',
-          2 => '#FF3300',
+          2 => '#FF6A3D',
           3 => '#FF9900',
-          4 => '#773399',
-          5 => '#009933',
-          15 => '#6495ed',
-          50 => '#666600',
-          99 => '#007070',
-          100 => '#ABABAB',
+          4 => '#C08CFF',
+          5 => '#4CD47A',
+          15 => '#8AB4FF',
+          50 => '#D6D65A',
+          99 => '#3FD0D0',
+          100 => '#C8C8C8',
           999 => '#CCCCCC'
         );
 

@@ -204,3 +204,5 @@ $LNG['login_code_button']       = 'Verify';
 $LNG['login_code_back']         = 'Use a different account';
 $LNG['login_code_mail_subject'] = '%1$s is your %2$s login code';
 $LNG['login_code_mail_body']    = "Hello %1\$s,\n\nYour login code is:\n\n    %2\$s\n\nIt is valid for 10 minutes. If you did not try to log in to %3\$s, change your password.\n\nThe %3\$s Team";
+$LNG['loginTagline']               = 'Real-time space strategy with your friends.';
+$LNG['loginNoAccount']             = 'No account yet?';

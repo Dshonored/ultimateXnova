@@ -56,118 +56,69 @@
 
 	}
 </script>
-<div class="box-border dark-blur-bg box-shadow-large register-container">
-<h1 class="login-heading">{$LNG.siteTitleRegister}</h1>
-	<form style=""  id="registerForm" method="post" action="index.php?page=register" data-action="index.php?page=register">
-		<input id="csrfToken" type="hidden" name="csrfToken" value="{$csrfToken}">
-		<input type="hidden" value="send" name="mode">
-		<input type="hidden" value="{$externalAuth.account}" name="externalAuth[account]">
-		<input type="hidden" value="{$externalAuth.method}" name="externalAuth[method]">
-		<input id="referralID" type="hidden" value="{$referralData.id}" name="referralID">
-		{if $isMultiUniverse}
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100" for="universe">{$LNG.universe}</label>
-			<select style="text-indent:5px;" class="bg-dark text-white form-select d-flex align-items-center my-2 fs-6 w-100 mx-0 px-0" name="uni" id="universe" class="changeAction">
-			{html_options options=$universeSelect selected=$UNI}
-			</select>
-		</div>
-		{else}
+<div class="login-stage">
+	<div class="login-card login-card-wide dark-blur-bg box-shadow-large">
+		<header class="login-card-header">
+			<h1 class="login-card-title">{$LNG.siteTitleRegister}</h1>
+			<p class="login-card-subtitle">{$LNG.loginTagline}</p>
+		</header>
+
+		<form id="registerForm" class="login-form" method="post" action="index.php?page=register" onsubmit="registerSubmit('{$recaptchaEnable}', '{$use_recaptcha_on_register}', '{$referralData.id|escape}'); return false;">
+			<input id="csrfToken" type="hidden" name="csrfToken" value="{$csrfToken|escape}">
+			<input type="hidden" value="send" name="mode">
+			<input type="hidden" value="{$externalAuth.account|escape}" name="externalAuth[account]">
+			<input type="hidden" value="{$externalAuth.method|escape}" name="externalAuth[method]">
+			<input id="referralID" type="hidden" value="{$referralData.id|escape}" name="referralID">
+
+			{if $isMultiUniverse}
+			<label class="login-label" for="universe">{$LNG.universe}</label>
+			<select class="login-input" name="uni" id="universe">{html_options options=$universeSelect selected=$UNI}</select>
+			{else}
 			<input type="hidden" name="uni" value="{$UNI}">
-		{/if}
-		{if !empty($error.uni)}
-			<span class="error errorUni"></span>
-		{/if}
-
-		{if !empty($externalAuth.account)}
-		{if $facebookEnable}
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100">{$LNG.registerFacebookAccount}</label>
-			<span class="text fbname">{$accountName}</span>
-		</div>
-		{/if}
-		{elseif empty($referralData.id)}
-		{if $facebookEnable}
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100">{$LNG.registerFacebookAccount}</label>
-			<a href="#" data-href="index.php?page=externalAuth&method=facebook" class="fb_login"><img src="styles/resource/images/facebook/fb-connect-large.png" alt=""></a>
-		</div>
-		{/if}
-		{/if}
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100" for="username">{$LNG.registerUsername}</label>
-			<input type="text" class="bg-dark text-white form-control d-flex align-items-center my-2 mx-0 px-0 fs-6 w-100" name="username" id="username" maxlenght="32">
-		</div>
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			{if !empty($error.username)}
-			<span class="error errorUsername"></span>
 			{/if}
-			<span class="fs-6 my-2 text-start w-100 text-secondary">{$LNG.registerUsernameDesc}</span>
-		</div>
 
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100" for="password">{$LNG.registerPassword}</label>
-			<input type="password" class="bg-dark text-white form-control d-flex align-items-center my-2 mx-0 px-0 fs-6 w-100" name="password" id="password">
-		</div>
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			{if !empty($error.password)}<span class="error errorPassword"></span>{/if}
-			<span class="inputDesc">{$registerPasswordDesc}</span>
-		</div>
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100" for="email">{$LNG.registerEmail}</label>
-			<input type="email" class="bg-dark text-white form-control d-flex align-items-center my-2 mx-0 px-0 fs-6 w-100" name="email" id="email">
-		</div>
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			{if !empty($error.email)}<span class="error errorEmail"></span>{/if}
-			<span class="inputDesc">{$LNG.registerEmailDesc}</span>
-		</div>
+			<label class="login-label" for="username">{$LNG.registerUsername}</label>
+			<input class="login-input" type="text" name="username" id="username" maxlength="32" autocomplete="username" required autofocus>
+			<p class="login-hint">{$LNG.registerUsernameDesc}</p>
 
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100" for="secretQuestion">{$LNG.registerSecretQuestionText}</label>
-			<select id="secretQuestion" style="text-indent:5px;" class="bg-dark text-white form-select d-flex align-items-center my-2 fs-6 w-100 mx-0 px-0" name="secretQuestion">
+			<label class="login-label" for="email">{$LNG.registerEmail}</label>
+			<input class="login-input" type="email" name="email" id="email" autocomplete="email" required>
+			<p class="login-hint">{$LNG.registerEmailDesc}</p>
+
+			<label class="login-label" for="password">{$LNG.registerPassword}</label>
+			<input class="login-input" type="password" name="password" id="password" minlength="8" autocomplete="new-password" required>
+			<p class="login-hint">{$registerPasswordDesc}</p>
+
+			<label class="login-label" for="secretQuestion">{$LNG.registerSecretQuestionText}</label>
+			<select class="login-input" id="secretQuestion" name="secretQuestion">
 				{foreach $LNG.registerSecretQuestionArray as $id => $currentQuestion}
 				<option value="{$id}">{$currentQuestion}</option>
 				{/foreach}
 			</select>
-		</div>
 
+			<label class="login-label" for="secretQuestionAnswer">{$LNG.registerSecretQuestionAnswerText}</label>
+			<input class="login-input" id="secretQuestionAnswer" type="text" name="secretQuestionAnswer" autocomplete="off">
 
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100" for="secretQuestionAnswer">{$LNG.registerSecretQuestionAnswerText}</label>
-			<input id="secretQuestionAnswer" type="text" class="bg-dark text-white form-control d-flex align-items-center my-2 mx-0 px-0 fs-6 w-100" name="secretQuestionAnswer">
-		</div>
-
-
-		{if !empty($referralData.name)}
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100" for="language">{$LNG.registerReferral}</label>
-			<span class="text">{$referralData.name}</span>
-		</div>
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			{if !empty($error.language)}<span class="error errorLanguage"></span>{/if}
-			<div class="clear"></div>
-		</div>
-		{/if}
-		{if $recaptchaEnable && $use_recaptcha_on_register}
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2">
-			<label class="fs-6 my-2 text-start w-100">{$LNG.registerCaptcha}</label>
-		</div>
-		<div class="form-group d-flex flex-md-row flex-column justify-content-md-between align-items-center my-2" id="captchaRow">
-				<div class="g-recaptcha" data-sitekey="{$recaptchaPublicKey}"></div>
-				<div class="clear"></div>
-		</div>
-		{/if}
-
-		<div class="form-group d-flex flex-row justify-content-md-start align-items-center my-2">
-			<input type="checkbox" name="rules" id="rules" value="">
-			{if !empty($error.rules)}
-				<span class="error errorRules"></span>
+			{if !empty($referralData.name)}
+			<p class="login-hint">{$LNG.registerReferral}: <strong>{$referralData.name|escape}</strong></p>
 			{/if}
-			<span class="fs-6 px-2">{$registerRulesDesc}</span>
-		</div>
-		<div class="form-group d-flex flex-column justify-content-md-between align-items-center my-2">
-			<button id="registerButton" type="button" onclick="registerSubmit(activeRecaptcha = '{$recaptchaEnable}', use_recaptcha_on_register = '{$use_recaptcha_on_register}', referralID = '{$referralData.id}');" class="hover-bg-color-grey btn btn-block w-100 bg-dark text-white">{$LNG.buttonRegister}</button>
-		</div>
-	</form>
+
+			{if $recaptchaEnable && $use_recaptcha_on_register}
+			<div class="g-recaptcha" data-sitekey="{$recaptchaPublicKey}"></div>
+			{/if}
+
+			<label class="login-check login-rules" for="rules">
+				<input type="checkbox" name="rules" id="rules" value="" required>
+				<span>{$registerRulesDesc}</span>
+			</label>
+
+			<button id="registerButton" class="login-button" type="submit">{$LNG.buttonRegister}</button>
+		</form>
+
+		<footer class="login-card-footer">
+			<a class="login-link" href="index.php">{$LNG.passwordBackToLogin}</a>
+		</footer>
+	</div>
 </div>
 {/block}
 {block name="script" append}

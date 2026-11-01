@@ -194,3 +194,6 @@ $LNG['login_code_button']       = 'Verificar';
 $LNG['login_code_back']         = 'Usar otra cuenta';
 $LNG['login_code_mail_subject'] = '%1$s es tu código de acceso a %2$s';
 $LNG['login_code_mail_body']    = "Hola %1\$s,\n\nTu código de acceso es:\n\n    %2\$s\n\nVale por 10 minutos. Si no intentaste entrar a %3\$s, cambia tu contraseña.\n\nEquipo de %3\$s";
+$LNG['loginTagline']               = 'Estrategia espacial en tiempo real con tus amigos.';
+$LNG['loginNoAccount']             = '¿Todavía no tienes cuenta?';
+$LNG['buttonLostPassword']         = '¿Olvidaste tu contraseña?';

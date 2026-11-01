@@ -769,3 +769,36 @@ position: relative;
     }
     .main-menu { max-height: none; }
 }
+
+/* Readable footer link (was white at 50% opacity) */
+.fe-source, .fe-source:visited { color: #d5d9e2 !important; }
+.fe-source:hover { color: #ffffff !important; }
+.footer-container.dark-blur-bg { background-color: rgba(0,0,0,0.82); }
+
+/* ==========================================================
+   friends-edition: readability pass (WCAG AA on bright backdrops)
+   ========================================================== */
+/* Panels: 50% black let bright planet backgrounds wash out the text */
+.dark-blur-bg { background-color: rgba(0,0,0,0.74); }
+.top-bar.dark-blur-bg, .menu-container.dark-blur-bg, .footer-container.dark-blur-bg { background-color: rgba(0,0,0,0.85); }
+
+/* Brighter versions of the theme's utility colors, same hues */
+.color-green  { color: #7ee07a !important; }
+.color-blue   { color: #7fb8ff !important; }
+.color-red, .res_current.color-red { color: #ff7a6e !important; }
+.color-yellow { color: #ffe066 !important; }
+font[color="red"], span[style*="color:red"], span[style*="color: red"] { color: #ff7a6e !important; }
+
+/* Planet name/coords sit on top of the planet picture: give them a dark plate */
+.planet-name, .planet-coords {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9);
+}
+.planet-name, .planet-coords {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 8px;
+    border-radius: 6px;
+    background-color: rgba(0,0,0,0.72);
+}
+.planet-coords { margin-top: 2px; }
