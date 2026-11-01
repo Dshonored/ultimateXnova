@@ -1,0 +1,21 @@
+# Override for linuxhome: no host port, reachable only by Traefik on dokploy-network.
+# docker compose -f docker-compose.yml -f docker-compose.linuxhome.yml up -d --build
+services:
+  web:
+    container_name: xnova-web
+    ports: !reset []
+    networks:
+      - default
+      - dokploy-network
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+  db:
+    container_name: xnova-db
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+networks:
+  dokploy-network:
+    external: true
