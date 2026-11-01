@@ -209,7 +209,7 @@ $LNG['sys_destruc_lune'] = 'La probabilità di distruzione della luna è: %d%% '
 $LNG['sys_destruc_rip'] = 'La probabilità di autodistruzione della flotta è: %d%%';
 $LNG['sys_destruc_stop'] = 'Il difensore ha bloccato con successo la distruzione della luna.';
 $LNG['sys_destruc_mess1'] = 'Le stelle della morte spararono la loro tremenda energia sulla luna. ';
-$LNG['sys_destruc_echec'] = 'I terremoti hanno scosso il pianeta. Ma qualcosa è andato storto, le stelle della morte sono esplose e si sono disintegrate in migliaia di pezzi, le onde d\'urto hanno distrutto l'intera flotta.';
+$LNG['sys_destruc_echec'] = 'I terremoti hanno scosso il pianeta. Ma qualcosa è andato storto, le stelle della morte sono esplose e si sono disintegrate in migliaia di pezzi, le onde d\'urto hanno distrutto l\'intera flotta.';
 $LNG['sys_destruc_reussi'] = 'I raggi della Morte Nera raggiunsero la luna e la fecero a pezzi. <br>L\'intera luna fu distrutta.';
 $LNG['sys_destruc_null'] = 'Le Deathstars non potevano caricarsi completamente prima di sparare e implodere.<br> La luna non viene distrutta.';
 
