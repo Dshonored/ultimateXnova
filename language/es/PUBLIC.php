@@ -108,6 +108,20 @@ $LNG['registerSendComplete']		= 'Gracias por tu registro. Debes consultar tu cor
 $LNG['registerWelcomePMSenderName']	= 'Administrador';
 $LNG['registerWelcomePMSubject']	= 'Bienvenido';
 $LNG['registerWelcomePMText']		= 'Bienvenido a %s! En primer lugar tienes que construir una planta de energía solar, ya que es el edificio que genera la energía que se necesita para la producción de materias primas. Para crear una, haga clic izquierdo en el menú de "edificios". Entonces construya el cuarto edificio contando apartir de la parte superior. </br> Cuando tengas construida la planta de energía, podrás comenzar a construir las minas. Ir a los edificios en el menú y construir una mina de metal, seguido de una mina de cristal. </br></br>Con el fin de poder construir tus propias flotas, debes tener un Hangar. Para ver lo que se necesita para desbloquear ese edificio se puede echar un vistazo al apartado "Tecnologías" en el menú de la izquierda.</br>Si tienes más preguntas puedes mirar en la guía de principiantes, nuestro foro o abrir un ticket de soporte. </br></br> El equipo te desea mucha diversión explorando el universo!';
+$LNG['registerSecretQuestionText'] = 'Por favor, selecciona una pregunta secreta';
+$LNG['registerSecretQuestionAnswerText'] = 'Respuesta a tu pregunta secreta';
+$LNG['registerSecretQuestionArray'] = array(
+  0 => '¿En qué ciudad naciste?',
+  1 => '¿Cómo se llama tu mascota favorita?',
+  2 => '¿Cuál es el apellido de soltera de tu madre?',
+  3 => '¿A qué escuela secundaria asististe?',
+  4 => '¿Cómo se llamaba tu escuela primaria?',
+  5 => '¿De qué marca era tu primer auto?',
+  6 => '¿Cuál era tu comida favorita de niño?'
+);
+$LNG['registerSecretQuestionError_1'] = '¡Seleccionaste una pregunta secreta incorrecta!';
+$LNG['registerSecretQuestionError_2'] = '¡La respuesta a la pregunta secreta no puede estar vacía!';
+$LNG['registerSecretQuestionError_3'] = '¡La respuesta a la pregunta secreta no puede tener más de 64 caracteres!';
 
 //Vertify
 
@@ -143,6 +157,7 @@ $LNG['login_error_2'] = "¡No se ha introducido la contraseña!";
 $LNG['login_error_3'] = "¡No se encuentra el usuario!";
 $LNG['login_error_4'] = "¡ReCaptcha no es correcto!";
 $LNG['login_error_5'] = "¡La contraseña ingresada es incorrecta!";
+$LNG['login_email'] = 'Correo electrónico';
 //Rules
 $LNG['rulesHeader']					= 'Reglas';
 

@@ -86,6 +86,8 @@ $LNG['type_mission_9']  					= 'Destruir';
 $LNG['type_mission_10']  					= 'Ataque con Misiles';
 $LNG['type_mission_11']  					= 'Investigación DM';
 $LNG['type_mission_15'] 					= 'Expedición';
+$LNG['type_mission_16'] = 'Comercio';
+$LNG['type_mission_17'] = 'Transferencia';
 
 $LNG['type_planet_1']  					= 'Planeta';
 $LNG['type_planet_2']  					= 'Escombros';
@@ -119,6 +121,7 @@ $LNG['lm_buildings']						= 'Edificios';
 $LNG['lm_research']						    = 'Investigacion';
 $LNG['lm_shipshard']						= 'Hangar';
 $LNG['lm_defenses']						    = 'Defensas';
+$LNG['lm_marketplace'] = 'Mercado';
 $LNG['lm_resources']						= 'Recursos';
 $LNG['lm_officiers']						= 'Oficiales';
 $LNG['lm_trader']							= 'Mercader';
@@ -185,6 +188,7 @@ $LNG['ov_temp_unit']						= '°C';
 $LNG['ov_to']								= 'hasta';
 $LNG['ov_position']							= 'Posición';
 $LNG['ov_points']							= 'Puntos';
+$LNG['ov_online'] = 'En línea';
 $LNG['ov_security_request']					= 'Petición de seguridad';
 $LNG['ov_security_confirm']					= 'Por favor, Confirme que desea eliminar el Planeta<br><nobr>%s .</nobr>';
 $LNG['ov_password']							= 'Contraseña';
@@ -289,6 +293,7 @@ $LNG['gl_no'] 								= 'No';
 $LNG['gl_points'] 							= 'Puntos';
 $LNG['gl_player']							= 'Jugador';
 $LNG['gl_to']								= 'hacia';
+$LNG['gl_trade_space'] = 'Zona comercial';
 
 //----------------------------------------------------------------------------//
 //PHALANX
@@ -373,6 +378,7 @@ $LNG['fl_hours']							= 'Horas';
 $LNG['fl_resources_left']					= 'Restante';
 $LNG['fl_all_resources']					= 'Capacidad máxima de recursos';
 $LNG['fl_empty_target']						= 'No hay misiones disponibles (¿existe el planeta?)';
+$LNG['fl_transfer_alert_message'] = '¡Atención! ¡Tu flota será transferida a otro usuario!';
 $LNG['fl_expedition_alert_message']			= 'ATENCIÓN: ¡Las expediciones son misiones muy arriesgadas y puedes perder tus naves!';
 $LNG['fl_dm_alert_message']					= 'Ten cuidado, si en el %s %s es encontrado ¡tu flota será destruida!';
 $LNG['fl_vacation_mode_active']				= 'Estás en modo vacaciones';
@@ -431,7 +437,18 @@ $LNG['fl_no_hold_depot']					= 'En el destino, no hay depósito de la alianza.';
 $LNG['fl_not_enough_deuterium']				= 'No hay suficiente Deuterio.';
 $LNG['fl_not_enough_space']					= 'No tienes suficiente espacio de carga disponible.';
 $LNG['fl_hold_time_not_exists']				= 'El tiempo de espera no es válido.';
-$LNG['fl_own_planet_error']					= 'Error! Again select the planet from which you want to send the fleet.';
+$LNG['fl_system_places'] = 'Ubicaciones especiales';
+$LNG['fl_no_noresource_exchange'] = 'No hay recursos en el campo de intercambio';
+$LNG['fl_own_planet_error']					= '¡Error! Selecciona de nuevo el planeta desde el cual quieres enviar la flota.';
+$LNG['fl_exchange'] = 'Intercambio';
+$LNG['fl_visibility'] = 'Visibilidad';
+$LNG['fl_visibility_all'] = 'Todos';
+$LNG['fl_visibility_alliance'] = 'Aliados y socios comerciales';
+$LNG['fl_visibility_no_enemies'] = 'Todos excepto enemigos';
+$LNG['fl_market_type'] = 'Tipo de mercado';
+$LNG['fl_mt_fleet'] = 'Mercado de flotas';
+$LNG['fl_mt_resources'] = 'Mercado de recursos';
+$LNG['fl_stronger_techs'] = 'Tus niveles de ataque/defensa/escudo son demasiado bajos.';
 
 //----------------------------------------------------------------------------//
 //BUILDINGS - RESEARCH - SHIPYARD - DEFENSES
@@ -614,7 +631,7 @@ $LNG['mg_answer_to']						= 'Responder a:';
 $LNG['mg_write_mail_to_ops']				= 'Escribe un E-mail a';
 $LNG['mg_page']								= 'Página';
 $LNG['mg_receiver_block_pm']				= 'El destinatario ha bloqueado los Mensajes Privados.';
-$LNG['mg_deleted']					= 'The message has been deleted.';
+$LNG['mg_deleted']					= 'El mensaje ha sido eliminado.';
 
 //----------------------------------------------------------------------------//
 //ALLIANCE
@@ -826,7 +843,9 @@ $LNG['al_rank_desc']['DIPLOMATIC']			= 'Puede gestionar la Diplomacia';
 $LNG['al_rank_desc']['RANKS']				= 'Puede administrar los Rangos';
 $LNG['al_rank_desc']['MANAGEUSERS']			= 'Puede gestionar a los miembros';
 $LNG['al_rank_desc']['EVENTS']				= 'Puede ver los eventos';
-$LNG['al_new_apply']                      	= 'Your alliance has received a new application from - <a href="#" onclick="return Dialog.Playercard(%s, \'%s\');">%s</a>';
+$LNG['al_invalid_rank_name'] = '¡En el nombre del rango solo se permiten números, letras, espacios, _ y -!';
+$LNG['al_make_ally_insufficient_points'] = 'No tienes puntos suficientes para crear una Alianza.<br>Se requieren %s puntos y tú tienes %s puntos.';
+$LNG['al_new_apply']                      	= 'Tu alianza ha recibido una nueva solicitud de - <a href="#" onclick="return Dialog.Playercard(%s, \'%s\');">%s</a>';
 
 //----------------------------------------------------------------------------//
 //BUDDY
@@ -993,6 +1012,9 @@ $LNG['op_dst_mode_sel'][1]					= 'Si';
 $LNG['op_dst_mode_sel'][2]					= 'Automatico';
 $LNG['op_timezone']							= 'Zona Horaria';
 $LNG['op_block_pm']							= 'Mensajes privados bloqueados';
+$LNG['multiUniverse'] = 'Multiuniverso';
+$LNG['multiUniverseDescription'] = 'Puedes comenzar en un nuevo universo. Los universos son independientes entre sí. Puedes jugar en todos los universos con la misma cuenta.';
+$LNG['startInMultiUniverse'] = 'Comenzar en ';
 
 //----------------------------------------------------------------------------//
 //BANNED
@@ -1055,6 +1077,33 @@ $LNG['sys_refferal_title']        	 		= 'Bonificación por %s';
 $LNG['sys_refferal_text']        	 		= 'El jugador %s que reclutaste ha alcanzado %s puntos.<br><br>Como agradecimiento, que ha reclutado un jugador activo, obtienes %s %s';
 $LNG['sys_closed_game']        	 			= 'El universo no está disponible actualmente:';
 $LNG['spec_mail_inactive_title']  			= '%s - Memoria';
+$LNG['sys_back'] = 'Atrás';
+$LNG['sys_forward'] = 'Siguiente';
+$LNG['market_p_total'] = 'Total';
+$LNG['market_p_ratio'] = 'Proporción';
+$LNG['market_p_cost_type'] = 'Tipo de costo';
+$LNG['market_p_cost_amount'] = 'Cantidad';
+$LNG['market_p_end'] = 'Fin';
+$LNG['market_p_from_duration'] = 'Vuelo desde';
+$LNG['market_p_to_duration'] = 'Vuelo hasta';
+$LNG['market_p_submit'] = '¡Comprar ahora!';
+$LNG['market_p_buy'] = 'Comprar';
+$LNG['market_ship_as_first'] = 'Tipo de nave como primera';
+$LNG['market_confirm_are_you_sure'] = '¿Estás seguro?';
+$LNG['market_info_header'] = 'Mercado';
+$LNG['market_info_description'] = 'Lado izquierdo - ofertas de venta | Lado derecho - cantidad a comprar<br><br>&bull; Las ofertas compradas no se pueden cancelar &bull;<br>&bull; Los jugadores pueden comerciar con cualquier tasa de cambio (proporción) &bull;';
+$LNG['market_fleet'] = 'Flota';
+$LNG['market_p_msg_not_found'] = 'Oferta no encontrada.';
+$LNG['market_p_msg_more_ships_is_needed'] = 'Se necesitan más naves.';
+$LNG['market_p_msg_resources_error'] = 'No hay recursos suficientes.';
+$LNG['market_p_msg_sent'] = 'Enviadas %s naves pequeñas de carga y %s naves grandes de carga';
+$LNG['market_msg_trade_topic'] = 'Estado del comercio';
+$LNG['market_msg_trade_from'] = 'Zona comercial';
+$LNG['market_msg_trade_bought'] = 'Tu flota viaja hacia %s con %s %s, %s %s, %s %s y cuesta %s %s';
+$LNG['market_msg_trade_sold'] = 'Tu flota viaja hacia %s con %s %s, %s %s, %s %s.';
+$LNG['market_buyable_only_trade_partners'] = 'Solo socios';
+$LNG['market_buyable_no_enemies'] = 'Sin enemigos';
+$LNG['market_buyable_no_tech'] = 'Demasiado débil';
 
 //----------------------------------------------------------------------------//
 // CombatReport.php
@@ -1187,6 +1236,8 @@ $LNG['ti_responded']							= 'Ticket respondido en ';
 $LNG['ti_not_exist']						= 'El Ticket #%d no existe!';
 $LNG['ti_from']								= 'desde';
 $LNG['ti_re']								= 'RE:';
+$LNG['ti_error_no_subject'] = '¡Debes ingresar un asunto!';
+$LNG['ti_msgtime'] = 'Mensaje publicado el';
 
 //----------------------------------------------------------------------------//
 // Rekorde

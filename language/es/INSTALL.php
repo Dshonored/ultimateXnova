@@ -20,7 +20,7 @@
 $LNG['back']					= 'Atras';
 $LNG['continue'] = 'Continuar';
 $LNG['continueUpgrade']			= 'Actualización!';
-$LNG['login']					= 'Login';
+$LNG['login']					= 'Iniciar sesión';
 
 $LNG['menu_intro'] = 'Intro';
 $LNG['menu_install'] = 'Instalar';
@@ -79,6 +79,8 @@ $LNG['req_ftp_dir'] = 'Directorio de ultimateXnova';
 $LNG['req_ftp_send'] = 'Enviar';
 $LNG['req_ftp_error_data']		= 'Con las credenciales proporcionadas no se pudo conectar a un servidor FTP.';
 $LNG['req_ftp_error_dir']		= 'El directorio que has introducido no es válido.';
+$LNG['reg_pdo_active'] = 'Soporte de la extensión &raquo;PDO&laquo;';
+$LNG['reg_pdo_desc'] = '<strong>Requisito previo</strong> — Debes habilitar el soporte de PDO en PHP.';
 
 $LNG['step1_head']				= 'Configurar el acceso a la base de datos';
 $LNG['step1_desc']				= 'Ahora que se ha determinado que ultimateXnova se puede utilizar en su servidor, debe proporcionar cierta información. Si usted no sabe cómo los datos están conectados a la base de datos, por favor póngase en contacto con su proveedor de hosting, como la primera o la espalda en los foros de soporte de ultimateXnova. Al introducir datos, por favor revise esto cuidadosamente antes de continuar.';
@@ -114,6 +116,7 @@ $LNG['step6_head']				= '¡Felicidades!';
 $LNG['step6_desc']				= 'Usted ha instalado exitosamente ultimateXnova.';
 $LNG['step6_info_head']			= 'Comience con ultimateXnova!';
 $LNG['step6_info_additional']	= 'Si hace clic en el botón de abajo, usted será redirigido a un formulario en el área de administración. Entonces usted debería tratar de sacar algo de tiempo para conocer las opciones disponibles.<br/><br/><strong>Por favor, borre el archivo &raquo;includes/ENABLE_INSTALL_TOOL&laquo; o renombrelo antes de utilizar su juego. Mientras existe este archivo, el juego estará en riesgo potencial!</strong>';
+$LNG['step8_need_fields'] = 'Debes completar todos los campos.';
 
 $LNG['sql_close_reason'] = 'El juego está actualmente cerrado';
 $LNG['sql_welcome'] = 'Bienvenido a ';

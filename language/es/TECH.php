@@ -290,11 +290,11 @@ $LNG['shortDescription'] = array(
 707 => 'El bono es s&oacute;lo temporal. No afecta a las expediciones.',
 
 //PLACEHOLDER MISSING TRANSLATION PREVENTING BUG
-901 => 'Metal is the main resource for Buildings and Ships. It is the cheapest resource, but it is needed the most as well. Producing Metal is the least energy expensive. The bigger the mines are, the deeper they dig into the earth.',
-902 => 'Crystals are the main resource used to build electronic circuits and form certain alloy compounds.',
-903 => 'Deuterium is found in the deepest sea. It belongs to the rarest resources in the Universe. Because you have to get to the ground of the sea in order to get Deuterium, it is the most expensive resource.',
-911 => 'Energy is needed for the production of every resource.',
-921 => 'Dark Matter is a very mysterious resource. Nobody really knows where it comes from. Sometimes it just appears out of nowhere. You can use Dark Matter to hire the most experienced officers in the universe.',
+901 => 'El Metal es el recurso principal para edificios y naves. Es el recurso más barato, pero también el más necesario.',
+902 => 'Los Cristales son el recurso principal para fabricar circuitos electrónicos y formar ciertas aleaciones.',
+903 => 'El Deuterio se encuentra en lo más profundo del mar. Es uno de los recursos más escasos del Universo.',
+911 => 'La Energía es necesaria para la producción de todos los recursos.',
+921 => 'La Materia Oscura es un recurso muy misterioso. Nadie sabe realmente de dónde viene. A veces aparece de la nada. Puedes usar Materia Oscura para contratar a los oficiales más experimentados del universo.',
 //PLACEHOLDER MISSING TRANSLATION PREVENTING BUG
 );
 
@@ -398,10 +398,10 @@ $LNG['longDescription'] = array(
 	707 => 'El bono es s&oacute;lo temporal. No afecta a las expediciones.',
 
 //PLACEHOLDER MISSING TRANSLATION PREVENTING BUG
-901 => 'Metal is the main resource for Buildings and Ships. It is the cheapest resource, but it is needed the most as well. Producing Metal is the least energy expensive. The bigger the mines are, the deeper they dig into the earth.',
-902 => 'Crystals are the main resource used to build electronic circuits and form certain alloy compounds. It gets produced in mines under the ground, where the raw material instantly is made into cicuits.',
-903 => 'Deuterium is found in the deepest sea. It belongs to the rarest resources in the Universe. Because you have to get to the ground of the sea in order to get Deuterium, it is the most expensive resource.',
-911 => 'Energy is needed for the production of every resource.',
-921 => 'Dark Matter is a very mysterious resource. Nobody really knows where it comes from. Sometimes it just appears out of nowhere and sometimes it is even found in old ships. Some even say that it doesn\'t exist, but it has been proven otherwise. You can use Dark Matter to hire the most experienced officers in the universe.',
+901 => 'El Metal es el recurso principal para edificios y naves. Es el recurso más barato, pero también el más necesario. Producir Metal es lo que menos energía consume. Cuanto más grandes son las minas, más profundo excavan en la tierra.',
+902 => 'Los Cristales son el recurso principal para fabricar circuitos electrónicos y formar ciertas aleaciones.',
+903 => 'El Deuterio se encuentra en lo más profundo del mar. Es uno de los recursos más escasos del Universo. Como hay que llegar al fondo del mar para extraerlo, es el recurso más caro.',
+911 => 'La Energía es necesaria para la producción de todos los recursos.',
+921 => 'La Materia Oscura es un recurso muy misterioso. Nadie sabe realmente de dónde viene. A veces aparece de la nada y a veces incluso se encuentra en naves antiguas. Algunos dicen que no existe, pero se ha demostrado lo contrario. Puedes usar Materia Oscura para contratar a los oficiales más experimentados del universo.',
 //PLACEHOLDER MISSING TRANSLATION PREVENTING BUG
 );
