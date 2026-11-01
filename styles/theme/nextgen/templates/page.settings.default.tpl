@@ -77,12 +77,6 @@
 			<td>{$LNG.op_timezone}</td>
 			<td>{html_options class="form-select bg-dark py-0 my-0 text-white" name=timezone options=$Selectors.timezones selected=$timezone}</td>
 		</tr>
-		{if count($Selectors.lang) > 1}
-		<tr>
-			<td>{$LNG.op_lang}</td>
-			<td>{html_options class="form-select bg-dark text-white py-0 my-0" name=language options=$Selectors.lang selected=$userLang}</td>
-		</tr>
-		{/if}
 		<tr>
 			<td>{$LNG.op_sort_planets_by}</td>
 			<td>{html_options class="form-select bg-dark text-white py-0 my-0" name=planetSort options=$Selectors.Sort selected=$planetSort}</td>

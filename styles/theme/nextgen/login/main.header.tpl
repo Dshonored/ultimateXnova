@@ -48,6 +48,7 @@
 	<script src="scripts/base/jquery.cookie.js?v={$REV}"></script>
 	<script src="scripts/base/jquery.fancybox.js?v={$REV}"></script>
 	<script src="scripts/login/main.js"></script>
+	<script src="scripts/base/lang-pref.js?v=1"></script>
 	<script>{if isset($code)}var loginError = {$code|json};{/if}</script>
 	{block name="script"}{/block}
 </head>

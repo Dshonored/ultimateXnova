@@ -80,6 +80,7 @@
 	<script type="text/javascript" src="./scripts/base/jquery.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/base/jquery.ui.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/base/jquery.cookie.js?v={$REV}"></script>
+	<script type="text/javascript" src="./scripts/base/lang-pref.js?v=1"></script>
 	<script type="text/javascript" src="./scripts/base/jquery.validationEngine.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/l18n/validationEngine/jquery.validationEngine-{$lang}.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/base/tooltip.js?v={$REV}"></script>

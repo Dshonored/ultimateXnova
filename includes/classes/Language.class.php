@@ -41,59 +41,29 @@ class Language implements ArrayAccess {
 		}
 	}
 
+	/**
+	 * friends-edition: the language is a visitor choice, not an account setting.
+	 * Priority: ?lang= (also stored) > "lang" cookie (mirrored from localStorage by
+	 * scripts/base/lang-pref.js) > DEFAULT_LANG (Spanish). Used for login AND in-game pages.
+	 */
+	static public function requestedLanguage()
+	{
+		$allowed = self::getAllowedLangs();
+
+		if (isset($_GET['lang']) && is_string($_GET['lang']) && in_array($_GET['lang'], $allowed, true)) {
+			HTTP::sendCookie('lang', $_GET['lang'], TIMESTAMP + 31536000);
+			return $_GET['lang'];
+		}
+		if (isset($_COOKIE['lang']) && is_string($_COOKIE['lang']) && in_array($_COOKIE['lang'], $allowed, true)) {
+			return $_COOKIE['lang'];
+		}
+		return in_array(DEFAULT_LANG, $allowed, true) ? DEFAULT_LANG : 'en';
+	}
+
 	public function getUserAgentLanguage()
 	{
-		// Pfahli: Added check for GET var to set language
-		if (isset($_GET['lang']) && in_array($_GET['lang'], self::getAllowedLangs()))
-		{
-			HTTP::sendCookie('lang', $_GET['lang'], 2147483647);
-			$this->setLanguage($_GET['lang']);
-			return true;
-		}
-   		if (isset($_REQUEST['lang']) && in_array($_REQUEST['lang'], self::getAllowedLangs()))
-		{
-			HTTP::sendCookie('lang', $_REQUEST['lang'], 2147483647);
-			$this->setLanguage($_REQUEST['lang']);
-			return true;
-		}
-		
-
-   		if ((MODE === 'LOGIN' || MODE === 'INSTALL') && isset($_COOKIE['lang']) && in_array($_COOKIE['lang'], self::getAllowedLangs()))
-		{
-			$this->setLanguage($_COOKIE['lang']);
-			return true;
-		}
-
-	    if (empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
-		{
-            return false;
-        }
-
-        $accepted_languages = preg_split('/,\s*/', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-        $language = $this->getLanguage();
-
-        foreach ($accepted_languages as $accepted_language)
-		{
-			$isValid = preg_match('!^([a-z]{1,8}(?:-[a-z]{1,8})*)(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$!i', $accepted_language, $matches);
-
-			if ($isValid !== 1)
-			{
-				continue;
-			}
-
-            list($code)	= explode('-', strtolower($matches[1]));
-
-			if(in_array($code, self::getAllowedLangs()))
-			{
-				$language	= $code;
-				break;
-			}
-        }
-
-		HTTP::sendCookie('lang', $language, 2147483647);
+		$language = self::requestedLanguage();
 		$this->setLanguage($language);
-
 		return $language;
 	}
 

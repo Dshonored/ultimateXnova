@@ -74,6 +74,22 @@
                 </a>
               </li>
               {/if}
+              {if count($languages) > 1}
+              <li class="d-flex align-items-center h-100 dropdown">
+                <a class="text-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{$languages[$lang]|escape}">
+                  <img src="styles/theme/nextgen/img/lang/{$lang}.svg" class="lang-flag" alt="{$lang}" style="width:22px;height:auto;">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end bg-dark p-0">
+                  {foreach $languages as $langKey => $langName}
+                  <li>
+                    <a class="dropdown-item text-white d-flex align-items-center gap-2 {if $langKey == $lang}fw-bold{/if}" href="#" data-set-lang="{$langKey}" hreflang="{$langKey}">
+                      <img src="styles/theme/nextgen/img/lang/{$langKey}.svg" alt="" style="width:18px;height:auto;"> {$langName}
+                    </a>
+                  </li>
+                  {/foreach}
+                </ul>
+              </li>
+              {/if}
               <li class="hover-underline d-flex align-items-center h-100">
                 <a class="text-white" href="game.php?page=logout"   data-bs-toggle="tooltip"
                 data-bs-placement="bottom"

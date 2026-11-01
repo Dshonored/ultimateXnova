@@ -54,12 +54,15 @@ if(!defined('CACHE_PATH')) {
 	define('CACHE_PATH', ROOT_PATH.'cache/');
 }
 
-define('DISCORD_URL'				, 'https://discord.gg/9zRCUUaHaR');
+define('DISCORD_URL'				, '');
+
+// AGPL-3.0 section 13: players must be able to get the source of the running server
+define('SOURCE_CODE_URL'			, 'https://github.com/Dshonored/ultimateXnova');
 
 define('COMBAT_ENGINE'				, 'xnova');
 
 // For Fatal Errors!
-define('DEFAULT_LANG'				, 'de');
+define('DEFAULT_LANG'				, 'es');
 
 // SUPPORT WILDCAST DOMAINS
 define('UNIS_WILDCAST'				, false);

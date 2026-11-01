@@ -142,4 +142,26 @@ $LNG['disclamerLabelPhone']			= 'Num. de téléphone:';
 $LNG['disclamerLabelMail']			= 'Email support:';
 $LNG['disclamerLabelNotice']		= 'Plus d\'informations';
 
-?>
+
+// friends-edition
+$LNG['login_error_invalid']        = 'E-mail or password is incorrect.';
+$LNG['login_error_throttled']      = 'Too many attempts. Please wait 15 minutes and try again.';
+$LNG['passwordMailNotConfigured']  = 'Password recovery by e-mail is not available on this server yet. Please contact the administrator.';
+$LNG['passwordInfoEmail']          = 'Enter the e-mail address of your account. If it exists, we will send you a link to choose a new password.';
+$LNG['passwordBackToLogin']        = 'Back to login';
+$LNG['passwordChooseNew']          = 'Choose a new password';
+$LNG['passwordSave']               = 'Save password';
+$LNG['passwordChangedDone']        = 'Your password has been changed. You can now log in with it.';
+$LNG['passwordErrorExpired']       = 'The form has expired. Please try again.';
+$LNG['languageSelect']             = 'Language';
+$LNG['loginRememberMe']            = 'Remember me';
+$LNG['login_code_sent']         = 'We sent a 6-digit code to your e-mail. Enter it to finish logging in.';
+$LNG['login_code_mail_missing'] = 'Login codes cannot be sent because e-mail is not configured on this server. Contact the administrator.';
+$LNG['login_code_expired']      = 'The code expired. Log in again to get a new one.';
+$LNG['login_code_too_many']     = 'Too many wrong codes. Log in again to get a new one.';
+$LNG['login_code_wrong']        = 'Wrong code. Check the e-mail and try again.';
+$LNG['login_code_label']        = 'Login code';
+$LNG['login_code_button']       = 'Verify';
+$LNG['login_code_back']         = 'Use a different account';
+$LNG['login_code_mail_subject'] = '%1$s is your %2$s login code';
+$LNG['login_code_mail_body']    = "Hello %1\$s,\n\nYour login code is:\n\n    %2\$s\n\nIt is valid for 10 minutes. If you did not try to log in to %3\$s, change your password.\n\nThe %3\$s Team";

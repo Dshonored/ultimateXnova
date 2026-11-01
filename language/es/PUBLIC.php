@@ -171,3 +171,26 @@ $LNG['disclamerLabelAddress']		= 'Dirección:';
 $LNG['disclamerLabelPhone']			= 'Nr. de Teléfono:';
 $LNG['disclamerLabelMail']			= 'Dirección de E-Mail:';
 $LNG['disclamerLabelNotice']		= 'Información de Contacto';
+
+// friends-edition
+$LNG['login_error_invalid']        = 'El correo o la contraseña son incorrectos.';
+$LNG['login_error_throttled']      = 'Demasiados intentos. Espera 15 minutos y vuelve a intentarlo.';
+$LNG['passwordMailNotConfigured']  = 'La recuperación de contraseña por correo todavía no está disponible en este servidor. Contacta al administrador.';
+$LNG['passwordInfoEmail']          = 'Ingresa el correo de tu cuenta. Si existe, te enviaremos un enlace para elegir una nueva contraseña.';
+$LNG['passwordBackToLogin']        = 'Volver al inicio de sesión';
+$LNG['passwordChooseNew']          = 'Elige una nueva contraseña';
+$LNG['passwordSave']               = 'Guardar contraseña';
+$LNG['passwordChangedDone']        = 'Tu contraseña fue cambiada. Ya puedes iniciar sesión con ella.';
+$LNG['passwordErrorExpired']       = 'El formulario expiró. Vuelve a intentarlo.';
+$LNG['languageSelect']             = 'Idioma';
+$LNG['loginRememberMe']            = 'Recordarme';
+$LNG['login_code_sent']         = 'Te enviamos un código de 6 dígitos a tu correo. Ingrésalo para terminar de iniciar sesión.';
+$LNG['login_code_mail_missing'] = 'No se pueden enviar códigos porque el correo no está configurado en este servidor. Contacta al administrador.';
+$LNG['login_code_expired']      = 'El código expiró. Inicia sesión otra vez para recibir uno nuevo.';
+$LNG['login_code_too_many']     = 'Demasiados códigos incorrectos. Inicia sesión otra vez para recibir uno nuevo.';
+$LNG['login_code_wrong']        = 'Código incorrecto. Revisa el correo y vuelve a intentarlo.';
+$LNG['login_code_label']        = 'Código de acceso';
+$LNG['login_code_button']       = 'Verificar';
+$LNG['login_code_back']         = 'Usar otra cuenta';
+$LNG['login_code_mail_subject'] = '%1$s es tu código de acceso a %2$s';
+$LNG['login_code_mail_body']    = "Hola %1\$s,\n\nTu código de acceso es:\n\n    %2\$s\n\nVale por 10 minutos. Si no intentaste entrar a %3\$s, cambia tu contraseña.\n\nEquipo de %3\$s";

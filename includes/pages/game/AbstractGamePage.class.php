@@ -444,6 +444,7 @@ abstract class AbstractGamePage
 
 		$this->assign(array(
 			'lang'    		=> $LNG->getLanguage(),
+			'languages'    		=> Language::getAllowedLangs(false),
 			'dpath'			=> $THEME->getTheme(),
 			'scripts'		=> $this->tplObj->jsscript,
 			'execscript'	=> implode("\n", $this->tplObj->script),

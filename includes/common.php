@@ -181,7 +181,17 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 		HTTP::redirectTo('index.php?code=3');
 	}
 
-	$LNG	= new Language($USER['lang']);
+	// friends-edition: visitor's chosen language (cookie/localStorage), not the account setting
+	$LNG	= new Language(Language::requestedLanguage());
+	// Keep the account language in sync so reports generated while the player is offline
+	// (battles, spy reports, messages) arrive in the language they browse with.
+	if (MODE === 'INGAME' && !empty($USER['id']) && $USER['lang'] !== $LNG->getLanguage()) {
+		$db->update("UPDATE %%USERS%% SET lang = :lang WHERE id = :userId;", array(
+			':lang'   => $LNG->getLanguage(),
+			':userId' => $USER['id'],
+		));
+		$USER['lang'] = $LNG->getLanguage();
+	}
 	$LNG->includeData(array('L18N', 'INGAME', 'TECH', 'CUSTOM'));
 	//if(!empty($USER['dpath'])) { $THEME->setUserTheme($USER['dpath']); }
 
