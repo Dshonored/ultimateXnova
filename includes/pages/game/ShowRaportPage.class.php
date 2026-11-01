@@ -113,7 +113,7 @@ class ShowRaportPage extends AbstractGamePage
 			$this->printMessage($LNG['sys_raport_not_found']);
 		}
 
-		$combatReport			= unserialize($reportData['raport']);
+		$combatReport			= unserialize($reportData['raport'], array('allowed_classes' => false));
 		$combatReport['time']	= _date($LNG['php_tdformat'], $combatReport['time'], $USER['timezone']);
 		$combatReport			= $this->BCWrapperPreRev2321($combatReport);
 
@@ -154,7 +154,7 @@ class ShowRaportPage extends AbstractGamePage
 			$this->printMessage($LNG['sys_raport_not_found']);
 		}
 
-		$combatReport			= unserialize($reportData['raport']);
+		$combatReport			= unserialize($reportData['raport'], array('allowed_classes' => false));
 		if($isAttacker && !$isDefender && $combatReport['result'] == 'r' && count($combatReport['rounds']) <= 2) {
 			$this->printMessage($LNG['sys_raport_lost_contact']);
 		}

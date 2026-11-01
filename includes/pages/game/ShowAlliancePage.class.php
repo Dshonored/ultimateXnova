@@ -781,8 +781,8 @@ class ShowAlliancePage extends AbstractGamePage
 			$db = Database::get();
 
 			$this->allianceData['ally_owner_range'] 		= HTTP::_GP('owner_range', '', true);
-			$this->allianceData['ally_web'] 				= filter_var(HTTP::_GP('web', ''), FILTER_VALIDATE_URL);
-			$this->allianceData['ally_image'] 				= filter_var(HTTP::_GP('image', ''), FILTER_VALIDATE_URL);
+			$this->allianceData['ally_web'] 				= $this->safeHttpUrl(HTTP::_GP('web', ''));
+			$this->allianceData['ally_image'] 				= $this->safeHttpUrl(HTTP::_GP('image', ''));
 			$this->allianceData['ally_request_notallow'] 	= HTTP::_GP('request_notallow', 0);
 			$this->allianceData['ally_max_members'] 		= max(HTTP::_GP('ally_max_members', ''), $this->allianceData['ally_members']);
 			$this->allianceData['ally_request_min_points']  = HTTP::_GP('request_min_points', 0);
@@ -963,6 +963,21 @@ class ShowAlliancePage extends AbstractGamePage
 		$this->redirectToHome();
 	}
 
+	/**
+	 * FILTER_VALIDATE_URL happily accepts javascript://%0Aalert(1) and data: URLs.
+	 * Only plain http(s) links may be stored.
+	 */
+	private function safeHttpUrl($url)
+	{
+		$url	= filter_var($url, FILTER_VALIDATE_URL);
+
+		if ($url === false || !in_array(strtolower((string) parse_url($url, PHP_URL_SCHEME)), array('http', 'https'), true)) {
+			return false;
+		}
+
+		return $url;
+	}
+
 	protected function adminTransfer()
 	{
 		global $USER;
@@ -975,10 +990,17 @@ class ShowAlliancePage extends AbstractGamePage
 
 		$postleader = HTTP::_GP('newleader', 0);
 		if (!empty($postleader)) {
-			$sql = "SELECT ally_rank_id FROM %%USERS%% WHERE id = :LeaderID;";
+			// the new leader must be another member of this very alliance
+			$sql = "SELECT ally_rank_id FROM %%USERS%% WHERE id = :LeaderID AND ally_id = :AllianceID AND id != :OwnerID;";
 			$Rank = $db->selectSingle($sql, array(
-				':LeaderID'	=> $postleader
+				':LeaderID'	=> $postleader,
+				':AllianceID'	=> $this->allianceData['id'],
+				':OwnerID'	=> $USER['id']
 			));
+
+			if (empty($Rank)) {
+				$this->redirectToHome();
+			}
 
 			$sql = "UPDATE %%USERS%% SET ally_rank_id = :AllyRank WHERE id = :UserID;";
 			$db->update($sql, array(
@@ -1100,10 +1122,11 @@ class ShowAlliancePage extends AbstractGamePage
 		LEFT JOIN %%USERS%% AS u ON r.userId = u.id
 		INNER JOIN %%USER_POINTS%% AS stat ON r.userId = stat.id_owner
 		LEFT JOIN %%PLANETS%% AS p ON p.id = u.id_planet
-		WHERE applyID = :applyID;";
+		WHERE applyID = :applyID AND r.allianceId = :allianceId;";
 
 		$applyDetail = $db->selectSingle($sql, array(
-			':applyID'	=> $id
+			':applyID'	=> $id,
+			':allianceId'	=> $this->allianceData['id']
 		));
 
 		if (empty($applyDetail)) {
@@ -1143,9 +1166,10 @@ class ShowAlliancePage extends AbstractGamePage
 		$answer		= HTTP::_GP('answer', '');
 		$applyID	= HTTP::_GP('id', 0);
 
-		$sql = "SELECT userId FROM %%ALLIANCE_REQUEST%% WHERE applyID = :applyID;";
+		$sql = "SELECT userId FROM %%ALLIANCE_REQUEST%% WHERE applyID = :applyID AND allianceId = :allianceId;";
 		$userId = $db->selectSingle($sql, array(
-			':applyID'	=> $applyID
+			':applyID'	=> $applyID,
+			':allianceId'	=> $this->allianceData['id']
 		), 'userId');
 
 		// only if alliance request still exist

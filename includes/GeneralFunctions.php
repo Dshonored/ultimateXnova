@@ -516,8 +516,10 @@ function exceptionHandler($exception)
 		E_USER_NOTICE		=> 'USER NOTICE',
 		E_STRICT			=> 'STRICT NOTICE',
 		E_RECOVERABLE_ERROR	=> 'RECOVERABLE ERROR',
-		E_DEPRECATED => 'DEPRECATED ERROR'
+		E_DEPRECATED => 'DEPRECATED ERROR',
+		E_USER_DEPRECATED => 'USER DEPRECATED'
 	);
+	$errno	= isset($errorType[$errno]) ? $errno : E_USER_ERROR;
 
 	if (file_exists(ROOT_PATH . 'install/VERSION')) {
 		$VERSION	= file_get_contents(ROOT_PATH . 'install/VERSION') . ' (FILE)';
@@ -592,10 +594,10 @@ function exceptionHandler($exception)
 	</tr>
 	<tr>
 		<td class="left">
-			<b>Message: </b>' . $exception->getMessage() . '<br>
+			<b>Message: </b>' . htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8') . '<br>
 			<b>File: </b>' . $exception->getFile() . '<br>
 			<b>Line: </b>' . $exception->getLine() . '<br>
-			<b>URL: </b>' . PROTOCOL . HTTP_HOST . $_SERVER['REQUEST_URI'] . '<br>
+			<b>URL: </b>' . htmlspecialchars(PROTOCOL . HTTP_HOST . $_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') . '<br>
 			<b>PHP-Version: </b>' . PHP_VERSION . '<br>
 			<b>PHP-API: </b>' . php_sapi_name() . '<br>
 			<b>2Moons Version: </b>' . $VERSION . '<br>
@@ -614,9 +616,8 @@ function exceptionHandler($exception)
 	$errorText	.= "Stack trace:\r\n";
 	$errorText	.= str_replace(ROOT_PATH, '/', htmlspecialchars(str_replace('\\', '/', $exception->getTraceAsString()))) . "\r\n";
 
-	if (is_writable('includes/error.log')) {
-		file_put_contents('includes/error.log', $errorText, FILE_APPEND);
-	}
+	// the log is not tracked by git anymore, so create it on demand
+	@file_put_contents('includes/error.log', $errorText, FILE_APPEND);
 
 	/* Debug via Support Ticket */
 	global $USER;

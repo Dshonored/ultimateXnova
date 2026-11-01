@@ -81,9 +81,11 @@ class ShowFleetTablePage extends AbstractGamePage
 
 		$db = Database::get();
 
-        $sql = "SELECT fleet_start_time, fleet_end_id, fleet_group, fleet_mess FROM %%FLEETS%% WHERE fleet_id = :fleetID;";
+        // only the owner of an attack fleet may open / create / rename its ACS group and invite players
+        $sql = "SELECT fleet_start_time, fleet_end_id, fleet_group, fleet_mess FROM %%FLEETS%% WHERE fleet_id = :fleetID AND fleet_owner = :userID AND fleet_mission IN (1, 2);";
         $fleetData = $db->selectSingle($sql, array(
-            ':fleetID'  => $fleetID
+            ':fleetID'  => $fleetID,
+            ':userID'   => $USER['id']
         ));
 
         if ($db->rowCount() != 1)

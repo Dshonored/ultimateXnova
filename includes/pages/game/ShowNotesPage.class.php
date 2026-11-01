@@ -96,7 +96,7 @@ class ShowNotesPage extends AbstractGamePage
 	public function insert()
 	{
 		global $LNG, $USER, $config;
-		$priority 	= HTTP::_GP('priority', 1);
+		$priority 	= min(2, max(0, HTTP::_GP('priority', 1)));
 		$title 		= HTTP::_GP('title', '', true);
 		$text 		= HTTP::_GP('text', '', true);
 		$id			= HTTP::_GP('id', 0);
@@ -135,9 +135,10 @@ class ShowNotesPage extends AbstractGamePage
     }
     else
     {
-			$sql	= "UPDATE %%NOTES%% SET time = :time, priority = :priority, title = :title, text = :text WHERE id = :noteID;";
+			$sql	= "UPDATE %%NOTES%% SET time = :time, priority = :priority, title = :title, text = :text WHERE id = :noteID AND owner = :userID;";
             $db->update($sql, array(
                 ':noteID'   => $id,
+                ':userID'   => $USER['id'],
                 ':time'     => TIMESTAMP,
                 ':priority' => $priority,
                 ':title'    => $title,
@@ -154,7 +155,7 @@ class ShowNotesPage extends AbstractGamePage
 
 		$deleteIds	= HTTP::_GP('delmes', array());
 		$deleteIds	= array_keys($deleteIds);
-		$deleteIds	= array_filter($deleteIds, 'is_numeric');
+		$deleteIds	= array_map('intval', array_filter($deleteIds, 'is_numeric'));
 
 		if(!empty($deleteIds))
 		{

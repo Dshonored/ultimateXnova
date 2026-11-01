@@ -86,7 +86,8 @@ class ShowInformationPage extends AbstractGamePage
 			if(!isset($Ships[$Ship]) || $Ship == 212)
 				continue;
 
-			$ShipArray[$Ship]	= max(0, min($Ships[$Ship], $PLANET[$resource[$Ship]]));
+			// values are request strings that get concatenated into SQL below: force a number
+			$ShipArray[$Ship]	= is_scalar($Ships[$Ship]) ? max(0, min((int) round((float) $Ships[$Ship]), (int) $PLANET[$resource[$Ship]])) : 0;
 
 			if(empty($ShipArray[$Ship]))
 				continue;
@@ -146,8 +147,10 @@ class ShowInformationPage extends AbstractGamePage
 		$db = Database::get();
 
 		$Missle	= HTTP::_GP('missile', array());
-		$PLANET[$resource[502]]	-= max(0, min($Missle[502], $PLANET[$resource[502]]));
-		$PLANET[$resource[503]]	-= max(0, min($Missle[503], $PLANET[$resource[503]]));
+		$destroy502	= isset($Missle[502]) && is_scalar($Missle[502]) ? (int) $Missle[502] : 0;
+		$destroy503	= isset($Missle[503]) && is_scalar($Missle[503]) ? (int) $Missle[503] : 0;
+		$PLANET[$resource[502]]	-= max(0, min($destroy502, $PLANET[$resource[502]]));
+		$PLANET[$resource[503]]	-= max(0, min($destroy503, $PLANET[$resource[503]]));
 
 		$sql = "UPDATE %%PLANETS%% SET ".$resource[502]." = :resource502Val, ".$resource[503]." = :resource503Val WHERE id = :planetID;";
 		$db->update($sql, array(

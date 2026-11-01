@@ -44,7 +44,77 @@ class HTTP {
 
 	static public function sendCookie($name, $value = "", $toTime = NULL)
 	{
-		setcookie($name, $value, $toTime);
+		setcookie($name, (string) $value, array(
+			'expires'	=> (int) $toTime,
+			'path'		=> '/',
+			'secure'	=> HTTPS,
+			'httponly'	=> true,
+			'samesite'	=> 'Lax',
+		));
+	}
+
+	/**
+	 * Is the direct peer a private/loopback address (docker network, local reverse proxy, tunnel)?
+	 * Only then forwarded-for headers are believed.
+	 */
+	static public function isTrustedProxy()
+	{
+		if (empty($_SERVER['REMOTE_ADDR']) || filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) === false) {
+			return false;
+		}
+
+		return filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false;
+	}
+
+	/**
+	 * Central CSRF guard (Fetch Metadata + Origin/Referer). The templates carry no per-form token,
+	 * so we reject every request the browser itself marks as cross-site.
+	 * - POST/PUT/DELETE...: any cross-site request is rejected.
+	 * - GET: top-level navigations from other sites are only allowed for read-only landing pages.
+	 */
+	static public function guardCrossSite(array $safeGetPages = array('overview', 'raport'))
+	{
+		$method	= isset($_SERVER['REQUEST_METHOD']) ? strtoupper($_SERVER['REQUEST_METHOD']) : 'GET';
+
+		$crossSite	= false;
+		if (isset($_SERVER['HTTP_SEC_FETCH_SITE'])) {
+			$crossSite	= !in_array($_SERVER['HTTP_SEC_FETCH_SITE'], array('same-origin', 'same-site', 'none'), true);
+		} else {
+			$source	= '';
+			if (!empty($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] !== 'null') {
+				$source	= $_SERVER['HTTP_ORIGIN'];
+			} elseif (!empty($_SERVER['HTTP_ORIGIN'])) {
+				$crossSite	= true;
+			} elseif (!empty($_SERVER['HTTP_REFERER'])) {
+				$source	= $_SERVER['HTTP_REFERER'];
+			}
+
+			if ($source !== '') {
+				$sourceHost	= parse_url($source, PHP_URL_HOST);
+				$sourcePort	= parse_url($source, PHP_URL_PORT);
+				if ($sourcePort) {
+					$sourceHost	.= ':'.$sourcePort;
+				}
+				$crossSite	= $sourceHost === null || strcasecmp($sourceHost, HTTP_HOST) !== 0;
+			}
+		}
+
+		if (!$crossSite) {
+			return;
+		}
+
+		if (($method === 'GET' || $method === 'HEAD')) {
+			$page	= isset($_GET['page']) && is_string($_GET['page']) ? $_GET['page'] : 'overview';
+			$mode	= isset($_GET['mode']) && is_string($_GET['mode']) ? $_GET['mode'] : 'show';
+			// only plain landing links: no extra parameters that could trigger an action
+			$plainQuery	= count(array_diff(array_keys($_GET), array('page', 'mode', 'raport', 'uni', 'lang'))) === 0;
+			if (in_array($page, $safeGetPages, true) && $mode === 'show' && $plainQuery) {
+				return;
+			}
+		}
+
+		self::sendHeader('HTTP/1.1 403 Forbidden');
+		exit('Cross-site request blocked.');
 	}
 
 	static public function _GP($name, $default, $multibyte = false, $highnum = false)
@@ -101,6 +171,11 @@ class HTTP {
 
 	private static function _quote($var, $multibyte)
 	{
+		if (!is_scalar($var)) {
+			return '';
+		}
+
+		$var	= (string) $var;
 		$var	= str_replace(array("\r\n", "\r", "\0"), array("\n", "\n", ''), $var);
 		$var	= htmlspecialchars($var, ENT_QUOTES, 'UTF-8');
 		$var	= trim($var);

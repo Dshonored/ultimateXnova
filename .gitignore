@@ -6,6 +6,7 @@ includes/ENABLE_INSTALL_TOOL
 # never commit runtime state / secrets
 cache/*
 !cache/.gitkeep
+!cache/.htaccess
 includes/backups/*
 !includes/backups/.gitkeep
 includes/FIRST_INSTALL

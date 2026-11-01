@@ -24,6 +24,9 @@ class BBCode
 		if (!isset($sText)) {
 			$sText = '';
 		}
+		// defense in depth: input normally arrives entity-encoded through HTTP::_GP, but never let
+		// raw markup through the parser (double_encode=false keeps already encoded entities)
+		$sText = htmlspecialchars((string) $sText, ENT_QUOTES, 'UTF-8', false);
 		$sText = str_replace("\r\n", "\n", $sText);
 		$sText = str_replace("\r", "\n", $sText);
 		$sText = str_replace("\n", '<br />', $sText);

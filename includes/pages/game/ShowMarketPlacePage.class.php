@@ -251,6 +251,15 @@ class ShowMarketPlacePage extends AbstractGamePage
 			return $LNG['market_p_msg_resources_error'];
 		}
 
+		// Atomically claim the offer. Only one buyer can flip it from "on offer" (mess 2) to "sold".
+		$sql = "UPDATE %%FLEETS%% SET fleet_mess = 0 WHERE fleet_id = :fleet_id AND fleet_mess = 2;";
+		$db->update($sql, array(
+			':fleet_id' => $FleetID,
+		));
+		if ($db->rowCount() != 1) {
+			return $LNG['market_p_msg_not_found'];
+		}
+
 		$PLANET[$resource[901]]	-= $fleetResource[901];
 		$PLANET[$resource[902]]	-= $fleetResource[902];
 		$PLANET[$resource[903]]	-= $fleetResource[903] + $consumption;

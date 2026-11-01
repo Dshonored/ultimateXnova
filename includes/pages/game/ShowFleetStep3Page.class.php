@@ -46,6 +46,12 @@ class ShowFleetStep3Page extends AbstractGamePage
 		$stayTime 				= HTTP::_GP('staytime', 0);
 		$token					= HTTP::_GP('token', '');
 
+		// Sanitize market offer parameters (they are stored as-is in the trade table)
+		$markettype				= $markettype == 1 ? 1 : 0;
+		$visibility				= in_array($visibility, array(0, 1, 2), true) ? $visibility : 0;
+		$maxFlightTime			= min(max(0, $maxFlightTime), 4000);
+		$stayTime				= max(0, $stayTime);
+
 		$config					= Config::get();
 
 		if (!isset($_SESSION['fleet'][$token])) {
@@ -126,6 +132,14 @@ class ShowFleetStep3Page extends AbstractGamePage
 			)));
 		}
 
+		if ($targetMission == 16 && !in_array($WantedResourceType, array(1, 2, 3), true))
+		{
+			$this->printMessage($LNG['fl_invalid_mission'], array(array(
+				'label'	=> $LNG['sys_back'],
+				'url'	=> 'game.php?page=fleetStep2'
+			)));
+		}
+
 		if ($targetMission == 16 && $WantedResourceAmount > pow(10, 50))
 		{
 			$this->printMessage($LNG['fl_invalid_mission'], array(array(
@@ -150,10 +164,19 @@ class ShowFleetStep3Page extends AbstractGamePage
 
 		if(!empty($fleetGroup))
 		{
+            // the player must be invited to this very ACS group and it must aim at the chosen target
             $sql = "SELECT ankunft FROM %%USERS_ACS%% INNER JOIN %%AKS%% ON id = acsID
-			WHERE acsID = :acsID AND :maxFleets > (SELECT COUNT(*) FROM %%FLEETS%% WHERE fleet_group = :acsID);";
+			WHERE acsID = :acsID AND userID = :userID
+			AND target = (SELECT id FROM %%PLANETS%% WHERE universe = :universe AND galaxy = :targetGalaxy AND `system` = :targetSystem AND planet = :targetPlanet AND planet_type = :targetType)
+			AND :maxFleets > (SELECT COUNT(*) FROM %%FLEETS%% WHERE fleet_group = :acsID);";
             $ACSTime = $db->selectSingle($sql, array(
                 ':acsID'        => $fleetGroup,
+                ':userID'       => $USER['id'],
+                ':universe'     => Universe::current(),
+                ':targetGalaxy' => $targetGalaxy,
+                ':targetSystem' => $targetSystem,
+                ':targetPlanet' => $targetPlanet,
+                ':targetType'   => ($targetType == 2 ? 1 : $targetType),
                 ':maxFleets'    => $config->max_fleets_per_acs,
             ), 'ankunft');
 

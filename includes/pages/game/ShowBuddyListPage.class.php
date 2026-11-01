@@ -145,7 +145,7 @@ class ShowBuddyListPage extends AbstractGamePage
 
 		if($isAllowed)
 		{
-			$sql = "SELECT COUNT(*) as count FROM %%BUDDY_REQUEST%% WHERE :id;";
+			$sql = "SELECT COUNT(*) as count FROM %%BUDDY_REQUEST%% WHERE id = :id;";
             $isRequest = $db->selectSingle($sql, array(
                 ':id'  => $id
             ), 'count');
@@ -155,7 +155,7 @@ class ShowBuddyListPage extends AbstractGamePage
                 $sql = "SELECT u.username, u.id, u.lang FROM %%BUDDY%% b INNER JOIN %%USERS%% u ON u.id = IF(b.sender = :userID,b.owner,b.sender) WHERE b.id = :id;";
                 $requestData = $db->selectSingle($sql, array(
                     ':id'       => $id,
-                    'userID'    => $USER['id']
+                    ':userID'   => $USER['id']
                 ));
 
 				$Enemy_LNG = $LNG;
@@ -183,13 +183,20 @@ class ShowBuddyListPage extends AbstractGamePage
 		$id	= HTTP::_GP('id', 0);
 		$db = Database::get();
 
-        $sql = "DELETE FROM %%BUDDY_REQUEST%% WHERE id = :id;";
-        $db->delete($sql, array(
-            ':id'       => $id
+        // only the addressee of a pending request may accept it
+        $sql = "SELECT sender, u.username, u.lang FROM %%BUDDY%% b INNER JOIN %%USERS%% u ON sender = u.id
+        WHERE b.id = :id AND b.owner = :userID AND b.id IN (SELECT id FROM %%BUDDY_REQUEST%%);";
+        $sender = $db->selectSingle($sql, array(
+            ':id'       => $id,
+            ':userID'   => $USER['id']
         ));
 
-        $sql = "SELECT sender, u.username, u.lang FROM %%BUDDY%% b INNER JOIN %%USERS%% u ON sender = u.id WHERE b.id = :id;";
-        $sender = $db->selectSingle($sql, array(
+        if (empty($sender)) {
+            $this->redirectTo("game.php?page=buddyList");
+        }
+
+        $sql = "DELETE FROM %%BUDDY_REQUEST%% WHERE id = :id;";
+        $db->delete($sql, array(
             ':id'       => $id
         ));
 

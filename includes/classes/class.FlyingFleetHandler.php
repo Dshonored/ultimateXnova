@@ -75,20 +75,32 @@ class FlyingFleetHandler
 
 			$path	= 'includes/classes/missions/'.$missionName.'.class.php';
 			require_once $path;
-			/** @var $missionObj Mission */
-			$missionObj	= new $missionName($fleetRow);
 
-			switch($fleetRow['fleet_mess'])
-			{
-				case 0:
-					$missionObj->TargetEvent();
-				break;
-				case 1:
-					$missionObj->ReturnEvent();
-				break;
-				case 2:
-					$missionObj->EndStayEvent();
-				break;
+			try {
+				/** @var $missionObj Mission */
+				$missionObj	= new $missionName($fleetRow);
+
+				switch($fleetRow['fleet_mess'])
+				{
+					case 0:
+						$missionObj->TargetEvent();
+					break;
+					case 1:
+						$missionObj->ReturnEvent();
+					break;
+					case 2:
+						$missionObj->EndStayEvent();
+					break;
+				}
+			} catch (Throwable $e) {
+				// Quarantine the failing event (keep it locked) so one broken fleet cannot
+				// take down every page load of every player. Admins find it in includes/error.log.
+				$sql = "UPDATE %%FLEETS_EVENT%% SET `lock` = 'ERROR' WHERE fleetID = :fleetId;";
+				$db->update($sql, array(
+					':fleetId'	=> $fleetRow['fleet_id']
+				));
+
+				@file_put_contents('includes/error.log', date('[d-M-Y H:i:s]').' FLEET EVENT '.$fleetRow['fleet_id'].' ('.$missionName.') FAILED: '.strip_tags($e->getMessage()).' @ '.$e->getFile().':'.$e->getLine()."\r\n", FILE_APPEND);
 			}
 		}
 	}

@@ -3167,7 +3167,7 @@ class AJAXChat {
 						- $this->stringLength($this->getConfig('guestUserSuffix'));
 
 		// seed with microseconds since last "whole" second:
-		mt_srand((double)microtime()*1000000);
+		mt_srand((float)microtime()*1000000);
 
 		// Create a random userName using numbers between 100000 and 999999:
 		$userName = substr(mt_rand(100000, 999999), 0, $maxLength);
@@ -3178,7 +3178,7 @@ class AJAXChat {
 	// Guest userIDs must not interfere with existing userIDs and must be lower than privateChannelDiff:
 	function createGuestUserID() {
 		// seed with microseconds since last "whole" second:
-		mt_srand((double)microtime()*1000000);
+		mt_srand((float)microtime()*1000000);
 
 		return mt_rand($this->getConfig('minGuestUserID'), $this->getConfig('privateChannelDiff')-1);
 	}
