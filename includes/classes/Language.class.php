@@ -44,7 +44,7 @@ class Language implements ArrayAccess {
 	/**
 	 * friends-edition: the language is a visitor choice, not an account setting.
 	 * Priority: ?lang= (also stored) > "lang" cookie (mirrored from localStorage by
-	 * scripts/base/lang-pref.js) > DEFAULT_LANG (Spanish). Used for login AND in-game pages.
+	 * scripts/base/lang-pref.js) > browser Accept-Language > DEFAULT_LANG (Spanish). Used for login AND in-game pages.
 	 */
 	static public function requestedLanguage()
 	{
@@ -56,6 +56,23 @@ class Language implements ArrayAccess {
 		}
 		if (isset($_COOKIE['lang']) && is_string($_COOKIE['lang']) && in_array($_COOKIE['lang'], $allowed, true)) {
 			return $_COOKIE['lang'];
+		}
+		// No choice yet: follow the browser (Accept-Language, by preference order)
+		if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+			$ranked = array();
+			foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $i => $part) {
+				if (!preg_match('/^\s*([a-z]{1,8})(?:-[a-z0-9]{1,8})*\s*(?:;\s*q=([01](?:\.\d{1,3})?))?\s*$/i', $part, $m)) {
+					continue;
+				}
+				$q = isset($m[2]) ? (float) $m[2] : 1.0;
+				$ranked[] = array(strtolower($m[1]), $q, $i);
+			}
+			usort($ranked, function ($a, $b) { return $b[1] <=> $a[1] ?: $a[2] <=> $b[2]; });
+			foreach ($ranked as $entry) {
+				if ($entry[1] > 0 && in_array($entry[0], $allowed, true)) {
+					return $entry[0];
+				}
+			}
 		}
 		return in_array(DEFAULT_LANG, $allowed, true) ? DEFAULT_LANG : 'en';
 	}
