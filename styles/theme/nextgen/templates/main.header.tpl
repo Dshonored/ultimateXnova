@@ -95,8 +95,8 @@
 	<script type="text/javascript" src="./scripts/game/attackAlert.js?v={$REV}"></script>
 	{/if}
 	<!-- fancybox 5.0 -->
-	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
+	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.css"/>
 
 <script>
 		var myDefaultWhiteList = bootstrap.Tooltip.Default.allowList
