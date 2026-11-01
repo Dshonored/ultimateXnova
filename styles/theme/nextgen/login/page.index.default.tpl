@@ -44,6 +44,11 @@ function loginSubmit(activeRecaptcha,use_recaptcha_on_login){
 
 							});
 
+		        }else if (dataParsed.status == 'code') {
+							$('#login').addClass('d-none');
+							$('#codeStep').removeClass('d-none');
+							$('#codeStepInfo').text(dataParsed.message);
+							$('#loginCode').val('').trigger('focus');
 		        }else if (dataParsed.status == 'redirect') {
 							location.href = "game.php";
 		        }
@@ -58,6 +63,25 @@ function loginSubmit(activeRecaptcha,use_recaptcha_on_login){
 
 
 
+function codeSubmit(){
+	$.ajax({
+		type: "POST",
+		url: 'index.php?page=login&mode=verifyCode&ajax=1',
+		data: { code: $('#loginCode').val(), csrfToken: $('#csrfToken').val() },
+		success: function(data) {
+			var res = jQuery.parseJSON(data);
+			$('#codeStep .alert').remove();
+			if (res.status == 'redirect') {
+				location.href = "game.php";
+				return;
+			}
+			$('#codeButton').before($("<span class='alert alert-danger fs-6 py-1 my-1'></span>").text(res.message));
+			if (res.status == 'fail') {
+				setTimeout(function(){ location.reload(); }, 2500);
+			}
+		}
+	});
+}
 </script>
 
 	<!-- <h1 class="fs-3 my-4 w-100">{sprintf($LNG.loginWelcome, $gameName)}</h1>
@@ -69,7 +93,7 @@ function loginSubmit(activeRecaptcha,use_recaptcha_on_login){
 	<div style="max-width:300px;" class="box-border login-container dark-blur-bg box-shadow-large">
 
 				<h1 class="login-heading">{$LNG.loginHeader}</h1>
-				<form id="login" action="" method="post">
+				<form id="login" action="" method="post" onsubmit="loginSubmit('{$recaptchaEnable}', '{$use_recaptcha_on_login}'); return false;">
 					<input id="csrfToken" type="hidden" name="csrfToken" value="{$csrfToken}">
 					<input id="rememberedEmail" type="hidden" name="rememberedEmail" value="{$rememberedEmail}">
 					<input id="rememberedTokenSelector" type="hidden" name="rememberedTokenSelector" value="{$rememberedTokenSelector}">
@@ -88,22 +112,30 @@ function loginSubmit(activeRecaptcha,use_recaptcha_on_login){
 							{/foreach}
 						{/if}
 						
-						<input class="form-control fs-6 my-2 w-100" id="userEmail" type="text" name="userEmail" placeholder="{$LNG.login_email}" value="{if !empty($rememberedEmail) && $rememberedEmail}{$rememberedEmail}{/if}">
-						<input class="form-control fs-6 my-2 w-100" id="password" type="password" name="password" placeholder="{$LNG.loginPassword}" value="{if $rememberedPassword}password{/if}">
+						<input class="form-control fs-6 my-2 w-100" id="userEmail" type="email" autocomplete="email" name="userEmail" placeholder="{$LNG.login_email}" value="{if !empty($rememberedEmail) && $rememberedEmail}{$rememberedEmail}{/if}">
+						<input class="form-control fs-6 my-2 w-100" id="password" type="password" autocomplete="current-password" name="password" placeholder="{$LNG.loginPassword}" value="{if $rememberedPassword}password{/if}">
 						{if $recaptchaEnable && $use_recaptcha_on_login}
 								<div style="overflow:hidden;" class="g-recaptcha form-group w-100 fs-6 my-2 mx-auto d-flex justify-content-start" data-sitekey="{$recaptchaPublicKey}"></div>
 						{/if}
 
 						<div class="form-group d-flex align-items-center justify-content-start my-2">
 							<input id="remember_me" type="checkbox" name="remember_me" {if $rememberedPassword}checked{/if} value="">
-							<span class="fs-6 px-2">Remember me</span>
+							<label for="remember_me" class="fs-6 px-2">{$LNG.loginRememberMe}</label>
 						</div>
 
-						<button id="loginButton" class="hover-bg-color-grey btn bg-dark text-white w-100" type="button" onclick="loginSubmit(activeRecaptcha = '{$recaptchaEnable}', use_recaptcha_on_login = '{$use_recaptcha_on_login}');">{$LNG.loginButton}</button>
+						<button id="loginButton" class="hover-bg-color-grey btn bg-dark text-white w-100" type="submit">{$LNG.loginButton}</button>
 
 					</div>
 
 				</form>
+
+				<div id="codeStep" class="d-none"><form class="d-flex flex-column" onsubmit="codeSubmit(); return false;">
+					<p id="codeStepInfo" class="fs-6 my-2"></p>
+					<label class="fs-6 text-start" for="loginCode">{$LNG.login_code_label}</label>
+					<input class="form-control fs-4 my-2 w-100 text-center login-code-input" id="loginCode" name="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" placeholder="000000" required>
+					<button id="codeButton" class="hover-bg-color-grey btn bg-dark text-white w-100 my-2" type="submit">{$LNG.login_code_button}</button>
+					<a class="fs-6 text-center" href="index.php">{$LNG.login_code_back}</a>
+				</form></div>
 				{if $facebookEnable}
 					<a href="#" data-href="index.php?page=externalAuth&method=facebook" class="fb_login">
 						<img src="styles/resource/images/facebook/fb-connect-large.png" alt="">
@@ -114,9 +146,7 @@ function loginSubmit(activeRecaptcha,use_recaptcha_on_login){
 				
 				<span class="fs-6">{$loginInfo}</span>
 -->
-				{if $mailEnable}
-					<a class="hover-bg-color-grey btn btn-block w-100 bg-dark text-white my-2 fs-6" href="index.php?page=lostPassword">{$LNG.buttonLostPassword}</a>
-				{/if}
+				<a class="d-block text-center fs-6 my-2" href="index.php?page=lostPassword">{$LNG.buttonLostPassword}</a>
 
 	</div>
 
@@ -124,7 +154,7 @@ function loginSubmit(activeRecaptcha,use_recaptcha_on_login){
 
 {if $recaptchaEnable && $use_recaptcha_on_login}
 	{block name="script" append}
-		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=tr"></script>
+		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$lang}"></script>
 	{/block}
 
 	{block name="script" append}

@@ -1,26 +1,9 @@
-Hallo {USERNAME},
-vielen Dank, dass du dich in unserem Game {GAMENAME} registriert hast. 
-Bevor dein Benutzerkonto aktiviert und Ihre Registrierung abgeschlossen 
-werden kann, müssen Sie noch einen letzten Schritt unternehmen.
+Hello {USERNAME},
 
-Bitte beachte, dass dieser Schritt zwingend notwendig ist, um 
-ein registrierter Benutzer zu werden. Du musst den Link unten nur 
-ein einziges Mal aufrufen, um dein Benutzerkonto zu aktivieren.
-
-Um deine Registrierung abzuschließen, klicke bitte auf folgenden 
-Link:
+Thanks for signing up for {GAMENAME}. To activate your account, open this link:
 
 {VERTIFYURL}
 
-Deine Logindaten:
+If you did not create this account, ignore this message.
 
-Username : {USERNAME}
-Passwort : {PASSWORD}
-
-Solltest du immer noch Probleme mit der Registrierung haben, 
-kontaktiere bitte den Webmaster unter dieser E-Mail-Adresse: 
-{GAMEMAIL}
-
-Mit freundlichen Grüßen
-
-Dein {GAMENAME} Team
+The {GAMENAME} Team

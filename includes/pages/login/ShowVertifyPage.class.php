@@ -62,7 +62,7 @@ class ShowVertifyPage extends AbstractLoginPage
 
 		if($config->mail_active == 1)
 		{
-			require('includes/classes/Mail.class.php');
+			require_once 'includes/classes/Mail.class.php';
 			$MailSubject	= sprintf($LNG['registerMailCompleteTitle'], $config->game_name, Universe::current());
 			$MailRAW		= $LNG->getTemplate('email_reg_done');
 			$MailContent	= str_replace(array(

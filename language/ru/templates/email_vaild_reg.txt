@@ -1,17 +1,9 @@
-Здравствуйте, {USERNAME}!
+Hello {USERNAME},
 
-Спасибо за регистрацию в игре {GAMENAME}. Для завершения регистрации Вам нужно активировать аккаунт.
-
-Обратите внимание, что активация аккаунта необходима для того, чтобы начать играть. Для активации аккаунта пройдите по следующей ссылке.
+Thanks for signing up for {GAMENAME}. To activate your account, open this link:
 
 {VERTIFYURL}
 
-Ваши данные:
+If you did not create this account, ignore this message.
 
-Логин: {USERNAME}
-Пароль: {PASSWORD}
-
-Если у Вас есть проблемы с регистрацией, обратитесь к Администрации по следующему адресу электронной почты: {GAMEMAIL}
-
-C уважением,
-Администрация {GAMENAME}.
+The {GAMENAME} Team

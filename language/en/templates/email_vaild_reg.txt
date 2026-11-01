@@ -1,26 +1,9 @@
 Hello {USERNAME},
 
-
-Thank you for registering at {GAMENAME}
-
-Before we can activate your account, one more step is needed.
-Please note that this step is mandatory in order to become a 
-registered user. You have to press the link below only once to 
-verify your identity.
-
-In order to complete your registration please click the 
-following activation link:
+Thanks for signing up for {GAMENAME}. To activate your account, open this link:
 
 {VERTIFYURL}
 
-Your login data:
+If you did not create this account, ignore this message.
 
-Username : {USERNAME}
-Password : {PASSWORD}
-
-Should you be facing any issues with the automated registration, 
-please contact the webmaster using the following email: 
-{GAMEMAIL}
-
-Regards,
-{GAMENAME} Team
+The {GAMENAME} Team

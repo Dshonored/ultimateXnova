@@ -118,7 +118,7 @@ class ShowSendMessagesPage extends AbstractAdminPage
 			}
 
 			if($Mode == 1 || $Mode == 2) {
-				require 'includes/classes/Mail.class.php';
+				require_once 'includes/classes/Mail.class.php';
 				$userList	= array();
 
 				if (!empty($Lang)) {

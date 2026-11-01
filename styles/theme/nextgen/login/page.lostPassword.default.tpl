@@ -1,35 +1,19 @@
 {block name="title" prepend}{$LNG.siteTitleLostPassword}{/block}
 {block name="content"}
-<p>{$LNG.passwordInfo}</p>
-<form action="index.php?page=lostPassword" method="post" data-action="index.php?page=lostPassword" >
-<input type="hidden" value="send" name="mode">
-<div class="formRow">
-	<label for="universe">{$LNG.universe}</label>
-	<select name="uni" class="changeAction" id="universe">{html_options options=$universeSelect selected=$UNI}</select>
+<div style="max-width:360px;" class="box-border login-container dark-blur-bg box-shadow-large mx-auto">
+	<h1 class="login-heading">{$LNG.siteTitleLostPassword}</h1>
+	{if $mailEnabled}
+	<p class="fs-6 my-2">{$LNG.passwordInfoEmail}</p>
+	<form action="index.php?page=lostPassword" method="post" class="d-flex flex-column">
+		<input type="hidden" name="mode" value="send">
+		<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
+		<label class="fs-6 text-start" for="mail">{$LNG.passwordMail}</label>
+		<input class="form-control fs-6 my-2 w-100" type="email" name="mail" id="mail" autocomplete="email" required autofocus>
+		<button class="hover-bg-color-grey btn bg-dark text-white w-100 my-2" type="submit">{$LNG.passwordSubmit}</button>
+	</form>
+	{else}
+	<p class="fs-6 my-2">{$LNG.passwordMailNotConfigured}</p>
+	{/if}
+	<a class="fs-6 d-block my-2" href="index.php">{$LNG.passwordBackToLogin}</a>
 </div>
-<div class="formRow">
-	<label for="username">{$LNG.passwordUsername}</label>
-	<input type="text" name="username" id="username">
-</div>
-<div class="formRow">
-	<label for="mail">{$LNG.passwordMail}</label>
-	<input type="text" name="mail" id="mail">
-</div>
-{if $recaptchaEnable}
-<div class="formRow" id="captchaRow">
-	<div>
-		<label>{$LNG.registerCaptcha}<p class="captchaButtons"></p></label>
-		<div class="g-recaptcha" data-sitekey="{$recaptchaPublicKey}"></div>
-	</div>
-</div>
-{/if}
-<div class="formRow">
-	<input type="submit" class="submitButton" value="{$LNG.passwordSubmit}">
-</div>
-</form>
-{/block}
-{block name="script" append}
-{if $recaptchaEnable}
-<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$lang}"></script>
-{/if}
 {/block}

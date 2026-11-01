@@ -1,4 +1,5 @@
 <?php
+require_once 'includes/classes/Mail.class.php';
 
 /**
 *  ultimateXnova
@@ -42,7 +43,7 @@ abstract class AbstractLoginPage
 	protected function generateCSRFToken(){
 
 		//generate token
-		$csrfToken = md5(uniqid(mt_rand(), true));
+		$csrfToken = bin2hex(random_bytes(32));
 
 		//write in to session
 
@@ -129,7 +130,8 @@ abstract class AbstractLoginPage
 			'gameName' 				=> $config->game_name,
 			'facebookEnable'		=> $config->fb_on,
 			'fb_key' 				=> $config->fb_apikey,
-			'mailEnable'			=> $config->mail_active,
+			'mailEnable'			=> Mail::isConfigured(),
+			'sourceCodeUrl'		=> SOURCE_CODE_URL,
 			'reg_close'				=> $config->reg_closed,
 			'referralEnable'		=> $config->ref_active,
 			'analyticsEnable'		=> $config->ga_active,

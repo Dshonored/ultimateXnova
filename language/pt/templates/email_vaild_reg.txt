@@ -1,18 +1,9 @@
-Olá {USERNAME},
+Hello {USERNAME},
 
-
-Obrigada por registares em {GAMENAME}
-
-Para completar o seu registo por favor clique no seguinte link:
+Thanks for signing up for {GAMENAME}. To activate your account, open this link:
 
 {VERTIFYURL}
 
-Dados de Login:
+If you did not create this account, ignore this message.
 
-Username : {USERNAME}
-Password : {PASSWORD}
-
-Se houver problemas em ativar a conta por favor contacte:
-{GAMEMAIL}
-
-{GAMENAME} Team
+The {GAMENAME} Team

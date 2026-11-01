@@ -18,6 +18,9 @@
  */
 
 
+require_once 'includes/classes/LoginThrottle.class.php';
+require_once 'includes/classes/LoginCode.class.php';
+
 class ShowLoginPage extends AbstractLoginPage
 {
 	public static $requireModule = 0;
@@ -45,26 +48,32 @@ class ShowLoginPage extends AbstractLoginPage
 	function validate(){
 		global $config, $LNG;
 
-
 		$db = Database::get();
 
-		$userEmail = HTTP::_GP('userEmail', '', true);
+		$userEmail = trim(HTTP::_GP('userEmail', '', true));
 		$password = HTTP::_GP('password', '', true);
-
 		$csrfToken = HTTP::_GP('csrfToken','',true);
 		$remember_me = HTTP::_GP('remember_me', 'false');
-
 		$rememberedTokenValidator = HTTP::_GP('rememberedTokenValidator', '');
 		$rememberedTokenSelector = HTTP::_GP('rememberedTokenSelector', '');
 		$rememberedEmail = HTTP::_GP('rememberedEmail','');
-
 		$universe = HTTP::_GP('universe', Universe::current());
+		if (!in_array((int) $universe, Universe::availableUniverses())) {
+			$universe = Universe::current();
+		}
 
 		$error = array();
+		$loginData = false;
 
-
-		if ($_COOKIE['csrfToken'] != $csrfToken) {
+		if (!isset($_COOKIE['csrfToken']) || !is_string($csrfToken) || $csrfToken === '' || !hash_equals((string) $_COOKIE['csrfToken'], $csrfToken)) {
 			$error[] = "csrf attack";
+		}
+
+		// Brute force protection: per IP and per e-mail
+		if (LoginThrottle::isBlocked($userEmail)) {
+			$error[] = $LNG['login_error_throttled'];
+			$error['status'] = "fail";
+			$this->sendJSON($error);
 		}
 
 		if (empty($userEmail)) {
@@ -76,86 +85,39 @@ class ShowLoginPage extends AbstractLoginPage
 		}
 
 		if (!empty($password) && !empty($userEmail)) {
-			$sql = "SELECT id, password FROM %%USERS%% WHERE email = :email AND universe = :universe;";
-	
+			// Login is by e-mail only (the username is just the in-game name)
+			$sql = "SELECT id, password, email FROM %%USERS%% WHERE email = :email AND universe = :universe;";
 			$loginData = $db->selectSingle($sql, array(
 				':email'	=> $userEmail,
 				':universe'	=> $universe,
 			));
+		}
 
-			if (!$loginData) {
-				// Check with username
-				$sql = "SELECT id, password FROM %%USERS%% WHERE username = :email AND universe = :universe;";
-	
-				$loginData = $db->selectSingle($sql, array(
-					':email'	=> $userEmail,
-					':universe'	=> $universe,
+		$usesRememberToken = !empty($rememberedTokenValidator) && !empty($rememberedTokenSelector)
+			&& $rememberedEmail === $userEmail && $password === 'password';
+
+		if (!empty($password) && !empty($userEmail)) {
+			if (!$usesRememberToken) {
+				// Same error for "unknown user" and "wrong password" to avoid account enumeration.
+				// password_verify still runs against a dummy hash so timing does not leak either.
+				$hash = $loginData ? $loginData['password'] : '$2y$10$usesomesillystringforsaltDummyHashToKeepTimingConstant..';
+				if (!password_verify($password, $hash) || !$loginData) {
+					$error[] = $LNG['login_error_invalid'];
+				}
+			} else {
+				$sql = "SELECT * FROM %%REMEMBER_ME%% WHERE selector = :selector;";
+				$rememberedTokenInfo = $db->selectSingle($sql,array(
+					':selector' => $rememberedTokenSelector,
 				));
-				if (!$loginData) {
-					$error[] = $LNG['login_error_3'];
+
+				if (!$rememberedTokenInfo || !$loginData
+					|| (int) $rememberedTokenInfo['expiration_date'] < TIMESTAMP
+					|| (int) $rememberedTokenInfo['user_id'] !== (int) $loginData['id']
+					|| !password_verify($rememberedTokenValidator, $rememberedTokenInfo['hashed_validator'])) {
+					$error[] = $LNG['login_error_invalid'];
 				}
 			}
 		}
-
-		if (empty($rememberedTokenValidator) || empty($rememberedTokenSelector) || $rememberedEmail != $userEmail || $password != 'password') { //verify with password
-			
-			if (isset($loginData['password'])) {
-				
-				if (!password_verify($password,$loginData['password'])) {
-					$error[] = $LNG['login_error_5'];
-				}
-			}
-
-
-
-
-		} else { //verify with token
-
-			//if user type a random password
-
-		
-
-			$sql = "SELECT * FROM %%REMEMBER_ME%% WHERE selector = :selector;";
-
-			$rememberedTokenInfo = $db->selectSingle($sql,array(
-				':selector' => $rememberedTokenSelector,
-			));
-
-
-			if (!$rememberedTokenInfo) {
-				$error[] = $LNG['login_error_3'];
-			}
-
-			if (isset($rememberedTokenInfo['hashed_validator'])) {
-				if (!password_verify($rememberedTokenValidator, $rememberedTokenInfo['hashed_validator'])) {
-					$error[] = $LNG['login_error_3'];
-				}
-
-
-
-				$sql = "SELECT email FROM %%USERS%% WHERE id = :userId;";
-
-				$userEmailCheck = $db->selectSingle($sql,array(
-					':userId' => $rememberedTokenInfo['user_id'],
-				),'email');
-
-
-
-				if (empty($userEmailCheck)) {
-					$error[] = $LNG['login_error_1'];
-				}
-
-				if ($userEmailCheck != $userEmail) {
-					$error[] = $LNG['login_error_3'];
-				}
-
-			}
-
-
-		}
-
-
-
 
 		if ($config->capaktiv === '1' && $config->use_recaptcha_on_login)
 		{
@@ -173,61 +135,94 @@ class ShowLoginPage extends AbstractLoginPage
 
 		if (empty($error))
 		{
-			$session	= Session::create();
-			$session->userId		= (int) $loginData['id'];
-			$session->adminAccess	= 0;
-			$session->save();
+			LoginThrottle::clear($userEmail);
 
-
-			if ($remember_me == 'true') {
-				$rememberMeToken = $this->generateRememberMeToken($universe);
-
-				//set a cookie
-				HTTP::sendCookie('remember_me',$rememberMeToken['full'], TIMESTAMP + 60 * 60 * 24 * 30);
-
-				//delete old remember me data
-
-				$sql = "DELETE FROM %%REMEMBER_ME%% WHERE `user_id` = :userId;";
-
-				$db->delete($sql,array(
-					':userId' => (int) $loginData['id']
-				));
-
-
-				//insert new remember data,
-
-				$sql = "INSERT INTO %%REMEMBER_ME%% (`selector`,`hashed_validator`, `expiration_date`, `user_id`,`universe`)
-				VALUES (:selector,:hashed_validator,:expiration_date,:user_id,:universe);";
-
-				$db->insert($sql,array(
-					':selector' => $rememberMeToken['selector'],
-					':hashed_validator' => password_hash($rememberMeToken['validator'], PASSWORD_DEFAULT),
-					':expiration_date' => TIMESTAMP + 60 * 60 * 24 * 30, //30 days
-					':user_id' => (int) $loginData['id'],
-					':universe' => $universe
-				));
-
-
+			// Password (or remember-me token) is correct. A device that already proved it
+			// can read the account's inbox goes straight in; anything else gets a code.
+			if ($usesRememberToken || LoginCode::isTrustedDevice((int) $loginData['id'])) {
+				$this->completeLogin((int) $loginData['id'], $universe, $remember_me);
 			}
 
-			if ($remember_me == "false") {
-				$sql = "DELETE FROM %%REMEMBER_ME%% WHERE user_id = :userId;";
-				$db->delete($sql,array(
-					':userId' => (int) $loginData['id']
-				));
+			if (!Mail::isConfigured() && !LoginCode::devLogEnabled()) {
+				$error[] = $LNG['login_code_mail_missing'];
+				$error['status'] = "fail";
+				$this->sendJSON($error);
 			}
 
-			$data = array();
-			$data['status'] = "redirect";
-			$this->sendJSON($data);
+			LoginCode::start((int) $loginData['id'], $loginData['email'], $universe, $remember_me === 'true');
+
+			$this->sendJSON(array(
+				'status'  => 'code',
+				'message' => $LNG['login_code_sent'],
+			));
 		}
 		else
 		{
+			LoginThrottle::recordFailure($userEmail);
 			$error['status'] = "fail";
 			$this->sendJSON($error);
 		}
-
 	}
 
+	/**
+	 * Second step: the 6-digit code that was e-mailed after a correct password.
+	 */
+	function verifyCode()
+	{
+		global $LNG;
 
+		$csrfToken = HTTP::_GP('csrfToken', '', true);
+		if (!isset($_COOKIE['csrfToken']) || $csrfToken === '' || !hash_equals((string) $_COOKIE['csrfToken'], $csrfToken)) {
+			$this->sendJSON(array('status' => 'fail', 'csrf attack'));
+		}
+
+		$result = LoginCode::verify(HTTP::_GP('code', '', true));
+
+		if ($result['ok']) {
+			LoginCode::trustDevice($result['userId']);
+			$this->completeLogin($result['userId'], $result['universe'], $result['remember'] ? 'true' : 'false');
+		}
+
+		$messages = array(
+			'expired'  => $LNG['login_code_expired'],
+			'too_many' => $LNG['login_code_too_many'],
+			'wrong'    => $LNG['login_code_wrong'],
+		);
+		$this->sendJSON(array(
+			'status'  => $result['reason'] === 'wrong' ? 'code_wrong' : 'fail',
+			'message' => isset($messages[$result['reason']]) ? $messages[$result['reason']] : $LNG['login_code_expired'],
+		));
+	}
+
+	private function completeLogin($userId, $universe, $remember_me)
+	{
+		$db = Database::get();
+
+		$session	= Session::create();
+		$session->userId		= (int) $userId;
+		$session->adminAccess	= 0;
+		$session->save();
+
+		// Always drop old remember-me tokens; issue a fresh one if asked.
+		$db->delete("DELETE FROM %%REMEMBER_ME%% WHERE user_id = :userId;", array(
+			':userId' => (int) $userId
+		));
+
+		if ($remember_me == 'true') {
+			$rememberMeToken = $this->generateRememberMeToken($universe);
+			HTTP::sendCookie('remember_me', $rememberMeToken['full'], TIMESTAMP + 60 * 60 * 24 * 30);
+
+			$sql = "INSERT INTO %%REMEMBER_ME%% (`selector`,`hashed_validator`, `expiration_date`, `user_id`,`universe`)
+			VALUES (:selector,:hashed_validator,:expiration_date,:user_id,:universe);";
+			$db->insert($sql, array(
+				':selector'         => $rememberMeToken['selector'],
+				':hashed_validator' => password_hash($rememberMeToken['validator'], PASSWORD_DEFAULT),
+				':expiration_date'  => TIMESTAMP + 60 * 60 * 24 * 30,
+				':user_id'          => (int) $userId,
+				':universe'         => $universe
+			));
+		}
+
+		$this->sendJSON(array('status' => 'redirect'));
+	}
 }

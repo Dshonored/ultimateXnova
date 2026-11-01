@@ -17,6 +17,8 @@
  * @link https://github.com/ultimateXnova/ultimateXnova
  */
 
+require_once 'includes/classes/Mail.class.php';
+
 class ShowRegisterPage extends AbstractLoginPage
 {
 	function __construct()
@@ -113,7 +115,7 @@ class ShowRegisterPage extends AbstractLoginPage
 		$userName 		= HTTP::_GP('userName', '', UTF8_SUPPORT);
 		$password 		= HTTP::_GP('password', '', true);
 		$mailAddress 	= HTTP::_GP('email', '', true);
-		$language 		= HTTP::_GP('language', '');
+		$language 		= Language::requestedLanguage(); // friends-edition: from the visitor's language choice
 		$rulesChecked	= HTTP::_GP('rules', 'false');
 		$csrfToken = HTTP::_GP('csrfToken','',true);
 
@@ -157,8 +159,12 @@ class ShowRegisterPage extends AbstractLoginPage
 			$error[]	= $LNG['registerErrorUsernameChar'];
 		}
 
-		if(strlen($password) < 6) {
-			$error[]	= sprintf($LNG['registerErrorPasswordLength'], 6);
+		if(!Mail::isConfigured() && getenv('LOGIN_CODE_DEV_LOG') !== '1') {
+			$error[]	= $LNG['login_code_mail_missing'];
+		}
+
+		if(mb_strlen($password) < 8) {
+			$error[]	= sprintf($LNG['registerErrorPasswordLength'], 8);
 		}
 
 
@@ -275,7 +281,7 @@ class ShowRegisterPage extends AbstractLoginPage
 			$referralID	= 0;
 		}
 
-		$validationKey	= md5(uniqid('2m'));
+		$validationKey	= bin2hex(random_bytes(16));
 
 		$sql = "INSERT INTO %%USERS_VALID%% SET
 				`userName` = :userName,
@@ -312,7 +318,8 @@ class ShowRegisterPage extends AbstractLoginPage
 		$validationID	= $db->lastInsertId();
 		$verifyURL	= 'index.php?page=vertify&i='.$validationID.'&k='.$validationKey;
 
-		if($config->user_valid == 0 || !empty($externalAuthUID))
+		// friends-edition: the account only exists once the e-mail is confirmed (no fake addresses)
+		if(!empty($externalAuthUID))
 		{
 			$data['status'] = "redirect";
 			$data['url'] = $verifyURL;
@@ -320,7 +327,7 @@ class ShowRegisterPage extends AbstractLoginPage
 		}
 		else
 		{
-			require 'includes/classes/Mail.class.php';
+			require_once 'includes/classes/Mail.class.php';
 			$MailRAW		= $LNG->getTemplate('email_vaild_reg');
 			$MailContent	= str_replace(array(
 				'{USERNAME}',
@@ -330,13 +337,16 @@ class ShowRegisterPage extends AbstractLoginPage
 				'{GAMEMAIL}',
 			), array(
 				$userName,
-				$password,
-				$config->game_name.' - '.$config->uni_name,
-				HTTP_PATH.$verifyURL,
+				'',
+				$config->game_name,
+				Mail::appUrl().$verifyURL,
 				$config->smtp_sendmail,
 			), $MailRAW);
 
 			$subject	= sprintf($LNG['registerMailVertifyTitle'], $config->game_name);
+			if (getenv('LOGIN_CODE_DEV_LOG') === '1') {
+				error_log('[Register] DEV verify link for '.$mailAddress.': '.Mail::appUrl().$verifyURL);
+			}
 			Mail::send($mailAddress, $userName, $subject, $MailContent);
 
 			$data['status'] = "success";

@@ -1,22 +1,9 @@
-﻿Witaj {USERNAME},
+Hello {USERNAME},
 
-Dzięki za rejstracje na {GAMENAME}
-Nim aktywujesz swoje konto jeszcze jeden krok przed tobą.
+Thanks for signing up for {GAMENAME}. To activate your account, open this link:
 
-Kliknij na ten link poniżej aktywujący twoje konto.
+{VERTIFYURL}
 
-Link aktywacyjny: {VERTIFYURL}
+If you did not create this account, ignore this message.
 
-Dane do logowania
-
-Username : {USERNAME}
-Password : {PASSWORD}
-
-
-Jeśli będziesz miał jakieś problemy prosze daj znać na maila adminowi :
-
-{GAMEMAIL}
-
-Pozdrowienia,
-
-{GAMENAME} - Team
+The {GAMENAME} Team
