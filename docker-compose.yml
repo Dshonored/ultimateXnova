@@ -1,45 +1,41 @@
-# Author: Pfahli
-# Version: 0.2
-# Project: ultimateXnova
-
-version: '3.8'
+# ultimateXnova friends-edition
+# 1. cp .env.example .env and fill in every value
+# 2. docker compose up -d --build
+# The database is NOT published to the host; only the web port is, and only on 127.0.0.1.
+# Put a reverse proxy / Cloudflare Tunnel / Tailscale in front of it for your friends.
+name: ultimatexnova
 
 services:
   web:
     build: .
+    env_file: .env
+    environment:
+      DB_HOST: db
     ports:
-      - "3838:80"
+      - "127.0.0.1:${WEB_PORT:-8080}:80"
     volumes:
-      - .:/var/www/html/
+      - cache:/var/www/html/cache
     depends_on:
-      - db
-    # This service serves the PHP application via Apache
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
   db:
-    image: mysql:5.7
-    ports:
-    - 3308:3306
+    image: mariadb:11.4
+    command: ["--sql-mode=NO_ENGINE_SUBSTITUTION", "--innodb-file-per-table=1"]
     environment:
-      MYSQL_ROOT_PASSWORD: uxn_root_password
-      MYSQL_DATABASE: ultimatexnova
-      MYSQL_USER: uxn_user
-      MYSQL_PASSWORD: uxn_password
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - dbdata:/var/lib/mysql
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: pma
-    links:
-      - db
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-    restart: always
-    ports:
-      - 3839:80
-    # MySQL database service with persistent storage
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      retries: 30
+    restart: unless-stopped
 
 volumes:
   dbdata:
-    # Persistent volume for MySQL database
+  cache:

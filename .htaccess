@@ -52,9 +52,7 @@ AddCharset utf-8 .css .js .xml .json .rss .atom
 </IfModule>
 
 <FilesMatch "(\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)|~)$">
-  Order allow,deny
-  Deny from all
-  Satisfy All
+  Require all denied
 </FilesMatch>
 
 # ----------------------------------------------------------------------
