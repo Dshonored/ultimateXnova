@@ -22,7 +22,13 @@
 
 //TEMPLATES DEFAULT SETTINGS
 //define('DEFAULT_THEME'	 		    , 'EpicBlueXIII');
-define('HTTPS'						, isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]  == 'on');
+// Requests that arrive through a reverse proxy / tunnel on a private or loopback address
+// (docker, nginx, cloudflared) may carry the original scheme in X-Forwarded-Proto.
+$uxnViaTrustedProxy	= isset($_SERVER['REMOTE_ADDR'])
+	&& filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false
+	&& filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false;
+define('HTTPS'						, (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]  == 'on')
+	|| ($uxnViaTrustedProxy && isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https'));
 define('PROTOCOL'					, HTTPS ? 'https://' : 'http://');
 if(PHP_SAPI === 'cli')
 {

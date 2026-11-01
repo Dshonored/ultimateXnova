@@ -37,8 +37,11 @@ error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED); // patched: deprecations wer
 // If date.timezone is invalid
 date_default_timezone_set(@date_default_timezone_get());
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0); // never leak paths/queries to players; errors go to includes/error.log
 header('Content-Type: text/html; charset=UTF-8');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: same-origin');
 define('TIMESTAMP',	time());
 
 require 'includes/constants.php';
@@ -135,6 +138,23 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 	{
 	    $session->delete();
 		HTTP::redirectTo('index.php?code=3');
+	}
+
+	// Central CSRF protection for every state changing ingame/admin request.
+	if(!(isset($_GET['page']) && $_GET['page'] === 'raport' && MODE === 'INGAME')) {
+		HTTP::guardCrossSite();
+	}
+
+	// Serialize all requests of one player. The game does read-modify-write on planet/user rows
+	// (and the tables are MyISAM, so there are no row locks): without this two parallel requests
+	// (double submit, two tabs, scripted races) can spend/duplicate the same resources or ships.
+	if(MODE === 'INGAME' && $session->userId)
+	{
+		$lockResult		= Database::get()->selectSingle("SELECT GET_LOCK(CONCAT('uxn_', DATABASE(), '_u', :userId), 20) as locked;", array(':userId' => (int) $session->userId), 'locked');
+		if((int) $lockResult !== 1) {
+			HTTP::sendHeader('HTTP/1.1 503 Service Unavailable');
+			exit('Server busy, please retry.');
+		}
 	}
 
 	require 'includes/vars.php';

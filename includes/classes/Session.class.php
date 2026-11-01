@@ -53,7 +53,13 @@ class Session
 
 		$HTTP_ROOT = MODE === 'INSTALL' ? dirname(HTTP_ROOT) : HTTP_ROOT;
 
-		session_set_cookie_params(SESSION_LIFETIME, $HTTP_ROOT, NULL, HTTPS, true);
+		session_set_cookie_params(array(
+			'lifetime'	=> SESSION_LIFETIME,
+			'path'		=> $HTTP_ROOT,
+			'secure'	=> HTTPS,
+			'httponly'	=> true,
+			'samesite'	=> 'Lax',
+		));
 		session_cache_limiter('nocache');
 		session_name('2Moons');
 
@@ -75,34 +81,37 @@ class Session
 
 	static public function getClientIp()
     {
-		if(!empty($_SERVER['HTTP_CLIENT_IP']))
-        {
-            $ipAddress = $_SERVER['HTTP_CLIENT_IP'];
-        }
-		elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-        {
-			$ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        elseif(!empty($_SERVER['HTTP_X_FORWARDED']))
-        {
-			$ipAddress = $_SERVER['HTTP_X_FORWARDED'];
-        }
-        elseif(!empty($_SERVER['HTTP_FORWARDED_FOR']))
-        {
-			$ipAddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        }
-        elseif(!empty($_SERVER['HTTP_FORWARDED']))
-        {
-			$ipAddress = $_SERVER['HTTP_FORWARDED'];
-        }
-        elseif(!empty($_SERVER['REMOTE_ADDR']))
-        {
-			$ipAddress = $_SERVER['REMOTE_ADDR'];
-        }
-        else
-        {
-			$ipAddress = 'UNKNOWN';
-        }
+		$ipAddress	= isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
+		// Forwarding headers are client controlled. Only believe them when the direct peer is a
+		// private/loopback proxy (docker network, local nginx, cloudflared), and always validate.
+		if(HTTP::isTrustedProxy())
+		{
+			$candidates	= array();
+
+			if(!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+				$candidates[]	= $_SERVER['HTTP_CF_CONNECTING_IP'];
+			}
+
+			if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$candidates[]	= trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+			}
+
+			foreach($candidates as $candidate)
+			{
+				if(filter_var($candidate, FILTER_VALIDATE_IP) !== false)
+				{
+					$ipAddress	= $candidate;
+					break;
+				}
+			}
+		}
+
+		if(filter_var($ipAddress, FILTER_VALIDATE_IP) === false)
+		{
+			return 'UNKNOWN';
+		}
+
         return $ipAddress;
 	}
 
@@ -120,6 +129,12 @@ class Session
 			register_shutdown_function(array(self::$obj, 'save'));
 
 			@session_start();
+
+			// Prevent session fixation: never keep a session id the client chose before authentication.
+			if(session_status() === PHP_SESSION_ACTIVE && !headers_sent())
+			{
+				@session_regenerate_id(true);
+			}
 		}
 
 		return self::$obj;
@@ -141,7 +156,7 @@ class Session
 			}
 			if(isset($_SESSION['obj']))
 			{
-				self::$obj	= unserialize($_SESSION['obj']);
+				self::$obj	= unserialize($_SESSION['obj'], array('allowed_classes' => array('Session')));
 				register_shutdown_function(array(self::$obj, 'save'));
 			}
 			else
