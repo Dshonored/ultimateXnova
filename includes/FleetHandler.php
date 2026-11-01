@@ -28,11 +28,15 @@ $fleetResult	= $db->update("UPDATE %%FLEETS_EVENT%% SET `lock` = :token WHERE `l
 if($db->rowCount() !== 0) {
 	require 'includes/classes/class.FlyingFleetHandler.php';
 
-	$fleetObj	= new FlyingFleetHandler();
-	$fleetObj->setToken($token);
-	$fleetObj->run();
-
-	$db->update("UPDATE %%FLEETS_EVENT%% SET `lock` = NULL WHERE `lock` = :token;", array(
-		':token' => $token
-	));
+	// Always release the event lock, even if a mission throws; otherwise the locked
+	// events would never be processed again (stuck fleets).
+	try {
+		$fleetObj	= new FlyingFleetHandler();
+		$fleetObj->setToken($token);
+		$fleetObj->run();
+	} finally {
+		$db->update("UPDATE %%FLEETS_EVENT%% SET `lock` = NULL WHERE `lock` = :token;", array(
+			':token' => $token
+		));
+	}
 }

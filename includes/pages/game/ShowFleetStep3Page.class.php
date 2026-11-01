@@ -46,6 +46,12 @@ class ShowFleetStep3Page extends AbstractGamePage
 		$stayTime 				= HTTP::_GP('staytime', 0);
 		$token					= HTTP::_GP('token', '');
 
+		// Sanitize market offer parameters (they are stored as-is in the trade table)
+		$markettype				= $markettype == 1 ? 1 : 0;
+		$visibility				= in_array($visibility, array(0, 1, 2), true) ? $visibility : 0;
+		$maxFlightTime			= min(max(0, $maxFlightTime), 4000);
+		$stayTime				= max(0, $stayTime);
+
 		$config					= Config::get();
 
 		if (!isset($_SESSION['fleet'][$token])) {
@@ -121,6 +127,14 @@ class ShowFleetStep3Page extends AbstractGamePage
 		if ($targetMission == 16 && $WantedResourceAmount < 1)
 		{
 			$this->printMessage($LNG['fl_no_noresource_exchange'], array(array(
+				'label'	=> $LNG['sys_back'],
+				'url'	=> 'game.php?page=fleetStep2'
+			)));
+		}
+
+		if ($targetMission == 16 && !in_array($WantedResourceType, array(1, 2, 3), true))
+		{
+			$this->printMessage($LNG['fl_invalid_mission'], array(array(
 				'label'	=> $LNG['sys_back'],
 				'url'	=> 'game.php?page=fleetStep2'
 			)));
