@@ -116,7 +116,23 @@ class ShowFleetStep1Page extends AbstractGamePage
 
         $db = Database::get();
 
-		$ShortcutData	= $_REQUEST['shortcut'];
+		$ShortcutData	= array();
+		if(is_array($_REQUEST['shortcut'])) {
+			foreach($_REQUEST['shortcut'] as $ID => $planetData) {
+				if(!is_array($planetData)) {
+					continue;
+				}
+
+				$name	= isset($planetData['name']) && is_scalar($planetData['name']) ? (string) $planetData['name'] : '';
+				$ShortcutData[(int) $ID]	= array(
+					'name'		=> mb_substr(htmlspecialchars(trim(str_replace("\0", '', $name)), ENT_QUOTES, 'UTF-8'), 0, 32),
+					'galaxy'	=> isset($planetData['galaxy']) ? min(255, max(0, (int) $planetData['galaxy'])) : 0,
+					'system'	=> isset($planetData['system']) ? min(65535, max(0, (int) $planetData['system'])) : 0,
+					'planet'	=> isset($planetData['planet']) ? min(255, max(0, (int) $planetData['planet'])) : 0,
+					'type'		=> isset($planetData['type']) && in_array((int) $planetData['type'], array(1, 2, 3), true) ? (int) $planetData['type'] : 1,
+				);
+			}
+		}
 		$ShortcutUser	= $this->GetUserShotcut();
 		foreach($ShortcutData as $ID => $planetData) {
 			if(!isset($ShortcutUser[$ID])) {

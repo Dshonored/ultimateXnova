@@ -265,6 +265,15 @@ class ShowSettingsPage extends AbstractGamePage
 		// New option to change the background image
 		$background_img = HTTP::_GP('user_background_image','');
 
+		// only a plain relative image path / file name may be stored (it ends up in css/html attributes)
+		if (!preg_match('/^[A-Za-z0-9_\-.\/]{0,100}$/D', $background_img) || strpos($background_img, '..') !== false) {
+			$background_img = '';
+		}
+
+		if (!in_array($timezone, DateTimeZone::listIdentifiers(), true)) {
+			$timezone = $USER['timezone'];
+		}
+
 		$availableThemes = array_keys(Theme::getAvalibleSkins());
 
 		if (!in_array($theme,$availableThemes)) {
