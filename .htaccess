@@ -45,17 +45,26 @@ AddCharset utf-8 .css .js .xml .json .rss .atom
   Options -Indexes
 </IfModule>
 
-<IfModule mod_rewrite.c>
-  RewriteCond %{SCRIPT_FILENAME} -d
-  RewriteCond %{SCRIPT_FILENAME} -f
-  RewriteRule "(^|/)\." - [F]
+# Never serve dot files / folders (.git, .env, .htaccess ...)
+<IfModule mod_alias.c>
+  RedirectMatch 404 /\.(?!well-known)
 </IfModule>
 
-<FilesMatch "(\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)|~)$">
-  Order allow,deny
-  Deny from all
-  Satisfy All
+<FilesMatch "(\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|md|lock|json|yml|yaml)|~)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+    Satisfy All
+  </IfModule>
 </FilesMatch>
+
+# Session / game cookies must not be readable through directory listings of the app
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>
 
 # ----------------------------------------------------------------------
 # ultimateXnova: MultiUniverse support
