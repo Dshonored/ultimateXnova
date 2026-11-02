@@ -1,3 +1,9 @@
+// Language strings may contain HTML entities (&ntilde;); decode them for <option> text.
+function feOption(text, value) {
+	var t = document.createElement('textarea');
+	t.innerHTML = String(text);
+	return value === undefined ? new Option(t.value) : new Option(t.value, value);
+}
 var v  			= new Date();
 
 function ShipyardInit() {
@@ -25,7 +31,7 @@ function BuildlistShipyard() {
 			Shipyard.shift();
 			if (Shipyard.length == 0) {
 				$("#bx").html(Ready);
-				document.getElementById('auftr').options[0] = new Option(Ready);
+				document.getElementById('auftr').options[0] = feOption(Ready);
 				document.location.href	= document.location.href;
 				window.clearInterval(ShipyardInterval);
 				return;
@@ -48,8 +54,8 @@ function ShipyardList() {
 
 	for (iv = 0; iv <= Shipyard.length - 1; iv++ ) {
 		if(iv == 0)
-			document.getElementById('auftr').options[iv] = new Option(Amount.toString()+ " " + Shipyard[iv][0] + " " + bd_operating, iv);
+			document.getElementById('auftr').options[iv] = feOption(Amount.toString()+ " " + Shipyard[iv][0] + " " + bd_operating, iv);
 		else
-			document.getElementById('auftr').options[iv] = new Option(Shipyard[iv][1]+ " " + Shipyard[iv][0] + " " + bd_operating, iv);
+			document.getElementById('auftr').options[iv] = feOption(Shipyard[iv][1]+ " " + Shipyard[iv][0] + " " + bd_operating, iv);
 	}
 }

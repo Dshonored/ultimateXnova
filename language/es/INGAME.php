@@ -1286,3 +1286,24 @@ $LNG['lo_continue']							= 'Pulsa aquí si no redirecciona tu navegador.';
 
 
 // Translated into Spanish by Angelus_ira . All rights reversed (C) 2011
+
+// friends-edition: build / research / shipyard pages
+$LNG['fe_show_all'] = 'Todos';
+$LNG['fe_show_ready'] = 'Disponibles';
+$LNG['fe_show_locked'] = 'Bloqueados';
+$LNG['fe_upgrade_to'] = 'Mejorar a nivel %s';
+$LNG['fe_research_to'] = 'Investigar nivel %s';
+$LNG['fe_missing_res'] = 'Faltan recursos';
+$LNG['fe_requires'] = 'Requiere';
+$LNG['fe_queue_full'] = 'Cola llena';
+$LNG['fe_build_selected'] = 'Construir seleccionados';
+$LNG['fe_have'] = 'Tienes';
+$LNG['fe_queue_now'] = 'En curso';
+$LNG['fe_queue_next'] = 'En cola';
+$LNG['fe_none_match'] = 'Nada para mostrar con este filtro.';
+$LNG['fe_fields'] = 'Campos';
+$LNG['fe_info'] = 'Ver detalles';
+$LNG['fe_clear'] = 'Limpiar';
+$LNG['fe_can_build'] = 'Puedes hacer';
+$LNG['fe_lab_busy'] = 'El laboratorio está mejorándose';
+$LNG['fe_busy'] = 'Ocupado';

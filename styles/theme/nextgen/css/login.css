@@ -314,3 +314,22 @@ body {
 .login-rules a, .login-rules a:visited { color: var(--fe-accent); font-weight: 600; }
 select.login-input { appearance: auto; }
 select.login-input option { background: #141824; color: var(--fe-text); }
+
+/* ==========================================================
+   friends-edition: everything centered on the public pages
+   ========================================================== */
+#navbar.uk-navbar { flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px 0; }
+#navbar .uk-navbar-left, #navbar .uk-navbar-right { justify-content: center; flex-wrap: wrap; gap: 12px; margin: 0; }
+#navbar .uk-navbar-nav { justify-content: center; }
+#navbar .logo { display: block; margin: 0 auto; }
+
+.login-card { text-align: center; }
+.login-label { display: block; text-align: center; }
+.login-input { text-align: center; }
+.login-input::placeholder { text-align: center; }
+.login-row { flex-direction: column; justify-content: center; gap: 8px; }
+.login-check { justify-content: center; }
+.login-card .alert, .login-hint { text-align: center; }
+.login-card select.login-input { text-align-last: center; }
+
+.footer-container { display: flex; justify-content: center; left: 0; right: 0; width: 100%; border-radius: 0; border-right: 0; padding: 6px; }

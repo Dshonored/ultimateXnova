@@ -1,3 +1,4 @@
+<header class="fe-header">
 <div class="dark-blur-bg top-bar ">
   <div class="uk-container">
     <div class="uk-navbar-center">
@@ -101,7 +102,6 @@
     </div>
   </div>
 </div>
-</div>
 <div class="dark-blur-bg menu-container box-shadow-large">
 	<div class="uk-container">
     <div class="uk-grid" uk-grid>
@@ -166,15 +166,17 @@
         
       </div>
     </div>
-   
+ 
   </div>
 </div>
+</header>
  
 
 
 
 
 
+<script src="./scripts/base/sticky-header.js?v={$smarty.const.ASSET_VERSION}"></script>
 {if !$vmode}
 <script type="text/javascript">
 var viewShortlyNumber	= {$shortlyNumber|json};

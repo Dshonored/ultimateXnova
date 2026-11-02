@@ -1190,3 +1190,24 @@ $LNG['lo_logout']                         = 'Сессия завершена.';
 $LNG['lo_redirect']                       = 'Перенаправление';
 $LNG['lo_notify']                         = 'Вы будете перенаправлены через <span id="seconds">5</span> секунд';
 $LNG['lo_continue']                       = 'Нажмите здесь, если не хотите ждать';
+
+// friends-edition: build / research / shipyard pages
+$LNG['fe_show_all'] = 'All';
+$LNG['fe_show_ready'] = 'Available';
+$LNG['fe_show_locked'] = 'Locked';
+$LNG['fe_upgrade_to'] = 'Upgrade to level %s';
+$LNG['fe_research_to'] = 'Research level %s';
+$LNG['fe_missing_res'] = 'Not enough resources';
+$LNG['fe_requires'] = 'Requires';
+$LNG['fe_queue_full'] = 'Queue full';
+$LNG['fe_build_selected'] = 'Build selected';
+$LNG['fe_have'] = 'You have';
+$LNG['fe_queue_now'] = 'In progress';
+$LNG['fe_queue_next'] = 'Queued';
+$LNG['fe_none_match'] = 'Nothing matches this filter.';
+$LNG['fe_fields'] = 'Fields';
+$LNG['fe_info'] = 'Details';
+$LNG['fe_clear'] = 'Clear';
+$LNG['fe_can_build'] = 'You can build';
+$LNG['fe_lab_busy'] = 'The research lab is being upgraded';
+$LNG['fe_busy'] = 'Busy';

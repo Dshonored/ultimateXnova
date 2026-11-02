@@ -265,4 +265,7 @@ define('ASSET_VERSION', substr(md5(implode('|', array_map(function ($f) {
 	'styles/theme/nextgen/css/login.css',
 	'styles/theme/nextgen/css/mobile.css',
 	'scripts/base/lang-pref.js',
+	'scripts/base/sticky-header.js',
+	'scripts/game/fe-items.js',
+	'scripts/game/shipyard.js',
 )))), 0, 10));

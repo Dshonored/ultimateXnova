@@ -91,7 +91,7 @@ class ShowRegisterPage extends AbstractLoginPage
 			'referralData'		=> $referralData,
 			'accountName'		=> $accountName,
 			'externalAuth'		=> $externalAuth,
-			'registerPasswordDesc'	=> sprintf($LNG['registerPasswordDesc'], 6),
+			'registerPasswordDesc'	=> sprintf($LNG['registerPasswordDesc'], 8),
 			'registerRulesDesc'	=> sprintf($LNG['registerRulesDesc'], '<a href="index.php?page=rules">'.$LNG['menu_rules'].'</a>'),
 			'csrfToken' => $this->generateCSRFToken(),
 		));
