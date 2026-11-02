@@ -9,10 +9,10 @@
 	</tr>
 	<tr>
 		<td>
-			<button id="resourceMBtn" class="marketOption selected">Resource market</button>
+			<button id="resourceMBtn" class="marketOption selected">{$LNG.fe_market_res}</button>
 		</td>
 		<td>
-			<button id="fleetMBtn" class="marketOption">Fleet market</button>
+			<button id="fleetMBtn" class="marketOption">{$LNG.fe_market_fleet}</button>
 		</td>
 	</tr>
 	<tr>

@@ -212,8 +212,20 @@ class ShowResourcesPage extends AbstractGamePage
 			$prodSelector[$percent]	= ($percent * 10).'%';
 		}
 
+		$resourceTiles = array();
+		foreach (array(901, 902, 903, 911) as $tileId) {
+			$resourceTiles[] = array(
+				'id'      => $tileId,
+				'net'     => $totalProduction[$tileId],
+				'daily'   => $dailyProduction[$tileId],
+				'weekly'  => $weeklyProduction[$tileId],
+				'storage' => isset($storage[$tileId]) ? $storage[$tileId] : null,
+			);
+		}
+
 		$this->assign(array(
 			'header'			=> sprintf($LNG['rs_production_on_planet'], $PLANET['name']),
+			'resourceTiles'		=> $resourceTiles,
 			'prodSelector'		=> $prodSelector,
 			'productionList'	=> $productionList,
 			'basicProduction'	=> $basicProduction,
