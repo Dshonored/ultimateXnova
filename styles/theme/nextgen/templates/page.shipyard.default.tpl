@@ -20,18 +20,42 @@
 	{/if}
 
 	{if !empty($BuildList)}
-	<section class="fe-queue fe-queue-shipyard">
-		<div class="fe-queue-head">
-			<span class="fe-queue-label">{$LNG.fe_queue_now}</span>
-			<strong id="bx"></strong>
-			<span class="fe-queue-times"><i class="bi bi-hourglass-split"></i> <span id="timeleft"></span></span>
-		</div>
-		<form action="game.php?page=shipyard&amp;mode={$mode}" method="post" class="fe-queue-cancel">
+	<section class="fe-queue fe-queue-shipyard" data-fe-squeue>
+		<form action="game.php?page=shipyard&amp;mode={$mode}" method="post" data-fe-squeue-form>
 			<input type="hidden" name="action" value="delete">
-			<select name="auftr[]" id="auftr" multiple size="4" aria-label="{$LNG.fe_queue_next}"><option>&nbsp;</option></select>
-			<div>
+			<div class="fe-squeue-top">
+				<span class="fe-queue-label">{$LNG.fe_queue_now}</span>
+				<span class="fe-queue-times"><i class="bi bi-hourglass-split"></i> {$LNG.fe_queue_total} <b data-total-left>{$BuildList.pretty_time_b_hangar}</b></span>
+			</div>
+			<ul class="fe-squeue">
+			{foreach $BuildList.Queue as $qIndex => $q}
+				<li class="fe-squeue-row{if $q@first} is-current{/if}" data-index="{$qIndex}" data-unit="{$q[2]}" data-count="{$q[1]}">
+					<label class="fe-squeue-pick">
+						<input type="checkbox" name="auftr[]" value="{$qIndex}" aria-label="{$LNG.bd_cancel} {$q[0]}">
+						<img src="{$dpath}gebaeude/{$q[3]}.gif" alt="" width="40" height="40">
+						<span class="fe-squeue-name">
+							<strong>{$q[0]}</strong>
+							<small>{if $q@first}{$LNG.fe_queue_building}{else}{$LNG.fe_queue_waiting} · #{$q@iteration}{/if}</small>
+						</span>
+					</label>
+					<span class="fe-squeue-count">× <b data-left>{$q[1]|number}</b></span>
+					<span class="fe-squeue-time">
+						{if $q@first}
+							<span class="fe-squeue-next"><i class="bi bi-stopwatch"></i> <span data-next-unit></span></span>
+							<span class="fe-squeue-bar"><span data-unit-bar></span></span>
+						{else}
+							<i class="bi bi-clock"></i> {pretty_time($q[2] * $q[1])}
+						{/if}
+					</span>
+				</li>
+			{/foreach}
+			</ul>
+			<div class="fe-squeue-actions">
+				<label class="fe-squeue-all"><input type="checkbox" data-select-all> {$LNG.fe_select_all}</label>
 				<p class="fe-hint">{$LNG.bd_cancel_warning}</p>
-				<button type="submit" class="fe-btn fe-btn-ghost fe-btn-danger"><i class="bi bi-x-lg"></i> {$LNG.bd_cancel_send}</button>
+				<button type="submit" class="fe-btn fe-btn-ghost fe-btn-danger" data-cancel-selected disabled>
+					<i class="bi bi-x-lg"></i> {$LNG.fe_cancel_selected} (<span data-picked>0</span>)
+				</button>
 			</div>
 		</form>
 	</section>
@@ -48,6 +72,7 @@
 				<span class="fe-item-level">{shortly_number($Element.available)}</span>
 			</button>
 			<div class="fe-item-body">
+				<button type="button" class="fe-info" onclick="return Dialog.info({$ID})" title="{$LNG.fe_info_button}" aria-label="{$LNG.fe_info_button}: {$LNG.tech.{$ID}}"><i class="bi bi-info-lg"></i></button>
 				<div class="fe-item-head">
 					<h3>{$LNG.tech.{$ID}}</h3>
 					<span class="fe-item-sub">{$LNG.fe_have} {$Element.available|number}</span>
@@ -92,17 +117,14 @@
 	</form>
 </div>
 
-<script type="text/javascript">
-data			= {$BuildList|json};
-bd_operating	= '{$LNG.bd_operating}';
-bd_available	= '{$LNG.bd_available}';
-</script>
 {if !empty($BuildList)}
-<script src="scripts/base/bcmath.js"></script>
-<script src="scripts/game/shipyard.js?v={$smarty.const.ASSET_VERSION}"></script>
-<script type="text/javascript">
-$(function() { ShipyardInit(); });
+<script>
+window.feShipyardQueue = {
+	elapsed: {$BuildList.b_hangar_id_plus|json},
+	confirmText: {$LNG.fe_cancel_confirm|json}
+};
 </script>
+<script src="scripts/game/fe-shipyard-queue.js?v={$smarty.const.ASSET_VERSION}"></script>
 {/if}
 <script src="scripts/game/fe-items.js?v={$smarty.const.ASSET_VERSION}"></script>
 {/block}

@@ -33,6 +33,7 @@
 				<span class="fe-item-level">{$Element.level}</span>
 			</button>
 			<div class="fe-item-body">
+				<button type="button" class="fe-info" onclick="return Dialog.info({$ID})" title="{$LNG.fe_info_button}" aria-label="{$LNG.fe_info_button}: {$LNG.tech.{$ID}}"><i class="bi bi-info-lg"></i></button>
 				<div class="fe-item-head">
 					<h3>{$LNG.tech.{$ID}}</h3>
 					<span class="fe-item-sub">{$LNG.bd_lvl} {$Element.level}{if $Element.maxLevel != 255}/{$Element.maxLevel}{/if}</span>

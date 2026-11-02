@@ -13,3 +13,94 @@
 
     
   }
+/* ==========================================================
+   friends-edition: phone / small tablet layout (< 960px)
+   - one compact sticky header: icons row + swipeable resource strip
+   - the side menu becomes a swipeable tab strip, always visible
+   - footer is no longer fixed over the content
+   ========================================================== */
+@media (max-width: 959px) {
+    html, body { overflow-x: hidden; }
+    .uk-container { padding-left: 10px; padding-right: 10px; }
+
+    /* header: keep it sticky but small */
+    .fe-header { position: sticky; }
+    .top-bar { height: 44px; }
+    .top-bar .uk-container { padding: 0; }
+    .top-bar .uk-navbar-center { position: static; transform: none; width: 100%; }
+    .top-bar .uk-navbar-nav {
+        gap: 4px; width: 100%; justify-content: space-between; flex-wrap: nowrap;
+        overflow-x: auto; scrollbar-width: none; padding: 0 8px;
+    }
+    .top-bar .uk-navbar-nav::-webkit-scrollbar { display: none; }
+    .top-bar .uk-navbar-nav > li > a { min-height: 44px; padding: 0 6px; }
+    .top-bar .uk-navbar-nav > li > div[style*="width:15px"] { display: none; }
+
+    .menu-container { padding: 4px 0 !important; }
+    .menu-container > .uk-container > .uk-grid { flex-wrap: nowrap; align-items: center; margin-left: 0; }
+    .menu-container > .uk-container > .uk-grid > div { padding-left: 0; margin-top: 0 !important; }
+    .menu-container > .uk-container > .uk-grid > div:first-child { flex: 0 0 auto; width: auto !important; padding-right: 8px; }
+    .menu-container .logo, html.fe-compact .menu-container .logo { height: 30px; width: auto; }
+    .menu-container .resources-container { margin-top: 0 !important; }
+    .menu-container > .uk-container > .uk-grid > div:nth-child(2) {
+        flex: 1 1 auto; width: auto !important; min-width: 0;
+        display: flex !important; flex-wrap: nowrap; justify-content: flex-start !important; gap: 6px; margin: 0 !important;
+        overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; padding: 2px 0 !important;
+    }
+    .menu-container > .uk-container > .uk-grid > div:nth-child(2)::-webkit-scrollbar { display: none; }
+    .menu-container > .uk-container > .uk-grid > div:nth-child(2) > div { flex: 0 0 auto; width: auto !important; padding: 0 !important; margin: 0 !important; scroll-snap-align: start; }
+    .menu-container .resource { height: 34px; padding: 3px 10px 3px 3px !important; min-height: 0; border-radius: 999px; display: flex; align-items: center; }
+    .menu-container .resource:hover { height: 34px; margin-bottom: 0; }
+    .menu-container .resource-picture { width: 26px; height: 26px; margin-right: 6px; flex: 0 0 26px; }
+    .menu-container .resource-picture img { width: 26px !important; height: 26px !important; }
+    .menu-container .resource-name { display: none; }
+    .menu-container .res_current { font-size: 12px !important; white-space: nowrap; }
+    .menu-container .resource-tooltip { display: none !important; }
+
+    /* side menu -> swipeable tabs */
+    #main-navigation, #main-navigation.main-menu-hidden { width: 100% !important; margin-top: 8px; }
+    #main-navigation > .main-menu-container,
+    .main-menu-hidden .main-menu-container {
+        position: relative !important; top: 0 !important; transform: none !important;
+        margin: 0 !important; padding: 6px !important; border-radius: 14px; min-width: 0 !important;
+    }
+    .main-menu {
+        display: flex; flex-wrap: nowrap; gap: 6px; max-height: none !important;
+        overflow-x: auto; overflow-y: hidden; scrollbar-width: none; margin: 0; padding: 0 !important;
+        scroll-snap-type: x proximity;
+    }
+    .main-menu::-webkit-scrollbar { display: none; }
+    .main-menu li { flex: 0 0 auto; margin: 0 !important; scroll-snap-align: start; }
+    .main-menu li a { padding: 7px 12px; white-space: nowrap; font-size: 13px; }
+    .toggle-menu-button-container { display: none !important; }
+    .main-menu-hidden .main-menu { display: flex !important; }
+
+    /* main 3-column grid becomes one column without UIkit's negative gutter */
+    .uk-container > .uk-margin.uk-grid { margin-left: 0; }
+    .uk-container > .uk-margin.uk-grid > * { padding-left: 0; }
+
+    /* content */
+    .center-content-box { padding-left: 0 !important; margin-top: 8px !important; }
+    .content-wrapper > .dark-blur-bg.box-border { padding: 10px !important; border-radius: 14px; }
+    .content-wrapper table { max-width: 100%; }
+    .content-wrapper { display: block; overflow-x: auto; }
+
+    /* footer: part of the page, one swipeable line */
+    .footer-container {
+        position: static !important; display: flex; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap;
+        border-radius: 14px 14px 0 0; border-right: 0; margin-top: 16px; scrollbar-width: none;
+    }
+    .footer-container::-webkit-scrollbar { display: none; }
+
+    /* build pages */
+    .fe-toolbar { flex-direction: column; align-items: stretch; }
+    .fe-filter { justify-content: space-between; }
+    .fe-filter button { flex: 1; padding: 8px 6px; }
+    .fe-submitbar { bottom: 8px; }
+    .fe-queue-now { flex-wrap: wrap; }
+    .fe-queue-now > form { width: 100%; }
+    .fe-queue-now > form .fe-btn { width: 100%; }
+}
+@media (max-width: 959px) and (prefers-reduced-motion: no-preference) {
+    .main-menu { scroll-behavior: smooth; }
+}

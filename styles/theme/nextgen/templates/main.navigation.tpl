@@ -87,6 +87,14 @@
       if (stored === 'true' || (stored === null && window.innerWidth < 960)) {
         nav.classList.add('main-menu-hidden');
       }
+      if (window.innerWidth < 960) {
+        var active = nav.querySelector('.menuActive');
+        var strip = nav.querySelector('.main-menu');
+        if (active && strip) {
+          var item = active.parentNode;
+          strip.scrollLeft = item.offsetLeft - (strip.clientWidth - item.offsetWidth) / 2;
+        }
+      }
       window.toggleMainMenu = function () {
         var hidden = nav.classList.toggle('main-menu-hidden');
         try { sessionStorage.setItem('menuHidden', hidden); } catch (e) {}
