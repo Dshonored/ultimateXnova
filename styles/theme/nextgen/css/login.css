@@ -333,3 +333,12 @@ select.login-input option { background: #141824; color: var(--fe-text); }
 .login-card select.login-input { text-align-last: center; }
 
 .footer-container { display: flex; justify-content: center; left: 0; right: 0; width: 100%; border-radius: 0; border-right: 0; padding: 6px; }
+
+/* classic public pages (rules, ban list, messages after a form): centered like the rest */
+#content > section > table.box-out { margin-left: auto; margin-right: auto; }
+
+/* messages after a public form (recovery sent, registration pending...) */
+.login-message { margin: 0 0 16px; font-size: 0.95rem; line-height: 1.5; color: var(--fe-text); text-align: center; overflow-wrap: anywhere; }
+.login-message a { color: var(--fe-accent); font-weight: 600; }
+.login-message-actions { display: flex; flex-direction: column; gap: 8px; }
+a.login-button, a.login-button:visited { display: flex; align-items: center; justify-content: center; text-decoration: none; color: #1a1006; }

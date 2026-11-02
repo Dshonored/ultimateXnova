@@ -1,22 +1,20 @@
 {block name="title" prepend}{$LNG.fcm_info}{/block}
 {block name="content"}
-<table class="table519">
-	<tr>
-		<td>
-			<p>{if isset ($message) }{$message}{/if}</p>
-			{if !empty($redirectButtons)}
-			<p>
-				{foreach $redirectButtons as $button}
-				<a href="{if is_array($button) && isset($button.label)}{$button.url}{/if}"><button>
-					{if is_array($button) && isset($button.label)}
-						{$button.label}
-					{/if}
-				</button>
-			</a>
+<div class="login-stage">
+	<div class="login-card dark-blur-bg box-shadow-large">
+		<header class="login-card-header">
+			<h1 class="login-card-title">{$LNG.fcm_info}</h1>
+		</header>
+		{if isset($message)}<p class="login-message">{$message}</p>{/if}
+		{if !empty($redirectButtons)}
+		<div class="login-message-actions">
+			{foreach $redirectButtons as $button}
+			{if is_array($button) && isset($button.label)}
+			<a class="login-button" href="{$button.url}">{$button.label}</a>
+			{/if}
 			{/foreach}
-		</p>
+		</div>
 		{/if}
-	</td>
-	</tr>
-</table>
+	</div>
+</div>
 {/block}
