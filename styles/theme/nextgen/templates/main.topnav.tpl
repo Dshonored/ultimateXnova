@@ -3,6 +3,9 @@
   <div class="uk-container">
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav">
+              <li class="fe-burger-item d-flex align-items-center h-100">
+                <button type="button" id="fe-burger" class="fe-burger" aria-label="{$LNG.fe_menu}" aria-expanded="false" aria-controls="main-menu-container"><i class="bi bi-list"></i></button>
+              </li>
               <!--{if isModuleAvailable($smarty.const.MODULE_ATTACK_ALERT)}
                 <div style="width:15px;" class="">
                 <img id="attack_alert" src="" alt="">

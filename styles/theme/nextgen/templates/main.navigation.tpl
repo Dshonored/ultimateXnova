@@ -1,4 +1,9 @@
+<div class="fe-drawer-backdrop" data-menu-close></div>
 <div class="dark-blur-bg box-border box-shadow-large main-menu-container" id="main-menu-container">
+  <div class="fe-drawer-head">
+    <strong>{$LNG.fe_menu}</strong>
+    <button type="button" class="fe-drawer-close" data-menu-close aria-label="{$LNG.fe_close}"><i class="bi bi-x-lg"></i></button>
+  </div>
   <ul class="main-menu">
       <li>
         <a class="{if $page == 'overview'}menuActive{/if}" href="game.php?page=overview"><i class="bi bi-house-door"></i><span>{$LNG.lm_overview}</span></a>
@@ -74,6 +79,38 @@
       </li>
       {/if}
   </ul>
+  <div class="fe-drawer-more">
+    <span class="fe-drawer-title">{$LNG.fe_more}</span>
+    <ul class="main-menu">
+      {if isModuleAvailable($smarty.const.MODULE_RECORDS)}
+      <li><a href="game.php?page=records"><i class="bi bi-award"></i><span>{$LNG.lm_records}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_BATTLEHALL)}
+      <li><a href="game.php?page=battleHall"><i class="bi bi-trophy"></i><span>{$LNG.lm_topkb}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_SIMULATOR)}
+      <li><a href="game.php?page=battleSimulator"><i class="bi bi-calculator"></i><span>{$LNG.lm_battlesim}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_CHAT)}
+      <li><a href="game.php?page=chat"><i class="bi bi-chat-dots"></i><span>{$LNG.lm_chat}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_FORUM) && !empty($hasBoard)}
+      <li><a href="game.php?page=board" target="forum"><i class="bi bi-chat-square-text"></i><span>{$LNG.lm_forums}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_BANLIST)}
+      <li><a href="game.php?page=banList"><i class="bi bi-slash-circle"></i><span>{$LNG.lm_banned}</span></a></li>
+      {/if}
+      <li><a href="index.php?page=rules" target="rules"><i class="bi bi-book"></i><span>{$LNG.lm_rules}</span></a></li>
+    </ul>
+    {if isModuleAvailable($smarty.const.MODULE_SERVER_INFO)}
+    <dl class="fe-drawer-info">
+      <div><dt>{$LNG.si_game_speed}</dt><dd>{$game_speed}</dd></div>
+      <div><dt>{$LNG.si_fleet_speed}</dt><dd>{$fleet_speed}</dd></div>
+      <div><dt>{$LNG.si_production_speed}</dt><dd>{$production_speed}</dd></div>
+      <div><dt>{$LNG.si_storage_multiplier}</dt><dd>{$storage_multiplier}</dd></div>
+    </dl>
+    {/if}
+  </div>
   <div class="toggle-menu-button-container">
     <button type="button" class="toggle-menu-button dark-blur-bg" aria-label="Menu" onclick="toggleMainMenu()">
       <span class="toggle-menu-button-icon"><img src="styles/theme/nextgen/img/menu-button.svg" alt=""></span>
@@ -82,23 +119,52 @@
   <script>
     (function () {
       var nav = document.getElementById('main-navigation');
+      var phone = window.matchMedia('(max-width: 959px)');
+
+      // Desktop: the collapse arrow, remembered for the session
       var stored = null;
       try { stored = sessionStorage.getItem('menuHidden'); } catch (e) {}
-      if (stored === 'true' || (stored === null && window.innerWidth < 960)) {
+      if (stored === 'true' && !phone.matches) {
         nav.classList.add('main-menu-hidden');
-      }
-      if (window.innerWidth < 960) {
-        var active = nav.querySelector('.menuActive');
-        var strip = nav.querySelector('.main-menu');
-        if (active && strip) {
-          var item = active.parentNode;
-          strip.scrollLeft = item.offsetLeft - (strip.clientWidth - item.offsetWidth) / 2;
-        }
       }
       window.toggleMainMenu = function () {
         var hidden = nav.classList.toggle('main-menu-hidden');
         try { sessionStorage.setItem('menuHidden', hidden); } catch (e) {}
       };
+
+      // Phone / tablet: full menu behind the hamburger
+      var panel = document.getElementById('main-menu-container');
+      var burger = document.getElementById('fe-burger');
+      if (!burger) return;
+
+      function setOpen(open, restoreFocus) {
+        nav.classList.toggle('is-open', open);
+        document.documentElement.classList.toggle('fe-menu-open', open);
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) {
+          panel.scrollTop = 0;
+          panel.querySelector('.fe-drawer-close').focus();
+        } else if (restoreFocus) {
+          burger.focus();
+        }
+      }
+      burger.addEventListener('click', function () { setOpen(!nav.classList.contains('is-open'), false); });
+      nav.addEventListener('click', function (event) {
+        if (event.target.closest('[data-menu-close]')) setOpen(false, true);
+      });
+      document.addEventListener('keydown', function (event) {
+        if (!nav.classList.contains('is-open')) return;
+        if (event.key === 'Escape') { setOpen(false, true); return; }
+        if (event.key !== 'Tab') return;
+        // keep keyboard focus inside the open menu
+        var items = panel.querySelectorAll('a[href], button:not(.toggle-menu-button)');
+        var first = items[0], last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      });
+      phone.addEventListener('change', function (event) { if (!event.matches) setOpen(false, false); });
+      // coming back with the browser's back button must not show it still open
+      window.addEventListener('pageshow', function () { setOpen(false, false); });
     })();
   </script>
 </div>

@@ -1239,3 +1239,6 @@ $LNG['fe_hide_empty'] = 'Hide empty rows';
 $LNG['fe_emp_all_planets'] = 'Applies to all planets';
 $LNG['fe_market_res'] = 'Resource market';
 $LNG['fe_market_fleet'] = 'Fleet market';
+$LNG['fe_menu'] = 'Menu';
+$LNG['fe_close'] = 'Close';
+$LNG['fe_more'] = 'More';

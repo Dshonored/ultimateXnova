@@ -1335,3 +1335,6 @@ $LNG['fe_hide_empty'] = 'Ocultar filas vacías';
 $LNG['fe_emp_all_planets'] = 'Aplica a todos los planetas';
 $LNG['fe_market_res'] = 'Mercado de recursos';
 $LNG['fe_market_fleet'] = 'Mercado de flotas';
+$LNG['fe_menu'] = 'Menú';
+$LNG['fe_close'] = 'Cerrar';
+$LNG['fe_more'] = 'Más';

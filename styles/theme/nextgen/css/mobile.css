@@ -1,22 +1,7 @@
-@media (max-width: 960px) {
-    #main-navigation {
-      width: 100% !important;
-    }
-    .main-menu-container, .toggle-menu-button-container  {
-      min-width: 100% !important;
-      width: 100% !important;
-    }
-    .toggle-menu-button, .toggle-menu-button-container {
-      margin: 0 auto !important;
-      
-    }
-
-    
-  }
 /* ==========================================================
    friends-edition: phone / small tablet layout (< 960px)
    - one compact sticky header: icons row + swipeable resource strip
-   - the side menu becomes a swipeable tab strip, always visible
+   - the side menu becomes a full menu behind a hamburger
    - footer is no longer fixed over the content
    ========================================================== */
 @media (max-width: 959px) {
@@ -29,11 +14,13 @@
     .top-bar .uk-container { padding: 0; }
     .top-bar .uk-navbar-center { position: static; transform: none; width: 100%; }
     .top-bar .uk-navbar-nav {
-        gap: 4px; width: 100%; justify-content: space-between; flex-wrap: nowrap;
+        gap: 2px; width: 100%; justify-content: space-between; flex-wrap: nowrap;
         overflow-x: auto; scrollbar-width: none; padding: 0 8px;
     }
     .top-bar .uk-navbar-nav::-webkit-scrollbar { display: none; }
-    .top-bar .uk-navbar-nav > li > a { min-height: 44px; padding: 0 6px; }
+    .top-bar .uk-navbar-nav > li { flex: 0 0 auto; }
+    .top-bar .uk-navbar-nav > li > a { min-height: 44px; padding: 0 4px; }
+    .top-bar .uk-navbar-nav img { flex: 0 0 auto; }
     .top-bar .uk-navbar-nav > li > div[style*="width:15px"] { display: none; }
 
     .menu-container { padding: 4px 0 !important; }
@@ -57,23 +44,62 @@
     .menu-container .res_current { font-size: 12px !important; white-space: nowrap; }
     .menu-container .resource-tooltip { display: none !important; }
 
-    /* side menu -> swipeable tabs */
-    #main-navigation, #main-navigation.main-menu-hidden { width: 100% !important; margin-top: 8px; }
+    /* side menu -> full menu behind the hamburger (full screen on phones, panel on tablets) */
+    #main-navigation, #main-navigation.main-menu-hidden { width: 100% !important; margin: 0 !important; padding: 0 !important; }
     #main-navigation > .main-menu-container,
-    .main-menu-hidden .main-menu-container {
-        position: relative !important; top: 0 !important; transform: none !important;
-        margin: 0 !important; padding: 6px !important; border-radius: 14px; min-width: 0 !important;
+    #main-navigation.main-menu-hidden > .main-menu-container {
+        position: fixed !important; top: 0; left: 0; bottom: 0; z-index: 2000;
+        display: flex; flex-direction: column; gap: 14px;
+        width: min(420px, 100%); min-width: 0; height: 100dvh; margin: 0; padding: 0 12px 24px; border: 0; border-radius: 0;
+        background: #0b0d15; backdrop-filter: none; overflow-y: auto; overscroll-behavior: contain;
+        visibility: hidden; opacity: 1; transform: translateX(-100%);
+        transition: transform 240ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 240ms;
     }
-    .main-menu {
-        display: flex; flex-wrap: nowrap; gap: 6px; max-height: none !important;
-        overflow-x: auto; overflow-y: hidden; scrollbar-width: none; margin: 0; padding: 0 !important;
-        scroll-snap-type: x proximity;
+    #main-navigation.is-open > .main-menu-container {
+        visibility: visible; transform: none;
+        transition: transform 240ms cubic-bezier(0.32, 0.72, 0, 1), visibility 0s;
     }
-    .main-menu::-webkit-scrollbar { display: none; }
-    .main-menu li { flex: 0 0 auto; margin: 0 !important; scroll-snap-align: start; }
-    .main-menu li a { padding: 7px 12px; white-space: nowrap; font-size: 13px; }
+    .fe-drawer-backdrop {
+        position: fixed; inset: 0; z-index: 1999; background: rgba(0,0,0,0.65);
+        opacity: 0; pointer-events: none; transition: opacity 200ms ease-out;
+    }
+    #main-navigation.is-open .fe-drawer-backdrop { opacity: 1; pointer-events: auto; }
+    html.fe-menu-open, html.fe-menu-open body { overflow: hidden; }
+
+    #main-navigation > .main-menu-container { text-align: left; }
+    .fe-drawer-head {
+        position: sticky; top: 0; z-index: 1; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+        margin: 0 -12px; padding: 8px 12px; background: #0b0d15; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .fe-drawer-head strong { font-size: 18px; color: #fff; font-weight: 600; }
+    .fe-drawer-close {
+        width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+        border: 0; border-radius: 10px; background: rgba(255,255,255,0.08); color: #fff; font-size: 18px; cursor: pointer;
+    }
+    .fe-drawer-close:active { background: rgba(255,255,255,0.18); }
+    .fe-drawer-more { display: flex; flex-direction: column; gap: 8px; flex: 0 0 auto; }
+    .fe-drawer-title { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #ffb066; padding: 0 4px; }
+    .fe-drawer-info { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 6px 0 0; }
+    .fe-drawer-info > div { padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,0.05); }
+    .fe-drawer-info dt { font-size: 11px; font-weight: 400; color: #b9c0cc; }
+    .fe-drawer-info dd { margin: 0; font-size: 14px; font-weight: 600; color: #fff; }
+
+    #main-navigation .main-menu {
+        display: flex !important; flex-direction: column; gap: 4px; flex: 0 0 auto;
+        max-height: none !important; overflow: visible; margin: 0; padding: 0 !important;
+    }
+    #main-navigation .main-menu li { margin: 0 !important; }
+    #main-navigation .main-menu li a { min-height: 48px; padding: 10px 14px; gap: 14px; font-size: 15px; border-radius: 12px; background: rgba(255,255,255,0.04); color: #eef1f6; }
+    #main-navigation .main-menu li a:active { background: rgba(255,255,255,0.14); }
+    #main-navigation .main-menu li a i { flex: 0 0 22px; font-size: 20px; }
+    #main-navigation .main-menu li a.menuActive { background: rgba(255,138,31,0.2); border-color: rgba(255,138,31,0.7); color: #fff; }
     .toggle-menu-button-container { display: none !important; }
-    .main-menu-hidden .main-menu { display: flex !important; }
+
+    /* hamburger */
+    .fe-burger-item { display: flex !important; }
+    .fe-burger { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; background: transparent; color: #fff; font-size: 30px; line-height: 1; cursor: pointer; }
+    .fe-burger:active { color: #ffb066; }
+    .fe-burger:focus-visible, .fe-drawer-close:focus-visible, #main-navigation .main-menu li a:focus-visible { outline: 2px solid #ff8a1f; outline-offset: -2px; }
 
     /* main 3-column grid becomes one column without UIkit's negative gutter */
     .uk-container > .uk-margin.uk-grid { margin-left: 0; }
@@ -85,12 +111,12 @@
     .content-wrapper table { max-width: 100%; }
     .content-wrapper { display: block; overflow-x: auto; }
 
-    /* footer: part of the page, one swipeable line */
+    /* footer: its links live in the menu now; only the AGPL source link stays */
     .footer-container {
-        position: static !important; display: flex; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap;
-        border-radius: 14px 14px 0 0; border-right: 0; margin-top: 16px; scrollbar-width: none;
+        position: static !important; display: flex; justify-content: center;
+        width: 100%; border-radius: 14px 14px 0 0; border-right: 0; margin-top: 16px;
     }
-    .footer-container::-webkit-scrollbar { display: none; }
+    .footer-container > *:not(.fe-source) { display: none !important; }
 
     /* build pages */
     .fe-toolbar { flex-direction: column; align-items: stretch; }
@@ -101,6 +127,10 @@
     .fe-queue-now > form { width: 100%; }
     .fe-queue-now > form .fe-btn { width: 100%; }
 }
-@media (max-width: 959px) and (prefers-reduced-motion: no-preference) {
-    .main-menu { scroll-behavior: smooth; }
+@media (max-width: 959px) and (prefers-reduced-motion: reduce) {
+    #main-navigation > .main-menu-container, #main-navigation.is-open > .main-menu-container, .fe-drawer-backdrop { transition: none; }
+}
+/* desktop: none of the phone menu parts exist */
+@media (min-width: 960px) {
+    .fe-burger-item, .fe-drawer-head, .fe-drawer-more, .fe-drawer-backdrop { display: none !important; }
 }
