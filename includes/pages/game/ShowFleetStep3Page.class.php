@@ -509,7 +509,7 @@ class ShowFleetStep3Page extends AbstractGamePage
 			$fleetList[$LNG['tech'][$Ship]]	= $Count;
 		}
 
-		$this->tplObj->gotoside('game.php?page=fleetTable');
+		$this->tplObj->gotoside('game.php?page=fleetTable', 6);
 		$this->assign(array(
 			'targetMission'		=> $targetMission,
 			'distance'			=> $distance,

@@ -1,160 +1,57 @@
-
 {block name="title" prepend}{$LNG.lm_overview}{/block}
 {block name="content"}
+{$fieldsPct = min(100, round($planet_field_current / max($planet_field_max, 1) * 100))}
+<div class="fe-build fe-ov">
 
-<script>
-  function showNews(){
+	<section class="fe-ov-hero">
+		<a class="fe-ov-planet" href="game.php?page=overview&amp;cp={$planet_id}">
+			<img src="{$dpath}planeten/{$planetimage}.jpg" width="150" height="150" alt="{$planetname}">
+		</a>
+		<div class="fe-ov-main">
+			<span class="fe-queue-label">{$LNG["type_planet_{$planet_type}"]}</span>
+			<h2>
+				{$planetname}
+				<button type="button" class="fe-info" onclick="return Dialog.PlanetAction();" title="{$LNG.ov_planetmenu}" aria-label="{$LNG.ov_planetmenu}"><i class="bi bi-pencil"></i></button>
+			</h2>
+			<p class="fe-ov-owner">
+				<i class="bi bi-person"></i> {$username}
+				<a href="game.php?page=galaxy&amp;galaxy={$galaxy}&amp;system={$system}"><i class="bi bi-geo-alt"></i> [{$galaxy}:{$system}:{$planet}]</a>
+			</p>
 
-    if ($('#newsRow').hasClass('d-none')) {
-      $('#newsRow').removeClass('d-none');
-    }else {
-      $('#newsRow').addClass('d-none');
-    }
+			<div class="fe-ov-fields" title="{$LNG.ov_developed_fields} / {$LNG.ov_max_developed_fields}">
+				<div class="fe-ov-fields-head">
+					<span>{$LNG.fe_fields}</span>
+					<b>{$planet_field_current} / {$planet_field_max}</b>
+				</div>
+				<span class="fe-squeue-bar"><span style="width:{$fieldsPct}%"></span></span>
+			</div>
 
-  }
-</script>
+			{if $Moon}
+			<a class="fe-ov-moon" href="game.php?page=overview&amp;cp={$Moon.id}">
+				<img src="{$dpath}planeten/{$Moon.image}.jpg" width="36" height="36" alt="">
+				<span>{$Moon.name} <small>({$LNG.fcm_moon})</small></span>
+			</a>
+			{/if}
+		</div>
+	</section>
 
+	<section class="fe-ov-stats">
+		<div class="fe-stat"><i class="bi bi-trophy"></i><span>{$LNG.ov_points}</span><b>{$rankInfo}</b></div>
+		<div class="fe-stat"><i class="bi bi-thermometer-half"></i><span>{$LNG.ov_temperature}</span><b>{$planet_temp_min}{$LNG.ov_temp_unit} {$LNG.ov_to} {$planet_temp_max}{$LNG.ov_temp_unit}</b></div>
+		<div class="fe-stat"><i class="bi bi-rulers"></i><span>{$LNG.ov_diameter}</span><b>{$planet_diameter} {$LNG.ov_distance_unit}</b></div>
+		<div class="fe-stat"><i class="bi bi-people"></i><span>{$LNG.ov_players}</span><b>{$usersOnline}</b></div>
+		<div class="fe-stat"><i class="bi bi-send"></i><span>{$LNG.ov_moving_fleets}</span><b>{$fleetsOnline}</b></div>
+		{if !empty($AdminsOnline)}
+		<div class="fe-stat"><i class="bi bi-shield-check"></i><span>{$LNG.ov_admins_online}</span>
+			<b>{foreach $AdminsOnline as $ID => $Name}{if !$Name@first}, {/if}<a href="#" onclick="return Dialog.PM({$ID})">{$Name}</a>{/foreach}</b>
+		</div>
+		{/if}
+	</section>
 
-<div class="table-responsive">
-  <table class="table table-sm fs-12 table-gow">
-    <thead></thead>
-    <tbody>
-      <tr>
-        <td class="text-start px-3 w-50">{$LNG["type_planet_{$planet_type}"]}</td>
-        <td class="text-center px-3 w-50">
-          <a href="#"  onclick="return Dialog.PlanetAction();" title="{$LNG.ov_planetmenu}">{$planetname}&nbsp;({$username})</a>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-start px-3">{$LNG.ov_admins_online}</td>
-        <td class="text-center px-3 w-50">
-          {foreach $AdminsOnline as $ID => $Name}
-          {if !$Name@first}&nbsp;&bull;&nbsp;{/if}
-          <a href="#" onclick="return Dialog.PM({$ID})"><a style="color:lime">{$Name}</a>
-          {foreachelse}
-          {/foreach}
-        </td>
-      </tr>
-      <tr>
-        <td class="text-start px-3">{$LNG.ov_players}</td>
-        <td class="text-center px-3 w-50"><a style="color:lime">{$usersOnline}</a></td>
-      </tr>
-      <tr>
-        <td class="text-start px-3">{$LNG.ov_moving_fleets}</td>
-        <td class="text-center px-3 w-50"><a style="color:lime">{$fleetsOnline}</a></td>
-      </tr>
-      <tr>
-        <td class="text-start px-3">{$LNG.ov_points}</td>
-        <td class="text-center px-3 w-50">{$rankInfo}</td>
-      </tr>
-    {if !empty($news)}
-      <tr>
-        <td class="text-center" colspan="3">
-          <button class="btn btn-dark py-0 px-1 border border-secondary fs-12 text-yellow" onclick="showNews();">Check News</button>
-        </td>
-      </tr>
-      <tr id="newsRow" class="d-none">
-        <td colspan="2">
-          <table class="table table-gow fs-12">
-            <thead>
-              <tr>
-                <th class="color-blue text-center" colspan="3">{$LNG.ov_news}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {foreach $news as $currentNews}
-              <tr>
-                <td class="text-center color-blue">{$currentNews.user}</td>
-                <td class="text-center color-blue">{$currentNews.date}</td>
-                <td class="text-center color-blue">{$currentNews.text}</td>
-              </tr>
-              {/foreach}
-            </tbody>
-          </table>
-        </td>
-
-      </tr>
-    {/if}
-    <tr>
-      <td>
-        <div class="d-flex flex-row align-items-center justify-content-center  fs-12">
-          <div class="d-flex flex-column align-items-center justify-content-center w-100">
-            <span>{$planetname}</span>
-            <a class="hover-pointer" href="?page=overview&cp={$planet_id}">
-              <img src="{$dpath}planeten/{$planetimage}.jpg" height="160" width="160" alt="{$planetname}">
-            </a>
-          </div>
-          {if $Moon}
-          <div class="d-flex flex-column align-items-center justify-content-center w-100">
-            <a href="game.php?page=overview&amp;cp={$Moon.id}" title="{$Moon.name}">
-              <img src="{$dpath}planeten/{$Moon.image}.jpg" height="50" width="50" alt="{$Moon.name} {if $Moon.planet_type == 3}({$LNG.fcm_moon}){/if}">
-            </a>
-            <span>{$Moon.name} {if $Moon.planet_type == 3}({$LNG.fcm_moon}){/if}</span>
-          </div>
-          {/if}
-        </div>
-      </td>
-      <td>
-        <table class="table table-gow table-sm my-2">
-          <thead></thead>
-          <tbody class="fs-12">
-            <tr>
-              <td ><span style="color:skyblue">{$LNG.ov_diameter}:</span> </td>
-              <td class="text-center">{$LNG.ov_distance_unit} (<a title="{$LNG.ov_developed_fields}">{$planet_field_current}</a> / <a title="{$LNG.ov_max_developed_fields}">{$planet_field_max}</a> {$LNG.ov_fields})</td>
-            </tr>
-            <tr>
-              <td ><span style="color:skyblue">{$LNG.ov_temperature}:</span></td>
-              <td class="text-center">{$LNG.ov_aprox} {$planet_temp_min}{$LNG.ov_temp_unit} {$LNG.ov_to} {$planet_temp_max}{$LNG.ov_temp_unit}</td>
-            </tr>
-            <tr>
-              <td><span style="color:skyblue">{$LNG.ov_position}:</span></td>
-              <td class="text-center">
-                <a class="hover-underline" href="game.php?page=galaxy&amp;galaxy={$galaxy}&amp;system={$system}">[{$galaxy}:{$system}:{$planet}]</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+	<section class="fe-ov-activity">
+		{include file="fe.job.tpl" job=$buildInfo.buildings icon="building" label=$LNG.lm_buildings url="game.php?page=buildings"}
+		{include file="fe.job.tpl" job=$buildInfo.tech icon="lightbulb" label=$LNG.lm_research url="game.php?page=research"}
+		{include file="fe.job.tpl" job=$buildInfo.fleet icon="rocket-takeoff" label=$LNG.lm_shipshard url="game.php?page=shipyard&amp;mode=fleet"}
+	</section>
 </div>
-
-
-<table class="table table-sm table-gow my-2">
-  <tr>
-    <td class="text-center">
-      {if $buildInfo.buildings}
-      <a href="game.php?page=buildings">{$LNG.lm_buildings}: </a>
-      {$LNG.tech[$buildInfo.buildings['id']]} ({$buildInfo.buildings['level']})<br>
-      <div class="timer" data-time="{$buildInfo.buildings['timeleft']}">{$buildInfo.buildings['starttime']}</div>
-      {else}
-      <a class="hover-underline" href="game.php?page=buildings">{$LNG.lm_buildings}: {$LNG.ov_free}</a><br>
-      {/if}
-    </td>
-    <td class="text-center">
-      {if $buildInfo.tech}
-      <a href="game.php?page=research">{$LNG.lm_research}: </a>
-      {$LNG.tech[$buildInfo.tech['id']]} ({$buildInfo.tech['level']})<br>
-      <div class="timer" data-time="{$buildInfo.tech['timeleft']}">{$buildInfo.tech['starttime']}</div>
-      {else}
-      <a class="hover-underline" href="game.php?page=research">{$LNG.lm_research}: {$LNG.ov_free}</a>
-      {/if}
-    </td>
-    <td class="text-center">
-      {if $buildInfo.fleet}
-      <a href="game.php?page=shipyard&amp;mode=fleet">{$LNG.lm_shipshard}: </a>
-      {$LNG.tech[$buildInfo.fleet['id']]} ({$buildInfo.fleet['level']})<br>
-      <div class="timer" data-time="{$buildInfo.fleet['timeleft']}">{$buildInfo.fleet['starttime']}</div>
-      {else}
-      <a class="hover-underline" href="game.php?page=shipyard&amp;mode=fleet">{$LNG.lm_shipshard}: {$LNG.ov_free}</a>
-      {/if}
-    </td>
-  </tr>
-</table>
-
-
-
-
-
 {/block}

@@ -269,4 +269,5 @@ define('ASSET_VERSION', substr(md5(implode('|', array_map(function ($f) {
 	'scripts/game/fe-items.js',
 	'scripts/game/shipyard.js',
 	'scripts/game/fe-shipyard-queue.js',
+	'scripts/game/fe-fleet.js',
 )))), 0, 10));

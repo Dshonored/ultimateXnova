@@ -2,7 +2,7 @@ function doit(missionID, planetID) {
 	$.getJSON("game.php?page=fleetAjax&ajax=1&mission="+missionID+"&planetID="+planetID, function(data)
 	{
 		$('#slots').text(data.slots);
-		if(typeof data.ships !== "undefined")
+		if(data.code == 600 && typeof data.ships !== "undefined")
 		{
 			$.each(data.ships, function(elementID, value) {
 				$('#elementID'+elementID).text(number_format(value));
@@ -27,6 +27,8 @@ function galaxy_submit(value) {
 
 // on keyboard click <> change page
 $(document).on('keydown', function(event){
+
+if (/^(INPUT|SELECT|TEXTAREA)$/.test(event.target.tagName)) return;
 
 if  (event.keyCode === 39) {
       $("input[name=systemRight]").trigger('click');

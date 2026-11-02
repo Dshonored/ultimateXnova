@@ -294,7 +294,7 @@ class ShowMessagesPage extends AbstractGamePage
     {
         global $LNG, $USER;
 
-        $messageCategory = HTTP::_GP('category', -1);
+        $messageCategory = HTTP::_GP('category', 100); // no category chosen: show everything
         $messagePage = HTTP::_GP('side', 1);
 
         $db = Database::get();

@@ -1,75 +1,44 @@
 {block name="title" prepend}{$LNG.lm_fleet}{/block}
 {block name="content"}
+<div class="fe-build fe-fleet">
+{include file="fe.fleet.steps.tpl" step=2}
 <form action="game.php?page=fleetStep2" method="post" onsubmit="return CheckTarget()" id="form">
 	<input type="hidden" name="token" value="{$token}">
 	<input type="hidden" name="fleet_group" value="0">
 	<input type="hidden" name="target_mission" value="{$mission}">
-	<table class="table table-gow table-sm fs-12" style="table-layout: fixed;">
-		<tr style="height:20px;">
-			<th colspan="2">{$LNG.fl_send_fleet}</th>
-		</tr>
-		<tr style="height:20px;">
-			<td style="width:50%">{$LNG.fl_destiny}</td>
-			<td class="d-flex">
-				<input style="width:32px;" class="form-control mx-1 fs-12 bg-dark text-white p-0 m-0 border border-secondary text-center" type="text" id="galaxy" name="galaxy" size="3" maxlength="2" onkeyup="updateVars()" value="{$galaxy}">
-				<input style="width:32px;" class="form-control mx-1 fs-12 bg-dark text-white p-0 m-0 border border-secondary text-center" type="text" id="system" name="system" size="3" maxlength="3" onkeyup="updateVars()" value="{$system}">
-				<input style="width:32px;" class="form-control mx-1 fs-12 bg-dark text-white p-0 m-0 border border-secondary text-center" type="text" id="planet" name="planet" size="3" maxlength="2" onkeyup="updateVars()" value="{$planet}">
-				<select class="text-yellow text-center mx-1" id="type" name="type" onchange="updateVars()">
-					{html_options options=$typeSelect selected=$type}
-				</select>
-			</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_fleet_speed}</td>
-			<td>
-				<select class="text-yellow text-center" id="speed" name="speed" onChange="updateVars(false)">
-					{html_options options=$speedSelect}
-				</select> %
-			</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_distance}</td>
-			<td id="distance">-</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_flying_time}</th>
-			<td id="duration">-</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_flying_arrival}</th>
-			<td id="arrival">-</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_flying_return}</th>
-			<td id="return">-</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_fuel_consumption}</td>
-			<td id="consumption">-</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_max_speed}</td>
-			<td id="maxspeed">-</td>
-		</tr>
-		<tr style="height:20px;">
-			<td>{$LNG.fl_cargo_capacity}</td>
-			<td id="storage">-</td>
-		</tr>
-	</table>
 
-<table class="table table-gow table-sm fs-12">
-	<tr style="height:20px;">
-		<th class="text-center" colspan="2">{$LNG.fl_system_places}</th>
-	</tr>
-	<tr style="height:20px;">
-		<td>
-			<a class="uk-button uk-button-default uk-button-small" href="javascript:setTarget({$galaxy},{$system},16,1);updateVars();">{$LNG.type_mission_15}[{$galaxy}:{$system}:16]</a>
-		</td>
-		<td>
-			<a class="uk-button uk-button-default uk-button-small" href="javascript:setTarget({$galaxy},{$system},17,1);updateVars();">{$LNG.type_mission_16}[{$galaxy}:{$system}:17]</a>
-		</td>
-	</tr>
-</table>
+	<section class="fe-panel">
+		<div class="fe-target">
+			<label><span>{$LNG.fe_fl_galaxy}</span><input type="text" inputmode="numeric" id="galaxy" name="galaxy" maxlength="2" onkeyup="updateVars()" value="{$galaxy}"></label>
+			<label><span>{$LNG.fe_fl_system}</span><input type="text" inputmode="numeric" id="system" name="system" maxlength="3" onkeyup="updateVars()" value="{$system}"></label>
+			<label><span>{$LNG.fe_fl_planet}</span><input type="text" inputmode="numeric" id="planet" name="planet" maxlength="2" onkeyup="updateVars()" value="{$planet}"></label>
+			<label class="fe-target-wide"><span>{$LNG.fe_fl_type}</span><select id="type" name="type" onchange="updateVars()">{html_options options=$typeSelect selected=$type}</select></label>
+			<label class="fe-target-wide"><span>{$LNG.fl_fleet_speed} (%)</span><select id="speed" name="speed" onChange="updateVars(false)">{html_options options=$speedSelect}</select></label>
+		</div>
+		<dl class="fe-facts">
+			<div><dt>{$LNG.fl_distance}</dt><dd id="distance">-</dd></div>
+			<div><dt>{$LNG.fl_flying_time}</dt><dd id="duration">-</dd></div>
+			<div><dt>{$LNG.fl_flying_arrival}</dt><dd id="arrival">-</dd></div>
+			<div><dt>{$LNG.fl_flying_return}</dt><dd id="return">-</dd></div>
+			<div><dt>{$LNG.fl_fuel_consumption}</dt><dd id="consumption">-</dd></div>
+			<div><dt>{$LNG.fl_max_speed}</dt><dd id="maxspeed">-</dd></div>
+			<div><dt>{$LNG.fl_cargo_capacity}</dt><dd id="storage">-</dd></div>
+		</dl>
+	</section>
+
+	<h3 class="fe-section-title">{$LNG.fe_fl_quick}</h3>
+	<div class="fe-chips">
+		<a class="fe-chip" href="javascript:setTarget({$galaxy},{$system},16,1);updateVars();"><i class="bi bi-compass"></i> {$LNG.type_mission_15} [{$galaxy}:{$system}:16]</a>
+		<a class="fe-chip" href="javascript:setTarget({$galaxy},{$system},17,1);updateVars();"><i class="bi bi-shop"></i> {$LNG.type_mission_16} [{$galaxy}:{$system}:17]</a>
+		{foreach $colonyList as $ColonyRow}
+		<a class="fe-chip" href="javascript:setTarget({$ColonyRow.galaxy},{$ColonyRow.system},{$ColonyRow.planet},{$ColonyRow.type});updateVars();"><i class="bi bi-{if $ColonyRow.type == 3}moon{else}globe2{/if}"></i> {$ColonyRow.name}{if $ColonyRow.type == 3}{$LNG.fl_moon_shortcut}{/if} [{$ColonyRow.galaxy}:{$ColonyRow.system}:{$ColonyRow.planet}]</a>
+		{/foreach}
+		{if $ACSList}
+		{foreach $ACSList as $ACSRow}
+		<a class="fe-chip" href="javascript:setACSTarget({$ACSRow.galaxy},{$ACSRow.system},{$ACSRow.planet},{$ACSRow.planet_type},{$ACSRow.id});"><i class="bi bi-people"></i> {$ACSRow.name} [{$ACSRow.galaxy}:{$ACSRow.system}:{$ACSRow.planet}]</a>
+		{/foreach}
+		{/if}
+	</div>
 
 	{if isModuleAvailable($smarty.const.MODULE_SHORTCUTS)}
 	<table class="table table-gow table-sm fs-12">
@@ -130,50 +99,12 @@
 		</tr>
 	</table>
 	{/if}
-	<table class="table table-gow table-sm table-striped fs-12" style="table-layout: fixed;">
-		<tr style="height:20px;">
-			<th class="text-center" colspan="{$themeSettings.COLONY_ROWS_ON_FLEET1}">{$LNG.fl_my_planets}</th>
-		</tr>
-		{foreach $colonyList as $ColonyRow}
-		{if ($ColonyRow@iteration % $themeSettings.COLONY_ROWS_ON_FLEET1) === 1}<tr style="height:20px;">{/if}
-		<td>
-			<a href="javascript:setTarget({$ColonyRow.galaxy},{$ColonyRow.system},{$ColonyRow.planet},{$ColonyRow.type});updateVars();">{$ColonyRow.name}{if $ColonyRow.type == 3}{$LNG.fl_moon_shortcut}{/if} [{$ColonyRow.galaxy}:{$ColonyRow.system}:{$ColonyRow.planet}]</a>
-		</td>
-		{if $ColonyRow@last && ($ColonyRow@iteration % $themeSettings.COLONY_ROWS_ON_FLEET1) !== 0}
-		{$to = $themeSettings.COLONY_ROWS_ON_FLEET1 - ($ColonyRow@iteration % $themeSettings.COLONY_ROWS_ON_FLEET1)}
-		{for $foo=1 to $to}<td>&nbsp;</td>{/for}
-		{/if}
-		{if ($ColonyRow@iteration % $themeSettings.COLONY_ROWS_ON_FLEET1) === 0}</tr>{/if}
-		{foreachelse}
-		<tr style="height:20px;">
-			<td colspan="{$themeSettings.COLONY_ROWS_ON_FLEET1}">{$LNG.fl_no_colony}</td>
-		</tr>
-		{/foreach}
-	</table>
-	{if $ACSList}
-	<table class="table table-gow" style="table-layout: fixed;">
-		<tr style="height:20px;">
-			<th colspan="{$themeSettings.COLONY_ROWS_ON_FLEET1}">{$LNG.fl_acs_title}</th>
-		</tr>
-		{foreach $ACSList as $ACSRow}
-		{if ($ACSRow@iteration % $themeSettings.ACS_ROWS_ON_FLEET1) === 1}<tr style="height:20px;">{/if}
-		<tr style="height:20px;">
-			<td><a href="javascript:setACSTarget({$ACSRow.galaxy},{$ACSRow.system},{$ACSRow.planet},{$ACSRow.planet_type},{$ACSRow.id});">{$ACSRow.name} - [{$ACSRow.galaxy}:{$ACSRow.system}:{$ACSRow.planet}]</a></td>
-		</tr>
-		{if $ACSRow@last && ($ACSRow@iteration % $themeSettings.ACS_ROWS_ON_FLEET1) !== 0}
-		{$to = $themeSettings.ACS_ROWS_ON_FLEET1 - ($ACSRow@iteration % $themeSettings.ACS_ROWS_ON_FLEET1)}
-		{for $foo=1 to $to}<td>&nbsp;</td>{/for}
-		{/if}
-		{if ($ACSRow@iteration % $themeSettings.ACS_ROWS_ON_FLEET1) === 0}</tr>{/if}
-		{/foreach}
-	</table>
-	{/if}
-	<table class="table table-gow table-sm fs-12" style="table-layout: fixed;">
-		<tr style="height:20px;">
-			<td class="text-center"><input class="uk-button uk-button-submit uk-button-small" type="submit" value="{$LNG.fl_continue}"></td>
-		</tr>
-	</table>
+
+	<div class="fe-submitbar">
+		<button type="submit" class="fe-btn fe-btn-primary">{$LNG.fl_continue} <i class="bi bi-arrow-right"></i></button>
+	</div>
 </form>
+</div>
 <script type="text/javascript">
 data			= {$fleetdata|json};
 shortCutRows	= {$themeSettings.SHORTCUT_ROWS_ON_FLEET1};

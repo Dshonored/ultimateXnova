@@ -1,66 +1,44 @@
 {block name="title" prepend}{$LNG.lm_fleet}{/block}
 {block name="content"}
+<div class="fe-build fe-fleet">
+{include file="fe.fleet.steps.tpl" step=3}
 <form action="game.php?page=fleetStep3" method="post">
-<input type="hidden" name="token" value="{$token}">
-   	<table class="table table-gow table-sm fs-12">
-        <tr>
-        	<th colspan="2">{$galaxy}:{$system}:{$planet} - {$LNG["type_planet_{$type}"]}</th>
-        </tr>
-		<tr>
-			<th class="text-center">{$LNG.fl_mission}</th>
-      <th class="text-center">{$LNG.fl_resources}</th>
-    </tr>
-		<tr>
-			<td class="left top" style="width:50%;margin:0;padding:0;"{if $StaySelector} rowspan="5"{/if}>
-        		<table class="table table-gow table-sm" border="0" cellpadding="0" cellspacing="0" style="margin:0;padding:0;">
-        			{foreach $MissionSelector as $MissionID}
-					<tr style="height:20px;">
-						<td class="transparent left">
-						<input id="radio_{$MissionID}" type="radio" name="mission" value="{$MissionID}" {if $mission == $MissionID || $MissionID@total == 1}checked="checked"{/if} style="width:60px;"><label for="radio_{$MissionID}">{$LNG["type_mission_{$MissionID}"]}</label><br>
-							{if $MissionID == 17}<br><div style="color:red;padding-left:13px;">{$LNG.fl_transfer_alert_message}</div><br>{/if}
-							{if $MissionID == 15}<br><div style="color:red;padding-left:13px;">{$LNG.fl_expedition_alert_message}</div><br>{/if}
-							{if $MissionID == 11}<br><div style="color:red;padding-left:13px;">{$fl_dm_alert_message}</div><br>{/if}
-						</td>
-					</tr>
-					{/foreach}
-        		</table>
-        	</td>
-        	<td class="top">
-				<table class="table table-gow table-sm fs-12">
-                    <tr style="height:20px;">
-        				<td class="transparent">{$LNG.tech.901}</td>
-        				<td class="transparent"><a href="javascript:maxResource('metal');">{$LNG.fl_max}</a></th>
-        				<td class="transparent"><input name="metal" size="10" onchange="calculateTransportCapacity();" type="text"></td>
-        			</tr>
-                    <tr style="height:20px;">
-        				<td class="transparent">{$LNG.tech.902}</td>
-        				<td class="transparent"><a href="javascript:maxResource('crystal');">{$LNG.fl_max}</a></th>
-        				<td class="transparent"><input name="crystal" size="10" onchange="calculateTransportCapacity();" type="text"></td>
-        			</tr>
-                    <tr style="height:20px;">
-        				<td class="transparent">{$LNG.tech.903}</td>
-        				<td class="transparent"><a href="javascript:maxResource('deuterium');">{$LNG.fl_max}</a></td>
-        				<td class="transparent"><input name="deuterium" size="10" onchange="calculateTransportCapacity();" type="text"></td>
-        			</tr>
-                    <tr style="height:20px;">
-        				<td class="transparent">{$LNG.fl_resources_left}</td>
-        				<td class="transparent" colspan="2" id="remainingresources">-</td>
-        			</tr>
-                    <tr style="height:20px;">
-        				<td class="transparent" colspan="3"><a href="javascript:maxResources()">{$LNG.fl_all_resources}</a></td>
-        			</tr>
-                    <tr style="height:20px;">
-        				<td class="transparent" colspan="3">{$LNG.fl_fuel_consumption}: <span id="consumption" class="consumption">{$consumption}</span></td>
-        			</tr>
-				</table>
-			</td>
-		</tr>
+	<input type="hidden" name="token" value="{$token}">
+
+	<div class="fe-target-title"><i class="bi bi-geo-alt"></i> [{$galaxy}:{$system}:{$planet}] · {$LNG["type_planet_{$type}"]}</div>
+
+	<h3 class="fe-section-title">{$LNG.fl_mission}</h3>
+	<div class="fe-missions">
+	{foreach $MissionSelector as $MissionID}
+		<label class="fe-mission">
+			<input id="radio_{$MissionID}" type="radio" name="mission" value="{$MissionID}" {if $mission == $MissionID || $MissionID@total == 1}checked="checked"{/if}>
+			<span>
+				<strong>{$LNG["type_mission_{$MissionID}"]}</strong>
+				{if $MissionID == 17}<small>{$LNG.fl_transfer_alert_message}</small>{/if}
+				{if $MissionID == 15}<small>{$LNG.fl_expedition_alert_message}</small>{/if}
+				{if $MissionID == 11}<small>{$fl_dm_alert_message}</small>{/if}
+			</span>
+		</label>
+	{/foreach}
+	</div>
+
+	<h3 class="fe-section-title">{$LNG.fl_resources}</h3>
+	<section class="fe-panel">
+		<div class="fe-cargo">
+			<label><span>{$LNG.tech.901}</span><input name="metal" inputmode="numeric" onchange="calculateTransportCapacity();" oninput="calculateTransportCapacity();" type="text"><button type="button" class="fe-btn fe-btn-ghost" onclick="maxResource('metal')">{$LNG.fl_max}</button></label>
+			<label><span>{$LNG.tech.902}</span><input name="crystal" inputmode="numeric" onchange="calculateTransportCapacity();" oninput="calculateTransportCapacity();" type="text"><button type="button" class="fe-btn fe-btn-ghost" onclick="maxResource('crystal')">{$LNG.fl_max}</button></label>
+			<label><span>{$LNG.tech.903}</span><input name="deuterium" inputmode="numeric" onchange="calculateTransportCapacity();" oninput="calculateTransportCapacity();" type="text"><button type="button" class="fe-btn fe-btn-ghost" onclick="maxResource('deuterium')">{$LNG.fl_max}</button></label>
+		</div>
+		<div class="fe-cargo-foot">
+			<button type="button" class="fe-btn fe-btn-ghost" onclick="maxResources()">{$LNG.fl_all_resources}</button>
+			<span>{$LNG.fl_resources_left}: <b id="remainingresources">-</b></span>
+			<span>{$LNG.fl_fuel_consumption}: <b id="consumption" class="consumption">{$consumption}</b></span>
+		</div>
+	</section>
+
 		{if $Exchange}
-		<tr style="height:20px;">
-			<th>{$LNG.fl_exchange}</th>
-		</tr>
-		<tr style="height:20px;">
-			<td>
+		<h3 class="fe-section-title">{$LNG.fl_exchange}</h3>
+		<section class="fe-panel">
 				<table class="table table-gow table-sm">
 				<tr class="no-border">
 					<td >
@@ -102,25 +80,21 @@
 			Max flight time (0 = unlimited):
 			<input name="maxFlightTime" size="10" type="text" value="0"> hours<br/>
 			-->
-			</td>
-		</tr>
+		</section>
 		{/if}
 
 		{if $StaySelector}
-		<tr style="height:20px;">
-			<th class="text-center">{$LNG.fl_hold_time}</th>
-		</tr>
-		<tr style="height:20px;">
-			<td>
+		<h3 class="fe-section-title">{$LNG.fl_hold_time}</h3>
+		<section class="fe-panel fe-stay">
 			{html_options name=staytime options=$StaySelector} {$LNG.fl_hours}
-			</td>
-		</tr>
+		</section>
 		{/if}
-        <tr style="height:20px;">
-        	<td colspan="2"><input class="button-upgrade" value="{$LNG.fl_continue}" type="submit" /></td>
-        </tr>
-    </table>
+
+	<div class="fe-submitbar">
+		<button type="submit" class="fe-btn fe-btn-primary"><i class="bi bi-send"></i> {$LNG.fl_continue}</button>
+	</div>
 </form>
+</div>
 <script type="text/javascript">
 data	= {$fleetdata|json};
 </script>

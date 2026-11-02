@@ -1,49 +1,25 @@
 {block name="title" prepend}{$LNG.lm_fleet}{/block}
 {block name="content"}
-<table class="table table-dark table-sm fs-12">
-	<tr style="height:20px">
-		<th colspan="2" class="success">{$LNG.fl_fleet_sended}</span></th>
-	</tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_mission}</td>
-        <td>{$LNG["type_mission_{$targetMission}"]}</td>
-	</tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_distance}</td>
-        <td>{$distance|number}</td>
-    </tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_fleet_speed}</td>
-        <td>{$MaxFleetSpeed|number}</td>
-    </tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_fuel_consumption}</td>
-        <td>{$consumption|number}</td>
-    </tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_from}</td>
-        <td>{$from}</td>
-    </tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_destiny}</td>
-        <td>{$destination}</td>
-    </tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_arrival_time}</td>
-        <td>{$fleetStartTime}</td>
-    </tr>
-    <tr style="height:20px">
-        <td>{$LNG.fl_return_time}</td>
-        <td>{$fleetEndTime}</td>
-    </tr>
-    <tr style="height:20px">
-        <th colspan="2">{$LNG.fl_fleet}</th>
-    </tr>
+<div class="fe-build fe-fleet">
+	<div class="fe-success"><i class="bi bi-check-circle-fill"></i> {$LNG.fl_fleet_sended}</div>
+	<section class="fe-panel">
+		<dl class="fe-facts">
+			<div><dt>{$LNG.fl_mission}</dt><dd>{$LNG["type_mission_{$targetMission}"]}</dd></div>
+			<div><dt>{$LNG.fl_from}</dt><dd>{$from}</dd></div>
+			<div><dt>{$LNG.fl_destiny}</dt><dd>{$destination}</dd></div>
+			<div><dt>{$LNG.fl_distance}</dt><dd>{$distance|number}</dd></div>
+			<div><dt>{$LNG.fl_fleet_speed}</dt><dd>{$MaxFleetSpeed|number}</dd></div>
+			<div><dt>{$LNG.fl_fuel_consumption}</dt><dd>{$consumption|number}</dd></div>
+			<div><dt>{$LNG.fl_arrival_time}</dt><dd>{$fleetStartTime}</dd></div>
+			<div><dt>{$LNG.fl_return_time}</dt><dd>{$fleetEndTime}</dd></div>
+		</dl>
+	</section>
+	<h3 class="fe-section-title">{$LNG.fl_fleet}</h3>
+	<ul class="fe-bonus fe-bonus-wide fe-shiplist">
 	{foreach $FleetList as $ShipID => $ShipCount}
-	<tr>
-		<td>{$LNG.tech.{$ShipID}}</td>
-		<td>{$ShipCount|number}</td>
-	</tr>
+		<li>{$ShipCount|number} × {$LNG.tech.{$ShipID}}</li>
 	{/foreach}
-</table>
+	</ul>
+	<div class="fe-fleet-tools"><a class="fe-btn fe-btn-primary" href="game.php?page=fleetTable"><i class="bi bi-send"></i> {$LNG.lm_fleet}</a></div>
+</div>
 {/block}
