@@ -815,7 +815,7 @@ font[color="red"], span[style*="color:red"], span[style*="color: red"] { color: 
     z-index: 1030;
 }
 .menu-container { transition: padding 160ms ease-out; }
-.menu-container .logo { transition: height 160ms ease-out, width 160ms ease-out; }
+.menu-container .logo { height: 68px; width: auto; transition: height 160ms ease-out, width 160ms ease-out; }
 .menu-container .resources-container { transition: margin 160ms ease-out; }
 html.fe-compact .menu-container .logo { height: 44px; width: auto; }
 html.fe-compact .menu-container .resources-container { margin-top: 4px; }

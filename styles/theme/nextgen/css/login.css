@@ -342,3 +342,7 @@ select.login-input option { background: #141824; color: var(--fe-text); }
 .login-message a { color: var(--fe-accent); font-weight: 600; }
 .login-message-actions { display: flex; flex-direction: column; gap: 8px; }
 a.login-button, a.login-button:visited { display: flex; align-items: center; justify-content: center; text-decoration: none; color: #1a1006; }
+
+/* smaller logo on the public pages */
+#navbar .logo { width: 170px; height: auto; }
+@media (max-width: 750px) { #navbar .logo { width: 130px; } }
