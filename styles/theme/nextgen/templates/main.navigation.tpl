@@ -4,6 +4,39 @@
     <strong>{$LNG.fe_menu}</strong>
     <button type="button" class="fe-drawer-close" data-menu-close aria-label="{$LNG.fe_close}"><i class="bi bi-x-lg"></i></button>
   </div>
+  {if $AllPlanets}
+  <div class="fe-drawer-more">
+    <span class="fe-drawer-title">{$LNG.fe_planets}</span>
+    <ul class="fe-planets">
+      {foreach $AllPlanets as $PlanetRow}
+      <li>
+        <a class="fe-planet {if $PlanetRow.selected}is-current{/if}" href="game.php?page={$page}&amp;cp={$PlanetRow.id}">
+          <img src="{$dpath}planeten/{$PlanetRow.image}.jpg" alt="" width="40" height="40" loading="lazy">
+          <span><strong>{$PlanetRow.name}</strong><small>[{$PlanetRow.galaxy}:{$PlanetRow.system}:{$PlanetRow.planet}]</small></span>
+          {if $PlanetRow.selected}<i class="bi bi-check-lg"></i>{/if}
+        </a>
+        {if isset($PlanetRow.moonInfo)}
+        {foreach $PlanetRow.moonInfo as $MoonRow}
+        <a class="fe-planet fe-moon {if $MoonRow.selected}is-current{/if}" href="game.php?page={$page}&amp;cp={$MoonRow.id}">
+          <img src="{$dpath}planeten/{$MoonRow.image}_small.webp" alt="" width="28" height="28" loading="lazy">
+          <span><strong>{$MoonRow.name}</strong></span>
+          {if $MoonRow.selected}<i class="bi bi-check-lg"></i>{/if}
+        </a>
+        {/foreach}
+        {/if}
+      </li>
+      {/foreach}
+    </ul>
+    {if $hasMultiUniverseAccounts}
+    <ul class="main-menu">
+      {foreach $mu_unis as $universe_id => $universe_name}
+      <li><a href="game.php?page=overview&amp;switch_universe={$universe_id}"><i class="bi bi-globe2"></i><span>{$universe_name}</span></a></li>
+      {/foreach}
+    </ul>
+    {/if}
+  </div>
+  {/if}
+  <div class="fe-drawer-more fe-drawer-title-only"><span class="fe-drawer-title">{$LNG.fe_game}</span></div>
   <ul class="main-menu">
       <li>
         <a class="{if $page == 'overview'}menuActive{/if}" href="game.php?page=overview"><i class="bi bi-house-door"></i><span>{$LNG.lm_overview}</span></a>
@@ -80,6 +113,30 @@
       {/if}
   </ul>
   <div class="fe-drawer-more">
+    <span class="fe-drawer-title">{$LNG.fe_account}</span>
+    <ul class="main-menu">
+      {if isModuleAvailable($smarty.const.MODULE_MESSAGES)}
+      <li><a class="{if $page == 'messages'}menuActive{/if}" href="game.php?page=messages"><i class="bi bi-envelope"></i><span>{$LNG.lm_messages}</span>{nocache}{if $new_message > 0}<b class="fe-menu-badge">{$new_message}</b>{/if}{/nocache}</a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_BUDDYLIST)}
+      <li><a class="{if $page == 'buddyList'}menuActive{/if}" href="game.php?page=buddyList"><i class="bi bi-people"></i><span>{$LNG.lm_buddylist}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_NOTICE)}
+      <li><a href="javascript:OpenPopup('?page=notes', 'notes', 720, 300);"><i class="bi bi-journal-check"></i><span>{$LNG.lm_notes}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_STATISTICS)}
+      <li><a class="{if $page == 'statistics'}menuActive{/if}" href="game.php?page=statistics"><i class="bi bi-graph-up-arrow"></i><span>{$LNG.lm_statistics}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_SEARCH)}
+      <li><a class="{if $page == 'search'}menuActive{/if}" href="game.php?page=search"><i class="bi bi-search"></i><span>{$LNG.lm_search}</span></a></li>
+      {/if}
+      {if isModuleAvailable($smarty.const.MODULE_SUPPORT)}
+      <li><a class="{if $page == 'ticket'}menuActive{/if}" href="game.php?page=ticket"><i class="bi bi-info-circle"></i><span>{$LNG.lm_support}</span></a></li>
+      {/if}
+      <li><a class="{if $page == 'settings'}menuActive{/if}" href="game.php?page=settings"><i class="bi bi-gear"></i><span>{$LNG.lm_options}</span></a></li>
+    </ul>
+  </div>
+  <div class="fe-drawer-more">
     <span class="fe-drawer-title">{$LNG.fe_more}</span>
     <ul class="main-menu">
       {if isModuleAvailable($smarty.const.MODULE_RECORDS)}
@@ -110,6 +167,19 @@
       <div><dt>{$LNG.si_storage_multiplier}</dt><dd>{$storage_multiplier}</dd></div>
     </dl>
     {/if}
+  </div>
+  <div class="fe-drawer-more">
+    {if count($languages) > 1}
+    <span class="fe-drawer-title">{$LNG.fe_language}</span>
+    <div class="fe-langs">
+      {foreach $languages as $langKey => $langName}
+      <a class="fe-lang {if $langKey == $lang}is-current{/if}" href="#" data-set-lang="{$langKey}" hreflang="{$langKey}"><img src="styles/theme/nextgen/img/lang/{$langKey}.svg" alt="" width="22"><span>{$langName}</span></a>
+      {/foreach}
+    </div>
+    {/if}
+    <ul class="main-menu fe-menu-logout">
+      <li><a href="game.php?page=logout"><i class="bi bi-box-arrow-right"></i><span>{$LNG.lm_logout}</span></a></li>
+    </ul>
   </div>
   <div class="toggle-menu-button-container">
     <button type="button" class="toggle-menu-button dark-blur-bg" aria-label="Menu" onclick="toggleMainMenu()">

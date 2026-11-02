@@ -4,7 +4,13 @@
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav">
               <li class="fe-burger-item d-flex align-items-center h-100">
-                <button type="button" id="fe-burger" class="fe-burger" aria-label="{$LNG.fe_menu}" aria-expanded="false" aria-controls="main-menu-container"><i class="bi bi-list"></i></button>
+                <button type="button" id="fe-burger" class="fe-burger" aria-expanded="false" aria-controls="main-menu-container">
+                  <i class="bi bi-list"></i><span>{$LNG.fe_menu}</span>
+                  {nocache}{if $new_message > 0}<b class="fe-burger-badge" aria-label="{$LNG.lm_messages}: {$new_message}">{$new_message}</b>{/if}{/nocache}
+                </button>
+              </li>
+              <li class="fe-bar-logo d-flex align-items-center h-100">
+                <a href="game.php?page=overview"><img src="styles/resource/images/ultimatexnova.svg" alt="" height="32"></a>
               </li>
               <!--{if isModuleAvailable($smarty.const.MODULE_ATTACK_ALERT)}
                 <div style="width:15px;" class="">

@@ -1338,3 +1338,7 @@ $LNG['fe_market_fleet'] = 'Mercado de flotas';
 $LNG['fe_menu'] = 'Menú';
 $LNG['fe_close'] = 'Cerrar';
 $LNG['fe_more'] = 'Más';
+$LNG['fe_planets'] = 'Tus planetas';
+$LNG['fe_game'] = 'Juego';
+$LNG['fe_account'] = 'Tu cuenta';
+$LNG['fe_language'] = 'Idioma';

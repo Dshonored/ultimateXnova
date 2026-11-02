@@ -1309,3 +1309,7 @@ $LNG['fe_market_fleet'] = 'Fleet market';
 $LNG['fe_menu'] = 'Menu';
 $LNG['fe_close'] = 'Close';
 $LNG['fe_more'] = 'More';
+$LNG['fe_planets'] = 'Your planets';
+$LNG['fe_game'] = 'Game';
+$LNG['fe_account'] = 'Your account';
+$LNG['fe_language'] = 'Language';
