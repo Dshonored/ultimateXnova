@@ -8,8 +8,10 @@
  *
  * - codes: 10 minutes, max 5 tries, single use; only a hash is stored (cache/logincodes)
  * - the pending login is bound to this browser through an HttpOnly cookie
- * - after a valid code the browser is trusted for 30 days with an HMAC-signed cookie that
- *   also covers the password hash, so a password change revokes every trusted device
+ * - a valid code (or the registration link) verifies the ACCOUNT for 30 days: during that
+ *   month no code is asked on any device. The record is HMAC-signed over the password hash,
+ *   so a password change forces a new code right away.
+ * - the browser is also trusted for 30 days with an HMAC-signed cookie (same password binding)
  *
  * Environment:
  *   APP_SECRET          long random string (required, signs trusted-device cookies)
@@ -22,6 +24,7 @@ class LoginCode
 	const CODE_TTL       = 600;              // 10 minutes
 	const MAX_ATTEMPTS   = 5;
 	const TRUST_DAYS     = 30;
+	const VERIFY_DAYS    = 30;             // e-mail code at most once a month per account
 	const CHALLENGE_COOKIE = 'login_challenge';
 	const TRUST_COOKIE     = 'trusted_device';
 
@@ -139,6 +142,28 @@ class LoginCode
 		return hash_equals(self::signature($userId, (int) $parts[1]), $parts[2]);
 	}
 
+	/** The account proved it owns its inbox: no more codes for VERIFY_DAYS, on any device. */
+	static public function markAccountVerified($userId)
+	{
+		$verifiedAt = TIMESTAMP;
+		file_put_contents(self::verifiedFile($userId), json_encode(array(
+			'verifiedAt' => $verifiedAt,
+			'sig'        => self::signature($userId, $verifiedAt),
+		)), LOCK_EX);
+	}
+
+	static public function isAccountVerified($userId)
+	{
+		$data = @json_decode((string) @file_get_contents(self::verifiedFile($userId)), true);
+		if (!is_array($data) || !isset($data['verifiedAt'], $data['sig'])) {
+			return false;
+		}
+		if ((int) $data['verifiedAt'] + self::VERIFY_DAYS * 86400 < TIMESTAMP) {
+			return false;
+		}
+		return hash_equals(self::signature($userId, (int) $data['verifiedAt']), (string) $data['sig']);
+	}
+
 	static public function clearChallengeCookie()
 	{
 		self::setCookie(self::CHALLENGE_COOKIE, '', TIMESTAMP - 3600);
@@ -184,6 +209,15 @@ class LoginCode
 			@mkdir($dir, 0770, true);
 		}
 		return $dir.'/'.hash('sha256', $challengeId).'.json';
+	}
+
+	static private function verifiedFile($userId)
+	{
+		$dir = ROOT_PATH.'cache/loginverified';
+		if (!is_dir($dir)) {
+			@mkdir($dir, 0770, true);
+		}
+		return $dir.'/'.(int) $userId.'.json';
 	}
 
 	/** Remove stale challenge files now and then. */

@@ -60,6 +60,10 @@ class ShowVertifyPage extends AbstractLoginPage
 
 		list($userID, $planetID) = PlayerUtil::createPlayer($userData['universe'], $userData['userName'], $userData['password'], $userData['email'], $userData['language'], NULL, NULL, NULL, NULL, 0, NULL, $userData['user_secret_question_id'], $userData['user_secret_question_answer']);
 
+		// Clicking the registration link is an e-mail verification: no login code this month.
+		require_once 'includes/classes/LoginCode.class.php';
+		LoginCode::markAccountVerified($userID);
+
 		if($config->mail_active == 1)
 		{
 			require_once 'includes/classes/Mail.class.php';

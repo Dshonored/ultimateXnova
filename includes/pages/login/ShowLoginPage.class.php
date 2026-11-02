@@ -137,9 +137,11 @@ class ShowLoginPage extends AbstractLoginPage
 		{
 			LoginThrottle::clear($userEmail);
 
-			// Password (or remember-me token) is correct. A device that already proved it
-			// can read the account's inbox goes straight in; anything else gets a code.
-			if ($usesRememberToken || LoginCode::isTrustedDevice((int) $loginData['id'])) {
+			// Password (or remember-me token) is correct. The e-mail code is only asked once a
+			// month per account (or on a device/account that never proved it owns the inbox).
+			if ($usesRememberToken
+				|| LoginCode::isAccountVerified((int) $loginData['id'])
+				|| LoginCode::isTrustedDevice((int) $loginData['id'])) {
 				$this->completeLogin((int) $loginData['id'], $universe, $remember_me);
 			}
 
@@ -180,6 +182,7 @@ class ShowLoginPage extends AbstractLoginPage
 
 		if ($result['ok']) {
 			LoginCode::trustDevice($result['userId']);
+			LoginCode::markAccountVerified($result['userId']);
 			$this->completeLogin($result['userId'], $result['universe'], $result['remember'] ? 'true' : 'false');
 		}
 
